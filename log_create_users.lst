@@ -1,0 +1,68 @@
+14:53:53 SQL> 
+14:53:53 SQL> /* set server output */
+14:53:53 SQL> SET serveroutput on
+14:53:53 SQL> /* show time on SQL ex 01:10 SQL> */
+14:53:53 SQL> set time on
+14:53:53 SQL> 
+14:53:53 SQL> /* make SQL type in upper case, ex SELECT * FROM etc */
+14:53:53 SQL> set sqlcase lower
+14:53:53 SQL> 
+14:53:53 SQL> /* display data with heading */
+14:53:53 SQL> set heading on
+14:53:53 SQL> 
+14:53:53 SQL> /* making sure line size are default at 80 */
+14:53:53 SQL> set linesize 80
+14:53:53 SQL> 
+14:53:53 SQL> /* making sure page size are default at 14 */
+14:53:53 SQL> set pagesize 14
+14:53:53 SQL> 
+14:53:53 SQL> /* Display commands as they are executed */
+14:53:53 SQL> set echo on
+14:53:53 SQL> 
+14:53:53 SQL> /* Error Trapping from www.orafaq.com/wiki/SQL%2APlus_FAQ#How_does_one_trap_errors_in_SQL.2APlus.3F */
+14:53:53 SQL> 
+14:53:53 SQL> WHENEVER OSERROR	EXIT 9
+14:53:53 SQL> WHENEVER SQLERROR EXIT SQL.SQLCODE
+14:53:53 SQL> 
+14:53:53 SQL> /* drop user... just in case */
+14:53:53 SQL> DROP USER datadev;
+
+User dropped.
+
+14:53:53 SQL> DROP USER dataqa;
+
+User dropped.
+
+14:53:54 SQL> DROP USER dataprd;
+
+User dropped.
+
+14:53:54 SQL> 
+14:53:54 SQL> /* create users datadev, dataqa, dataprd, edma */
+14:53:54 SQL> CREATE USER datadev IDENTIFIED BY edward;
+
+User created.
+
+14:53:54 SQL> CREATE USER dataqa IDENTIFIED BY edward;
+
+User created.
+
+14:53:54 SQL> CREATE USER dataprd IDENTIFIED BY edward;
+
+User created.
+
+14:53:54 SQL> 
+14:53:54 SQL> /* check if users is in database */
+14:53:54 SQL> SELECT username FROM dba_users WHERE username LIKE 'data%';
+
+no rows selected
+
+14:53:54 SQL> 
+14:53:54 SQL> /* grant datadev privilage to connect and ALL table */
+14:53:54 SQL> GRANT connect,create table, create view, create any index TO datadev;
+
+Grant succeeded.
+
+14:53:54 SQL> /* apparently create any index is a bad idea...?
+14:53:54 SQL> Turning off spool*/
+14:53:54 SQL> spool off
