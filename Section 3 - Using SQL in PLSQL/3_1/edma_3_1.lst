@@ -1,0 +1,443 @@
+13:03:32 SQL> @scripts/3_1_3.sql
+13:04:01 SQL> DROP TABLE grocery_items;
+drop table grocery_items
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+13:04:01 SQL> 
+13:04:01 SQL> CREATE TABLE grocery_items
+13:04:01   2  	      (
+13:04:01   3  		      product_id NUMBER,
+13:04:01   4  		      brand VARCHAR2(35),
+13:04:01   5  		      descriptions VARCHAR2(40)
+13:04:01   6  	      );
+
+Table created.
+
+13:04:01 SQL> @scripts/3_1_4.sql
+13:04:13 SQL> INSERT INTO grocery_items (product_id, brand, descriptions) VALUES (110, 'Colgate', 'Toothpaste');
+
+1 row created.
+
+13:04:13 SQL> INSERT INTO grocery_items (product_id, brand, descriptions) VALUES (111, 'Ivory', 'Soap');
+
+1 row created.
+
+13:04:13 SQL> INSERT INTO grocery_items (product_id, brand, descriptions) VALUES (112, 'Heinz', 'Ketchup');
+
+1 row created.
+
+13:04:13 SQL> INSERT INTO grocery_items(product_id, brand, descriptions) VALUES (113, 'Water', 'Water');
+
+1 row created.
+
+13:04:28 SQL> @scripts/3_1_6.sql
+13:05:16 SQL> UPDATE grocery_items
+13:05:16   2  	      SET descriptions = 'tomato catsup'
+13:05:16   3  	      WHERE brand = 'Heinz';
+
+1 row updated.
+
+13:05:16 SQL> SELECT * FROM grocery_items;
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       110 colgate                                                              
+toothpaste                                                                      
+                                                                                
+       111 ivory                                                                
+soap                                                                            
+                                                                                
+       112 heinz                                                                
+tomato catsup                                                                   
+                                                                                
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       113 water                                                                
+water                                                                           
+                                                                                
+
+13:05:30 SQL> INSERT INTO grocery_items VALUES (114, 'Smarties', 'Chocolate');
+
+1 row created.
+
+13:05:45 SQL> SELECT * FROM grocery_items;
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       110 colgate                                                              
+toothpaste                                                                      
+                                                                                
+       111 ivory                                                                
+soap                                                                            
+                                                                                
+       112 heinz                                                                
+tomato catsup                                                                   
+                                                                                
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       113 water                                                                
+water                                                                           
+                                                                                
+       114 smarties                                                             
+chocolate                                                                       
+                                                                                
+
+13:05:56 SQL> @scripts/3_1_8.sql
+13:06:37 SQL> UPDATE grocery_items
+13:06:37   2  	      SET brand = 'Dove'
+13:06:37   3  	      WHERE product_id = 111;
+
+1 row updated.
+
+13:06:37 SQL> SELECT * FROM grocery_items;
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       110 colgate                                                              
+toothpaste                                                                      
+                                                                                
+       111 dove                                                                 
+soap                                                                            
+                                                                                
+       112 heinz                                                                
+tomato catsup                                                                   
+                                                                                
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       113 water                                                                
+water                                                                           
+                                                                                
+       114 smarties                                                             
+chocolate                                                                       
+                                                                                
+
+13:06:47 SQL> @scripts/3_1_9.sql
+13:07:20 SQL> DROP TABLE new_items;
+drop table new_items
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+13:07:20 SQL> 
+13:07:20 SQL> CREATE TABLE new_items
+13:07:20   2  	      (
+13:07:20   3  		      product_id NUMBER,
+13:07:20   4  		      brand VARCHAR2(35),
+13:07:20   5  		      descriptions VARCHAR2(40)
+13:07:20   6  	      );
+
+Table created.
+
+13:07:20 SQL> 
+13:07:20 SQL> INSERT INTO new_items (product_id, brand, descriptions) VALUES (110, 'Colgate', 'Toothpaste');
+
+1 row created.
+
+13:07:20 SQL> INSERT INTO new_items (product_id, brand, descriptions) VALUES (175, 'Dew', 'Soda');
+
+1 row created.
+
+13:07:20 SQL> INSERT INTO new_items (product_id, brand, descriptions) VALUES (275, 'Palmolive', 'Dish detergent');
+
+1 row created.
+
+13:07:20 SQL> SELECT * FROM new_items;
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       110 colgate                                                              
+toothpaste                                                                      
+                                                                                
+       175 dew                                                                  
+soda                                                                            
+                                                                                
+       275 palmolive                                                            
+dish detergent                                                                  
+                                                                                
+
+13:07:32 SQL> @scripts/3_1_10.sql
+13:09:24 SQL> MERGE INTO grocery_items g
+13:09:24   2  	      USING new_items n
+13:09:24   3  	      ON (g.product_id = n.product_id)
+13:09:24   4  
+13:09:24 SQL> 	      WHEN MATCH THEN
+SP2-0734: unknown command beginning "WHEN MATCH..." - rest of line ignored.
+13:09:24 SQL> 		      UPDATE SET g.descriptions = h.descriptions
+13:09:24   2  
+13:09:24 SQL> 	      WHEN NOT MATCH THEN
+SP2-0734: unknown command beginning "WHEN NOT M..." - rest of line ignored.
+13:09:24 SQL> 		      INSERT (product_id, brand,descriptions)
+13:09:24   2  		      VALUES (h.product_id, h.brand, h.descriptions);
+		insert (product_id, brand,descriptions)
+		       *
+ERROR at line 1:
+ORA-00925: missing INTO keyword 
+
+
+13:09:24 SQL> @scripts/3_1_10.sql
+13:11:02 SQL> MERGE INTO grocery_items g
+13:11:02   2  	      USING new_items n
+13:11:02   3  	      ON (g.product_id = n.product_id)
+13:11:02   4  
+13:11:02 SQL> 	      WHEN MATCH THEN
+SP2-0734: unknown command beginning "WHEN MATCH..." - rest of line ignored.
+13:11:02 SQL> 		      UPDATE SET g.descriptions = h.descriptions
+13:11:02   2  
+13:11:02 SQL> 	      WHEN NOT MATCH THEN
+SP2-0734: unknown command beginning "WHEN NOT M..." - rest of line ignored.
+13:11:02 SQL> 		      INSERT INTO g (product_id, brand,descriptions)
+13:11:02   2  		      VALUES (h.product_id, h.brand, h.descriptions);
+		insert into g (product_id, brand,descriptions)
+		            *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+13:11:02 SQL> @scripts/3_1_10.sql
+13:11:42 SQL> MERGE INTO grocery_items g
+13:11:42   2  	      USING new_items n
+13:11:42   3  	      ON (g.product_id = n.product_id)
+13:11:42   4  
+13:11:42 SQL> 	      WHEN MATCHED THEN
+SP2-0734: unknown command beginning "WHEN MATCH..." - rest of line ignored.
+13:11:42 SQL> 		      UPDATE SET g.descriptions = h.descriptions
+13:11:42   2  
+13:11:42 SQL> 	      WHEN NOT MATCHED THEN
+SP2-0734: unknown command beginning "WHEN NOT M..." - rest of line ignored.
+13:11:42 SQL> 		      INSERT INTO g (product_id, brand,descriptions)
+13:11:42   2  		      VALUES (h.product_id, h.brand, h.descriptions);
+		insert into g (product_id, brand,descriptions)
+		            *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+13:11:42 SQL> @scripts/3_1_10.sql
+13:13:29 SQL> MERGE INTO grocery_items g
+13:13:29   2  	      USING new_items n
+13:13:29   3  	      ON (g.product_id = n.product_id)
+13:13:29   4  	      WHEN MATCHED THEN
+13:13:29   5  		      UPDATE SET g.descriptions = h.descriptions
+13:13:29   6  	      WHEN NOT MATCHED THEN
+13:13:29   7  		      INSERT INTO g (product_id, brand,descriptions)
+13:13:29   8  		      VALUES (h.product_id, h.brand, h.descriptions);
+		insert into g (product_id, brand,descriptions)
+		       *
+ERROR at line 7:
+ORA-00926: missing VALUES keyword 
+
+
+13:13:29 SQL> @scripts/3_1_10.sql
+13:14:00 SQL> MERGE INTO grocery_items g
+13:14:00   2  	      USING new_items n
+13:14:00   3  	      ON (g.product_id = n.product_id)
+13:14:00   4  	      WHEN MATCHED THEN
+13:14:00   5  		      UPDATE SET g.descriptions = h.descriptions
+13:14:00   6  	      WHEN NOT MATCHED THEN
+13:14:00   7  		      INSERT (product_id, brand,descriptions)
+13:14:00   8  		      VALUES (h.product_id, h.brand, h.descriptions);
+		values (h.product_id, h.brand, h.descriptions)
+		                               *
+ERROR at line 8:
+ORA-00904: "H"."DESCRIPTIONS": invalid identifier 
+
+
+13:14:00 SQL> SELECT * FROM new_items;
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       110 colgate                                                              
+toothpaste                                                                      
+                                                                                
+       175 dew                                                                  
+soda                                                                            
+                                                                                
+       275 palmolive                                                            
+dish detergent                                                                  
+                                                                                
+
+13:14:35 SQL> SELECT * FROM grocery_items;
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       110 colgate                                                              
+toothpaste                                                                      
+                                                                                
+       111 dove                                                                 
+soap                                                                            
+                                                                                
+       112 heinz                                                                
+tomato catsup                                                                   
+                                                                                
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       113 water                                                                
+water                                                                           
+                                                                                
+       114 smarties                                                             
+chocolate                                                                       
+                                                                                
+
+13:15:28 SQL> @script/3_1_10.sql
+SP2-0310: unable to open file "script/3_1_10.sql"
+13:16:10 SQL> @scripts/3_1_10.sql
+13:16:19 SQL> MERGE INTO grocery_items g
+13:16:19   2  	      USING new_items n
+13:16:19   3  	      ON (g.product_id = n.product_id)
+13:16:19   4  	      WHEN MATCHED THEN
+13:16:19   5  		      UPDATE SET g.descriptions = h.descriptions
+13:16:19   6  	      WHEN NOT MATCHED THEN
+13:16:19   7  		      INSERT (product_id, brand,descriptions)
+13:16:19   8  		      VALUES (h.product_id, h.brand, h.descriptions);
+		values (h.product_id, h.brand, h.descriptions)
+		                               *
+ERROR at line 8:
+ORA-00904: "H"."DESCRIPTIONS": invalid identifier 
+
+
+13:16:19 SQL> @scripts/scripts.sql
+13:18:22 SQL> UPDATE new_items
+13:18:22   2  	      SET descriptions = 'Dental Paste'
+13:18:22   3  	      WHERE brand = 'Colgate';
+
+1 row updated.
+
+13:18:22 SQL> SELECT * FROM new_items;
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       110 colgate                                                              
+dental paste                                                                    
+                                                                                
+       175 dew                                                                  
+soda                                                                            
+                                                                                
+       275 palmolive                                                            
+dish detergent                                                                  
+                                                                                
+
+13:18:30 SQL> @scripts/3_1_10.sql
+13:18:58 SQL> MERGE INTO grocery_items g
+13:18:58   2  	      USING new_items n
+13:18:58   3  	      ON (g.product_id = n.product_id)
+13:18:58   4  	      WHEN MATCHED THEN
+13:18:58   5  		      UPDATE SET g.descriptions = h.descriptions
+13:18:58   6  	      WHEN NOT MATCHED THEN
+13:18:58   7  		      INSERT (product_id, brand, descriptions)
+13:18:58   8  		      VALUES (h.product_id, h.brand, h.descriptions);
+		values (h.product_id, h.brand, h.descriptions)
+		                               *
+ERROR at line 8:
+ORA-00904: "H"."DESCRIPTIONS": invalid identifier 
+
+
+13:18:58 SQL> SELECT * FROM grocery_items;
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       110 colgate                                                              
+toothpaste                                                                      
+                                                                                
+       111 dove                                                                 
+soap                                                                            
+                                                                                
+       112 heinz                                                                
+tomato catsup                                                                   
+                                                                                
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       113 water                                                                
+water                                                                           
+                                                                                
+       114 smarties                                                             
+chocolate                                                                       
+                                                                                
+
+13:20:15 SQL> @scripts/3_1_10.sql
+13:20:52 SQL> MERGE INTO grocery_items g
+13:20:52   2  	      USING new_items n
+13:20:52   3  	      ON (g.product_id = n.product_id)
+13:20:52   4  	      WHEN MATCHED THEN
+13:20:52   5  		      UPDATE SET g.descriptions = n.descriptions
+13:20:52   6  	      WHEN NOT MATCHED THEN
+13:20:52   7  		      INSERT (product_id, brand, descriptions)
+13:20:52   8  		      VALUES (n.product_id, n.brand, n.descriptions);
+
+3 rows merged.
+
+13:20:52 SQL> SELECT * FROM grocery_items;
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       110 colgate                                                              
+dental paste                                                                    
+                                                                                
+       111 dove                                                                 
+soap                                                                            
+                                                                                
+       112 heinz                                                                
+tomato catsup                                                                   
+                                                                                
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       113 water                                                                
+water                                                                           
+                                                                                
+       114 smarties                                                             
+chocolate                                                                       
+                                                                                
+       175 dew                                                                  
+soda                                                                            
+                                                                                
+
+PRODUCT_ID BRAND                                                                
+---------- -----------------------------------                                  
+DESCRIPTIONS                                                                    
+----------------------------------------                                        
+       275 palmolive                                                            
+dish detergent                                                                  
+                                                                                
+
+7 rows selected.
+
+13:21:16 SQL> spool off

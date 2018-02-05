@@ -1,0 +1,277 @@
+SQL> CREATE TABLE new_depts AS SELECT * FROM departments;
+
+Table created.
+
+SQL> @scripts/3_3_3.sql
+SQL> DECLARE
+  2  	     v_max_deptno new_depts.department_id%TYPE;
+  3  BEGIN
+  4  	     SELECT MAX(department_id) INTO v_max_deptno
+  5  	     FROM new_depts;
+  6  	     DBMS_OUTPUT.PUT_LINE('The maximum department id is: ' || v_max_deptno);
+  7  END;
+  8  /
+The maximum department id is: 190                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/3_3_4to8.sql
+SQL> DECLARE
+  2  	     v_max_deptno new_depts.department_id%TYPE;
+  3  	     v_dept_name new_depts.department_name%TYPE := 'A New Department';
+  4  	     v_dept_id new_depts.department_id%TYPE;
+  5  BEGIN
+  6  	     SELECT MAX(department_id) INTO v_max_deptno
+  7  	     FROM new_depts;
+  8  
+  9  	     v_dept_id = v_max_deptno + 10;
+ 10  
+ 11  	     DBMS_OUTPUT.PUT_LINE('The maximum department id is: ' || v_max_deptno);
+ 12  
+ 13  	     INSERT INTO departments (department_id, department_name, manager_id, location_id)
+ 14  	     Values(v_dept_id,v_dept_name,null,null);
+ 15  
+ 16  END;
+ 17  /
+	v_dept_id = v_max_deptno + 10;
+	          *
+ERROR at line 9:
+ORA-06550: line 9, column 12: 
+PLS-00103: Encountered the symbol "=" when expecting one of the following: 
+:= . ( @ % ; 
+The symbol ":= was inserted before "=" to continue. 
+
+
+SQL> @scripts/3_3_4to8.sql
+SQL> DECLARE
+  2  	     v_max_deptno new_depts.department_id%TYPE;
+  3  	     v_dept_name new_depts.department_name%TYPE := 'A New Department';
+  4  	     v_dept_id new_depts.department_id%TYPE;
+  5  BEGIN
+  6  	     SELECT MAX(department_id) INTO v_max_deptno
+  7  	     FROM new_depts;
+  8  
+  9  	     v_dept_id := v_max_deptno + 10;
+ 10  
+ 11  	     DBMS_OUTPUT.PUT_LINE('The maximum department id is: ' || v_max_deptno);
+ 12  
+ 13  	     INSERT INTO departments (department_id, department_name, manager_id, location_id)
+ 14  	     Values(v_dept_id,v_dept_name,null,null);
+ 15  
+ 16  END;
+ 17  /
+The maximum department id is: 190                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT * FROM departments WHERE department_name = 'A New Department';
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          200 A New Department                                                  
+
+SQL> DELETE FROM departments WHERE department_name = 'A New Department';
+
+1 row deleted.
+
+SQL> SELECT * FROM departments WHERE department_name = 'A New Department';
+
+no rows selected
+
+SQL> @scripts/3_3_4to8.sql
+SQL> DECLARE
+  2  	     v_max_deptno new_depts.department_id%TYPE;
+  3  	     v_dept_name new_depts.department_name%TYPE := 'A New Department';
+  4  	     v_dept_id new_depts.department_id%TYPE;
+  5  BEGIN
+  6  	     SELECT MAX(department_id) INTO v_max_deptno
+  7  	     FROM new_depts;
+  8  
+  9  	     v_dept_id := v_max_deptno + 10;
+ 10  
+ 11  	     INSERT INTO new_depts (department_id, department_name, manager_id, location_id)
+ 12  	     Values(v_dept_id,v_dept_name,null,null);
+ 13  
+ 14  	     DBMS_OUTPUT.PUT_LINE('The new department id is: ' || v_dept_id);
+ 15  	     DBMS_OUTPUT.PUT_LINE('The new department name is: ' || v_dept_name);
+ 16  
+ 17  END;
+ 18  /
+The new department id is: 200                                                   
+The new department name is: A New Department                                    
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT * FROM new_depts WHERE department_name = 'A New Department';
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          200 A New Department                                                  
+
+SQL> @scripts/3_3_4to8.sql
+SQL> DECLARE
+  2  	     v_max_deptno new_depts.department_id%TYPE;
+  3  	     v_dept_name new_depts.department_name%TYPE := 'A New Department';
+  4  	     v_dept_id new_depts.department_id%TYPE;
+  5  BEGIN
+  6  	     SELECT MAX(department_id) INTO v_max_deptno
+  7  	     FROM new_depts;
+  8  
+  9  	     v_dept_id := v_max_deptno + 10;
+ 10  
+ 11  	     INSERT INTO new_depts (department_id, department_name, manager_id, location_id)
+ 12  	     Values(v_dept_id,v_dept_name,null,null);
+ 13  
+ 14  	     DBMS_OUTPUT.PUT_LINE('The new department id is: ' || v_dept_id);
+ 15  	     DBMS_OUTPUT.PUT_LINE('The new department name is: ' || v_dept_name);
+ 16  	     DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT);
+ 17  
+ 18  END;
+ 19  /
+The new department id is: 210                                                   
+The new department name is: A New Department                                    
+1                                                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT * FROM new_depts;
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+           10 Administration                        200        1700             
+           20 Marketing                             201        1800             
+           50 Shipping                              124        1500             
+           60 IT                                    103        1400             
+           80 Sales - Europe                        149        2500             
+           85 Sales - Americas                      149        2100             
+           90 Executive                             100        1700             
+          110 Accounting                            205        1700             
+          190 Contracting                                      1700             
+          200 A New Department                                                  
+          210 A New Department                                                  
+
+11 rows selected.
+
+SQL> @scripts/3_3_4to8.sql
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_max_deptno new_depts.department_id%TYPE;
+SQL> 	     v_dept_name new_depts.department_name%TYPE := 'A New Department';
+SQL> 	     v_dept_id new_depts.department_id%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT MAX(department_id) INTO v_max_deptno
+SQL> 	     FROM new_depts;
+SQL> 
+SQL> 	     v_dept_id := v_max_deptno + 10;
+SQL> 
+SQL> 	     INSERT INTO new_depts (department_id, department_name, manager_id, location_id)
+SQL> 	     Values(v_dept_id,v_dept_name,null,null);
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('The new department id is: ' || v_dept_id);
+SQL> 	     DBMS_OUTPUT.PUT_LINE('The new department name is: ' || v_dept_name);
+SQL> 	     DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT||' was inserted');
+SQL> 
+SQL> END;
+SQL> 
+SQL> */
+SQL> 
+SQL> DECLARE
+  2  	     v_max_deptno new_depts.department_id%TYPE;
+  3  	     v_dept_name new_depts.department_name%TYPE := 'A New Department';
+  4  	     v_dept_id new_depts.department_id%TYPE;
+  5  	     v_new_location_id new_depats.location_id%TYPE := 1400;
+  6  BEGIN
+  7  	     SELECT MAX(department_id) INTO v_max_deptno
+  8  	     FROM new_depts;
+  9  
+ 10  	     v_dept_id := v_max_deptno + 10;
+ 11  
+ 12  	     UPDATE new_depts
+ 13  	     SET location_id = v_new_location_id
+ 14  	     WHERE location_id = 1700;
+ 15  
+ 16  	     DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT||' was updated');
+ 17  
+ 18  END;
+ 19  /
+	v_new_location_id new_depats.location_id%TYPE := 1400;
+	                  *
+ERROR at line 5:
+ORA-06550: line 5, column 20: 
+PLS-00201: identifier 'NEW_DEPATS.LOCATION_ID' must be declared 
+ORA-06550: line 5, column 20: 
+PL/SQL: Item ignored 
+ORA-06550: line 13, column 20: 
+PLS-00320: the declaration of the type of this expression is incomplete or 
+malformed 
+ORA-06550: line 13, column 20: 
+PL/SQL: ORA-00904: "V_NEW_LOCATION_ID": invalid identifier 
+ORA-06550: line 12, column 2: 
+PL/SQL: SQL Statement ignored 
+
+
+SQL> @scripts/3_3_4to8.sql
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_max_deptno new_depts.department_id%TYPE;
+SQL> 	     v_dept_name new_depts.department_name%TYPE := 'A New Department';
+SQL> 	     v_dept_id new_depts.department_id%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT MAX(department_id) INTO v_max_deptno
+SQL> 	     FROM new_depts;
+SQL> 
+SQL> 	     v_dept_id := v_max_deptno + 10;
+SQL> 
+SQL> 	     INSERT INTO new_depts (department_id, department_name, manager_id, location_id)
+SQL> 	     Values(v_dept_id,v_dept_name,null,null);
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('The new department id is: ' || v_dept_id);
+SQL> 	     DBMS_OUTPUT.PUT_LINE('The new department name is: ' || v_dept_name);
+SQL> 	     DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT||' was inserted');
+SQL> 
+SQL> END;
+SQL> 
+SQL> */
+SQL> 
+SQL> DECLARE
+  2  	     v_max_deptno new_depts.department_id%TYPE;
+  3  	     v_dept_name new_depts.department_name%TYPE := 'A New Department';
+  4  	     v_dept_id new_depts.department_id%TYPE;
+  5  	     v_new_location_id new_depts.location_id%TYPE := 1400;
+  6  BEGIN
+  7  	     SELECT MAX(department_id) INTO v_max_deptno
+  8  	     FROM new_depts;
+  9  
+ 10  	     v_dept_id := v_max_deptno + 10;
+ 11  
+ 12  	     UPDATE new_depts
+ 13  	     SET location_id = v_new_location_id
+ 14  	     WHERE location_id = 1700;
+ 15  
+ 16  	     DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT||' was updated');
+ 17  
+ 18  END;
+ 19  /
+4 was updated                                                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT * FROM new_depts;
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+           10 Administration                        200        1400             
+           20 Marketing                             201        1800             
+           50 Shipping                              124        1500             
+           60 IT                                    103        1400             
+           80 Sales - Europe                        149        2500             
+           85 Sales - Americas                      149        2100             
+           90 Executive                             100        1400             
+          110 Accounting                            205        1400             
+          190 Contracting                                      1400             
+          200 A New Department                                                  
+          210 A New Department                                                  
+
+11 rows selected.
+
+SQL> spool off

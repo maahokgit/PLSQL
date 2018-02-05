@@ -1,0 +1,63 @@
+SQL> @scripts/3_4_2.sql
+SQL> CREATE TABLE endangered_species
+  2  (
+  3  	     species_id NUMBER(4) CONSTRAINT es_spec_pk PRIMARY KEY,
+  4  	     common_name VARCHAR2(30) CONSTRAINT es_com_name_nn NOT NULL,
+  5  	     scientific_name VARCHAR2(30) CONSTRAINT es_sci_name_nn NOT NULL
+  6  );
+
+Table created.
+
+SQL> @scripts/3_4_3.sql
+SQL> BEGIN
+  2  	     INSERT INTO endangered_species
+  3  	     VALUES (100, 'Polar Bear', 'Ursus maritimus');
+  4  
+  5  	     SAVEPOINT sp_100;
+  6  
+  7  	     INSERT INTO endangered_species
+  8  	     VALUES (200, 'Spotted Owl', 'Strix occidentalis');
+  9  
+ 10  	     SAVEPOINT sp_200;
+ 11  
+ 12  	     INSERT INTO endangered_species
+ 13  	     VALUES (300, 'Asiatic Black Bear', 'Ursus thibetanus');
+ 14  
+ 15  	     ROLLBACK TO sp_100;
+ 16  	     COMMIT;
+ 17  END;
+ 18  /
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT * FROM endangered_species;
+
+SPECIES_ID COMMON_NAME                    SCIENTIFIC_NAME                       
+---------- ------------------------------ ------------------------------        
+       100 Polar Bear                     Ursus maritimus                       
+
+SQL> @scripts/3_4_5.sql
+SQL> BEGIN
+  2  	     INSERT INTO endangered_species
+  3  	     VALUES (400, 'Blue Gound Beetle', 'Carabus intricatus');
+  4  
+  5  	     SAVEPOINT sp_400;
+  6  	     INSERT INTO endangered_species
+  7  	     VALUES (500, 'Little Spotted Cat', 'Leopardus tigrinus');
+  8  
+  9  	     ROLLBACK;
+ 10  
+ 11  	     INSERT INTO endangered_species
+ 12  	     VALUES (600, 'Veined Tongue-Fern', 'Elaphoglossum nervosum');
+ 13  
+ 14  	     ROLLBACK TO sp_400;
+ 15  END;
+ 16  /
+BEGIN
+*
+ERROR at line 1:
+ORA-01086: savepoint 'SP_400' never established in this session or is invalid 
+ORA-06512: at line 14 
+
+
+SQL> spool off

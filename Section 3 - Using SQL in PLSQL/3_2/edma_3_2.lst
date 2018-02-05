@@ -1,0 +1,688 @@
+SQL> @scripts/3_2_2.sql
+SQL> DECLARE
+  2  	     v_max_deptno departments.department_id%TYPE;
+  3  BEGIN
+  4  	     SELECT department_id
+  5  	     INTO v_max_deptno
+  6  	     FROM departments
+  7  	     WHERE department_id = (SELECT MAX(department_id) FROM departments);
+  8  
+  9  	     DBMS_OUTPUT.PUT_LINE('The Highest Department ID # is ' || v_max_deptno || '.');
+ 10  END;
+ 11  /
+The Highest Department ID # is 190.                                             
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/3_2_3.sql
+SQL> DECLARE
+  2  	     v_country_name countries.country_name%TYPE := 'Federative Republic of Brazil';
+  3  	     v_lowest_elevation countries.lowest_elevation%TYPE;
+  4  	     v_highest_elevation countries.highest_elevation%TYPE;
+  5  BEGIN
+  6  	     SELECT country_name, lowest_elevation, highest_elevation
+  7  	     INTO v_country_name, v_lowest_elevation, v_highest_elevation
+  8  	     FROM countries
+  9  	     WHERE country_name = v_country_name;
+ 10  	     DBMS_OUTPUT.PUT_LINE('The lowest elevation in '
+ 11  	     || v_country_name || ' is ' || v_lowest_elevation
+ 12  	     || ' and the highest elevation is ' || v_highest_elevation || '.');
+ 13  END;
+ 14  /
+The lowest elevation in Federative Republic of Brazil is 0 and the highest      
+elevation is 3014.                                                              
+
+PL/SQL procedure successfully completed.
+
+SQL> CREATE TABLE emp_dup AS (SELECT * FROM employees);
+
+Table created.
+
+SQL> SELECT first_name, last_name FROM emp_dup;
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Steven               King                                                       
+Neena                Kochhar                                                    
+Lex                  De Haan                                                    
+Jennifer             Whalen                                                     
+Shelley              Higgins                                                    
+William              Gietz                                                      
+Eleni                Zlotkey                                                    
+Ellen                Abel                                                       
+Jonathon             Taylor                                                     
+Kimberely            Grant                                                      
+Kevin                Mourgos                                                    
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Trenna               Rajs                                                       
+Curtis               Davies                                                     
+Randall              Matos                                                      
+Peter                Vargas                                                     
+Alexander            Hunold                                                     
+Bruce                Ernst                                                      
+Diana                Lorentz                                                    
+Michael              Hartstein                                                  
+Pat                  Fay                                                        
+Sophia               Barbosa Souza                                              
+Diego                Silva Pinto                                                
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Sarah                Alves Rocha                                                
+Lucas                Almeida Castro                                             
+Nick                 Hooper                                                     
+Donna                Steiner                                                    
+George               Bell                                                       
+Lisa                 TAYLOR                                                     
+Michael              Stocks                                                     
+Tiffany              Heiden                                                     
+Chen                 Li                                                         
+Alain                Fontaine                                                   
+Matthias             Reinhard                                                   
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Katia                Hernandez                                                  
+Guido                Ricci                                                      
+Mizuto               Saikawa                                                    
+Nabil                Safwah                                                     
+Jelena               Duric                                                      
+Jennifer             Loermans                                                   
+Alice                Newton                                                     
+
+40 rows selected.
+
+SQL> @scripts/3_2_5.sql
+SQL> -- Part A
+SQL> --CREATE TABLE emp_dup AS (SELECT * FROM employees);
+SQL> 
+SQL> -- Part B
+SQL> --SELECT first_name, last_name FROM emp_dup;
+SQL> 
+SQL> -- Part C
+SQL> DECLARE
+  2  	     last_name VARCHAR2(25) := 'Fay';
+  3  BEGIN
+  4  	     UPDATE emp_dup SET first_name = 'Jennifer'
+  5  	     WHERE last_name = last_name;
+  6  END;
+  7  
+  8  -- Part D
+  9  --SELECT first_name, last_name FROM emp_dup;
+ 10  
+ 11  -- Part E
+ 12  /* DROP TABLE emp_dup;
+ 13  
+ 14  CREATE TABLE emp_dup AS (SELECT * FROM employees);
+ 15  
+ 16  -- Part F
+ 17  DECLARE
+ 18  	     v_last_name VARCHAR2(25) := 'Fay';
+ 19  BEGIN
+ 20  	     UPDATE emp_dup SET first_name = 'Jennifer'
+ 21  	     WHERE last_name = v_last_name;
+ 22  END;
+ 23  
+ 24  -- Part G
+ 25  -- SELECT first_name, last_name FROM emp_dup;
+ 26  /
+-- SELECT first_name, last_name FROM emp_dup;
+                                            *
+ERROR at line 25:
+ORA-06550: line 25, column 45: 
+PLS-00111: end-of-file in comment 
+
+
+SQL> @scripts/3_2_5.sql
+SQL> -- Part A
+SQL> --CREATE TABLE emp_dup AS (SELECT * FROM employees);
+SQL> 
+SQL> -- Part B
+SQL> --SELECT first_name, last_name FROM emp_dup;
+SQL> 
+SQL> -- Part C
+SQL> DECLARE
+  2  	     last_name VARCHAR2(25) := 'Fay';
+  3  BEGIN
+  4  	     UPDATE emp_dup SET first_name = 'Jennifer'
+  5  	     WHERE last_name = last_name;
+  6  END;
+  7  /
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> -- Part D
+SQL> --SELECT first_name, last_name FROM emp_dup;
+SQL> 
+SQL> -- Part E
+SQL> /* DROP TABLE emp_dup;
+SQL> 
+SQL> CREATE TABLE emp_dup AS (SELECT * FROM employees); */
+SQL> 
+SQL> -- Part F
+SQL> /* DECLARE
+SQL> 	     v_last_name VARCHAR2(25) := 'Fay';
+SQL> BEGIN
+SQL> 	     UPDATE emp_dup SET first_name = 'Jennifer'
+SQL> 	     WHERE last_name = v_last_name;
+SQL> END;
+SQL> / */
+SQL> 
+SQL> -- Part G
+SQL> -- SELECT first_name, last_name FROM emp_dup;
+SQL> SELECT first_name, last_name FROM emp_dup;
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Jennifer             King                                                       
+Jennifer             Kochhar                                                    
+Jennifer             De Haan                                                    
+Jennifer             Whalen                                                     
+Jennifer             Higgins                                                    
+Jennifer             Gietz                                                      
+Jennifer             Zlotkey                                                    
+Jennifer             Abel                                                       
+Jennifer             Taylor                                                     
+Jennifer             Grant                                                      
+Jennifer             Mourgos                                                    
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Jennifer             Rajs                                                       
+Jennifer             Davies                                                     
+Jennifer             Matos                                                      
+Jennifer             Vargas                                                     
+Jennifer             Hunold                                                     
+Jennifer             Ernst                                                      
+Jennifer             Lorentz                                                    
+Jennifer             Hartstein                                                  
+Jennifer             Fay                                                        
+Jennifer             Barbosa Souza                                              
+Jennifer             Silva Pinto                                                
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Jennifer             Alves Rocha                                                
+Jennifer             Almeida Castro                                             
+Jennifer             Hooper                                                     
+Jennifer             Steiner                                                    
+Jennifer             Bell                                                       
+Jennifer             TAYLOR                                                     
+Jennifer             Stocks                                                     
+Jennifer             Heiden                                                     
+Jennifer             Li                                                         
+Jennifer             Fontaine                                                   
+Jennifer             Reinhard                                                   
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Jennifer             Hernandez                                                  
+Jennifer             Ricci                                                      
+Jennifer             Saikawa                                                    
+Jennifer             Safwah                                                     
+Jennifer             Duric                                                      
+Jennifer             Loermans                                                   
+Jennifer             Newton                                                     
+
+40 rows selected.
+
+SQL> @scripts/3_2_5.sql
+SQL> -- Part A
+SQL> --CREATE TABLE emp_dup AS (SELECT * FROM employees);
+SQL> 
+SQL> -- Part B
+SQL> --SELECT first_name, last_name FROM emp_dup;
+SQL> 
+SQL> -- Part C
+SQL> DECLARE
+  2  	     last_name VARCHAR2(25) := 'Fay';
+  3  BEGIN
+  4  	     UPDATE emp_dup SET first_name = 'Jennifer'
+  5  	     WHERE last_name = last_name;
+  6  END;
+  7  /
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> -- Part D
+SQL> --SELECT first_name, last_name FROM emp_dup;
+SQL> 
+SQL> -- Part E
+SQL> /* DROP TABLE emp_dup;
+SQL> 
+SQL> CREATE TABLE emp_dup AS (SELECT * FROM employees); */
+SQL> 
+SQL> -- Part F
+SQL> /* DECLARE
+SQL> 	     v_last_name VARCHAR2(25) := 'Fay';
+SQL> BEGIN
+SQL> 	     UPDATE emp_dup SET first_name = 'Jennifer'
+SQL> 	     WHERE last_name = v_last_name;
+SQL> END;
+SQL> / */
+SQL> 
+SQL> -- Part G
+SQL> -- SELECT first_name, last_name FROM emp_dup;
+SQL> SELECT first_name, last_name FROM emp_dup;
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Jennifer             King                                                       
+Jennifer             Kochhar                                                    
+Jennifer             De Haan                                                    
+Jennifer             Whalen                                                     
+Jennifer             Higgins                                                    
+Jennifer             Gietz                                                      
+Jennifer             Zlotkey                                                    
+Jennifer             Abel                                                       
+Jennifer             Taylor                                                     
+Jennifer             Grant                                                      
+Jennifer             Mourgos                                                    
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Jennifer             Rajs                                                       
+Jennifer             Davies                                                     
+Jennifer             Matos                                                      
+Jennifer             Vargas                                                     
+Jennifer             Hunold                                                     
+Jennifer             Ernst                                                      
+Jennifer             Lorentz                                                    
+Jennifer             Hartstein                                                  
+Jennifer             Fay                                                        
+Jennifer             Barbosa Souza                                              
+Jennifer             Silva Pinto                                                
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Jennifer             Alves Rocha                                                
+Jennifer             Almeida Castro                                             
+Jennifer             Hooper                                                     
+Jennifer             Steiner                                                    
+Jennifer             Bell                                                       
+Jennifer             TAYLOR                                                     
+Jennifer             Stocks                                                     
+Jennifer             Heiden                                                     
+Jennifer             Li                                                         
+Jennifer             Fontaine                                                   
+Jennifer             Reinhard                                                   
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Jennifer             Hernandez                                                  
+Jennifer             Ricci                                                      
+Jennifer             Saikawa                                                    
+Jennifer             Safwah                                                     
+Jennifer             Duric                                                      
+Jennifer             Loermans                                                   
+Jennifer             Newton                                                     
+
+40 rows selected.
+
+SQL> DROP TABLE emp_dup;
+
+Table dropped.
+
+SQL> CREATE TABLE emp_dup AS (SELECT * FROM employees);
+
+Table created.
+
+SQL> SELECT first_name, last_name FROM emp_dup;
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Steven               King                                                       
+Neena                Kochhar                                                    
+Lex                  De Haan                                                    
+Jennifer             Whalen                                                     
+Shelley              Higgins                                                    
+William              Gietz                                                      
+Eleni                Zlotkey                                                    
+Ellen                Abel                                                       
+Jonathon             Taylor                                                     
+Kimberely            Grant                                                      
+Kevin                Mourgos                                                    
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Trenna               Rajs                                                       
+Curtis               Davies                                                     
+Randall              Matos                                                      
+Peter                Vargas                                                     
+Alexander            Hunold                                                     
+Bruce                Ernst                                                      
+Diana                Lorentz                                                    
+Michael              Hartstein                                                  
+Pat                  Fay                                                        
+Sophia               Barbosa Souza                                              
+Diego                Silva Pinto                                                
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Sarah                Alves Rocha                                                
+Lucas                Almeida Castro                                             
+Nick                 Hooper                                                     
+Donna                Steiner                                                    
+George               Bell                                                       
+Lisa                 TAYLOR                                                     
+Michael              Stocks                                                     
+Tiffany              Heiden                                                     
+Chen                 Li                                                         
+Alain                Fontaine                                                   
+Matthias             Reinhard                                                   
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Katia                Hernandez                                                  
+Guido                Ricci                                                      
+Mizuto               Saikawa                                                    
+Nabil                Safwah                                                     
+Jelena               Duric                                                      
+Jennifer             Loermans                                                   
+Alice                Newton                                                     
+
+40 rows selected.
+
+SQL> @script/3_2_5.sql
+SP2-0310: unable to open file "script/3_2_5.sql"
+SQL> @scripts/3_2_5.sql
+SQL> -- Part A
+SQL> --CREATE TABLE emp_dup AS (SELECT * FROM employees);
+SQL> 
+SQL> -- Part B
+SQL> --SELECT first_name, last_name FROM emp_dup;
+SQL> 
+SQL> -- Part C
+SQL> /* DECLARE
+SQL> 	     last_name VARCHAR2(25) := 'Fay';
+SQL> BEGIN
+SQL> 	     UPDATE emp_dup SET first_name = 'Jennifer'
+SQL> 	     WHERE last_name = last_name;
+SQL> END;
+SQL> /
+SQL> */
+SQL> 
+SQL> -- Part D
+SQL> --SELECT first_name, last_name FROM emp_dup;
+SQL> 
+SQL> -- Part E
+SQL> -- DROP TABLE emp_dup;
+SQL> 
+SQL> -- CREATE TABLE emp_dup AS (SELECT * FROM employees);
+SQL> 
+SQL> -- Part F
+SQL> DECLARE
+  2  	     v_last_name VARCHAR2(25) := 'Fay';
+  3  BEGIN
+  4  	     UPDATE emp_dup SET first_name = 'Jennifer'
+  5  	     WHERE last_name = v_last_name;
+  6  END;
+  7  /
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> -- Part G
+SQL> -- SELECT first_name, last_name FROM emp_dup;
+SQL> SELECT first_name, last_name FROM emp_dup;
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Steven               King                                                       
+Neena                Kochhar                                                    
+Lex                  De Haan                                                    
+Jennifer             Whalen                                                     
+Shelley              Higgins                                                    
+William              Gietz                                                      
+Eleni                Zlotkey                                                    
+Ellen                Abel                                                       
+Jonathon             Taylor                                                     
+Kimberely            Grant                                                      
+Kevin                Mourgos                                                    
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Trenna               Rajs                                                       
+Curtis               Davies                                                     
+Randall              Matos                                                      
+Peter                Vargas                                                     
+Alexander            Hunold                                                     
+Bruce                Ernst                                                      
+Diana                Lorentz                                                    
+Michael              Hartstein                                                  
+Jennifer             Fay                                                        
+Sophia               Barbosa Souza                                              
+Diego                Silva Pinto                                                
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Sarah                Alves Rocha                                                
+Lucas                Almeida Castro                                             
+Nick                 Hooper                                                     
+Donna                Steiner                                                    
+George               Bell                                                       
+Lisa                 TAYLOR                                                     
+Michael              Stocks                                                     
+Tiffany              Heiden                                                     
+Chen                 Li                                                         
+Alain                Fontaine                                                   
+Matthias             Reinhard                                                   
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Katia                Hernandez                                                  
+Guido                Ricci                                                      
+Mizuto               Saikawa                                                    
+Nabil                Safwah                                                     
+Jelena               Duric                                                      
+Jennifer             Loermans                                                   
+Alice                Newton                                                     
+
+40 rows selected.
+
+SQL> SELECT first_name, last_name FROM emp_dup WHERE last_name = 'Fay';
+
+FIRST_NAME           LAST_NAME                                                  
+-------------------- -------------------------                                  
+Jennifer             Fay                                                        
+
+SQL> @scripts/3_2_6.sql
+SQL> CREATE TABLE chinese
+  2  (
+  3  	     chinese VARCHAR2(50);
+	chinese VARCHAR2(50)
+	                   *
+ERROR at line 3:
+ORA-00907: missing right parenthesis 
+
+
+SQL> );
+SP2-0042: unknown command ")" - rest of line ignored.
+SQL> @scripts/3_2_6.sql
+SQL> CREATE TABLE chinese
+  2  (
+  3  	     people NUMBER;
+	people NUMBER
+	            *
+ERROR at line 3:
+ORA-00907: missing right parenthesis 
+
+
+SQL> 	     chinese VARCHAR2(50);
+SP2-0734: unknown command beginning "chinese VA..." - rest of line ignored.
+SQL> );
+SP2-0042: unknown command ")" - rest of line ignored.
+SQL> @scripts/3_2_6.sql
+SQL> CREATE TABLE chinese
+  2  (
+  3  	     people NUMBER;
+	people NUMBER
+	            *
+ERROR at line 3:
+ORA-00907: missing right parenthesis 
+
+
+SQL> 	     eh VARCHAR2(50);
+SP2-0734: unknown command beginning "eh VARCHAR..." - rest of line ignored.
+SQL> );
+SP2-0042: unknown command ")" - rest of line ignored.
+SQL> @scripts/3_2_6.sql
+SQL> CREATE TABLE chinese
+  2  (
+  3  	     chinese VARCHAR2(50)
+  4  );
+
+Table created.
+
+SQL> INSERT INTO chinese VALUES ('chinese');
+
+1 row created.
+
+SQL> I AM NOT VERY CREATIVE
+SQL> INSERT INTO chinese VALUES ('japanese');
+
+1 row created.
+
+SQL> INSERT INTO chinese VALUES ('something-nese');SELECT * FROM chinese;
+INSERT INTO chinese VALUES ('something-nese');SELECT * FROM chinese
+                                             *
+ERROR at line 1:
+ORA-00911: invalid character 
+
+
+SQL> SELECT * FROM chinese;
+
+CHINESE                                                                         
+--------------------------------------------------                              
+chinese                                                                         
+japanese                                                                        
+
+SQL> INSERT INTO chinese VALUES ('something-nese');
+
+1 row created.
+
+SQL> SELECT * FROM chinese;
+
+CHINESE                                                                         
+--------------------------------------------------                              
+chinese                                                                         
+japanese                                                                        
+something-nese                                                                  
+
+SQL> DROP TABLE chinese;
+
+Table dropped.
+
+SQL> @scripts/3_2_6.sql
+SQL> CREATE TABLE chinese
+  2  (
+  3  	     ch_id NUMBER,
+  4  	     chinese VARCHAR2(50)
+  5  );
+
+Table created.
+
+SQL> 
+SQL> INSERT INTO chinese VALUES (1, 'chinese');
+
+1 row created.
+
+SQL> INSERT INTO chinese VALUES (2, 'japanese');
+
+1 row created.
+
+SQL> INSERT INTO chinese VALUES (3, 'something-nese');
+
+1 row created.
+
+SQL> SELECT * FROM chinese;
+
+     CH_ID CHINESE                                                              
+---------- --------------------------------------------------                   
+         1 chinese                                                              
+         2 japanese                                                             
+         3 something-nese                                                       
+
+SQL> @scripts/3_2_6.sql
+SQL> /*
+SQL> CREATE TABLE chinese
+SQL> (
+SQL> 	     ch_id NUMBER,
+SQL> 	     chinese VARCHAR2(50)
+SQL> );
+SQL> 
+SQL> INSERT INTO chinese VALUES (1, 'chinese');
+SQL> INSERT INTO chinese VALUES (2, 'japanese');
+SQL> INSERT INTO chinese VALUES (3, 'something-nese');
+SQL> */
+SQL> 
+SQL> DECLARE
+  2  	     chinese chinese.chinese%TYPE := 'japanese';
+  3  	     v_id chinese.ch_id%TYPE;
+  4  BEGIN
+  5  	     SELECT ch_id INTO v_id WHERE chinese = chinese;
+  6  	     DBMS_OUTPUT.PUT_LINE('ch_id is '||v_id||' when chinese is '||chinese);
+  7  END;
+  8  /
+	SELECT ch_id INTO v_id WHERE chinese = chinese;
+	                       *
+ERROR at line 5:
+ORA-06550: line 5, column 25: 
+PL/SQL: ORA-00923: FROM keyword not found where expected 
+ORA-06550: line 5, column 2: 
+PL/SQL: SQL Statement ignored 
+
+
+SQL> @scripts/3_2_6.sql
+SQL> /*
+SQL> CREATE TABLE chinese
+SQL> (
+SQL> 	     ch_id NUMBER,
+SQL> 	     chinese VARCHAR2(50)
+SQL> );
+SQL> 
+SQL> INSERT INTO chinese VALUES (1, 'chinese');
+SQL> INSERT INTO chinese VALUES (2, 'japanese');
+SQL> INSERT INTO chinese VALUES (3, 'something-nese');
+SQL> */
+SQL> 
+SQL> DECLARE
+  2  	     chinese chinese.chinese%TYPE := 'japanese';
+  3  	     v_id chinese.ch_id%TYPE;
+  4  BEGIN
+  5  	     SELECT ch_id INTO v_id FROM chinese WHERE chinese = chinese;
+  6  	     DBMS_OUTPUT.PUT_LINE('ch_id is '||v_id||' when chinese is '||chinese);
+  7  END;
+  8  /
+	chinese chinese.chinese%TYPE := 'japanese';
+	        *
+ERROR at line 2:
+ORA-06550: line 2, column 10: 
+PLS-00320: the declaration of the type of this expression is incomplete or 
+malformed 
+ORA-06550: line 2, column 10: 
+PL/SQL: Item ignored 
+ORA-06550: line 3, column 7: 
+PLS-00320: the declaration of the type of this expression is incomplete or 
+malformed 
+ORA-06550: line 3, column 7: 
+PL/SQL: Item ignored 
+ORA-06550: line 5, column 20: 
+PLS-00320: the declaration of the type of this expression is incomplete or 
+malformed 
+ORA-06550: line 5, column 25: 
+PL/SQL: ORA-00904: : invalid identifier 
+ORA-06550: line 5, column 2: 
+PL/SQL: SQL Statement ignored 
+ORA-06550: line 6, column 36: 
+PLS-00320: the declaration of the type of this expression is incomplete or 
+malformed 
+ORA-06550: line 6, column 2: 
+PL/SQL: Statement ignored 
+
+
+SQL> spool off
