@@ -1,0 +1,516 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/5_1_4.sql
+SQL> --QUESTIONS 4 A to E
+SQL> DECLARE
+  2  	     CURSOR currencies_cur IS
+  3  		     SELECT * FROM (SELECT currency_code, currency_name FROM currencies ORDER BY currency_name) WHERE ROWNUM = 1;
+  4  	     v_cur_code currencies.currency_code%TYPE;
+  5  	     v_cur_name currencies.currency_name%TYPE;
+  6  BEGIN
+  7  	     OPEN currencies_cur;
+  8  		     FETCH currencies_cur INTO v_cur_code, v_cur_name;
+  9  		     DBMS_OUTPUT.PUT_LINE
+ 10  		     (v_cur_name||': '||v_cur_code);
+ 11  	     CLOSE currencies_cur;
+ 12  END;
+ 13  
+ 14  /
+Afghani: AFA                                                                    
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> @scripts/5_1_4.sql
+SQL> --QUESTIONS 4 A to E
+SQL> /*
+SQL> DECLARE
+SQL> 	     CURSOR currencies_cur IS
+SQL> 		     SELECT * FROM (SELECT currency_code, currency_name FROM currencies ORDER BY currency_name) WHERE ROWNUM = 1;
+SQL> 	     v_cur_code currencies.currency_code%TYPE;
+SQL> 	     v_cur_name currencies.currency_name%TYPE;
+SQL> BEGIN
+SQL> 	     OPEN currencies_cur;
+SQL> 		     FETCH currencies_cur INTO v_cur_code, v_cur_name;
+SQL> 		     DBMS_OUTPUT.PUT_LINE
+SQL> 		     (v_cur_name||': '||v_cur_code);
+SQL> 	     CLOSE currencies_cur;
+SQL> END;
+SQL> /
+SQL> */
+SQL> --QUESTIONS 4 F
+SQL> DECLARE
+  2  	     CURSOR currencies_cur IS
+  3  		     SELECT currency_code, currency_name
+  4  		     FROM currencies ORDER BY currency_name ASC;
+  5  	     v_cur_code currencies.currency_code%TYPE;
+  6  	     v_cur_name currencies.currency_name%TYPE;
+  7  BEGIN
+  8  	     OPEN currencies_cur;
+  9  	     LOOP
+ 10  		     FETCH currencies_cur INTO v_cur_code, v_cur_name;
+ 11  		     EXIT WHEN currencies_cur%NOTFOUND;
+ 12  		     DBMS_OUTPUT.PUT_LINE
+ 13  		     (v_cur_name||': '||v_cur_code);
+ 14  	     END LOOP;
+ 15  	     CLOSE currencies_cur;
+ 16  END;
+ 17  /
+Afghani: AFA                                                                    
+Algerian dinar: DZD                                                             
+Argentine peso: ARS                                                             
+Aruban guilder: AWG                                                             
+Australian dollar: AUD                                                          
+Azerbaijani Manat: AZM                                                          
+Bahamian dollar: BSD                                                            
+Bahraini Dinar: BHD                                                             
+Barbadian dollar: BBD                                                           
+Belarusian ruble: BYB                                                           
+Belizean dollar: BZD                                                            
+Bermudian dollar: BMD                                                           
+Boliviano: BOB                                                                  
+British pound: GBP                                                              
+Bruneian dollar: BND                                                            
+Burundi franc: BIF                                                              
+Canadian dollar: CAD                                                            
+Cape Verdean escudo: CVE                                                        
+Caymanian dollar: KYD                                                           
+Chilean peso: CLP                                                               
+Colombian peso: COP                                                             
+Communaute Financiere Africaine franc: XOF                                      
+Communaute Financiere Africaine franc: XAF                                      
+Comoran franc: KMF                                                              
+Comptoirs Francais du Pacifique franc: XPF                                      
+Congolese franc: CDF                                                            
+Convertible peso: CUC                                                           
+Costa Rican colon: CRC                                                          
+Cuban peso: CUP                                                                 
+Cypriot pound: CYP                                                              
+Czech koruna: CZK                                                               
+Danish krone: DKK                                                               
+Djiboutian franc: DJF                                                           
+Dominican peso: DOP                                                             
+Dram: AMD                                                                       
+East Caribbean dollar: XCD                                                      
+Egyptian pound: EGP                                                             
+Emirati dirham: AED                                                             
+Estonian kroon: EEK                                                             
+Euro: EUR                                                                       
+Falkland pound: FKP                                                             
+Fijian dollar: FJD                                                              
+Gibraltar pound: GIP                                                            
+Guinean franc: GNF                                                              
+Guyanese dollar: GYD                                                            
+Hong Kong dollar: HKD                                                           
+Icelandic krona: ISK                                                            
+Indian rupee: INR                                                               
+Indonesian rupiah: IDR                                                          
+Iranian rial: IRR                                                               
+Jamaican dollar: JMD                                                            
+Jordanian dollar: JOD                                                           
+Kenyan shilling: KES                                                            
+Kuwaiti dinar: KD                                                               
+Kwanza: AOA                                                                     
+Kyat: MMK                                                                       
+Latvian lat: LVL                                                                
+Lebanese pound: LBP                                                             
+Lek: ALL                                                                        
+Lev: BGL                                                                        
+Liberian dollar: LRD                                                            
+Libyan dinar: LYD                                                               
+Macedonian denar: MKD                                                           
+Madagascar ariary: MGA                                                          
+Malawian kwacha: MWK                                                            
+Maltese lira: MTL                                                               
+Marka: BAM                                                                      
+Mauritian rupee: MUR                                                            
+Mexican peso: MXN                                                               
+Moldovan leu: MDL                                                               
+Moroccan dirham: MAD                                                            
+Namibian dollar: NAD                                                            
+Nepalese rupee: NPR                                                             
+Netherlands Antillean guilder: ANG                                              
+New Iraqi dinar: NID                                                            
+New Zealand dollar: NZD                                                         
+Ngultrum: BTN                                                                   
+No currency used: NONE                                                          
+North Korean won: KPW                                                           
+Norwegian krone: NOK                                                            
+Omani rial: OMR                                                                 
+Pakistani rupee: PKR                                                            
+Philippine peso: PHP                                                            
+Pula: BWP                                                                       
+Qatari rial: QAR                                                                
+Real: BRL                                                                       
+Renminbi: RMB                                                                   
+Russian ruble: RUR                                                              
+Rwandan franc: RWF                                                              
+Saint Helenian pound: SHP                                                       
+Saudi riyal: SAR                                                                
+Seychelles rupee: SCR                                                           
+Singapore dollar: SGD                                                           
+Slovak koruna: SKK                                                              
+Solomon Islands dollar: SBD                                                     
+Somali shilling: SOS                                                            
+South African rand: ZAR                                                         
+South Korean won: KRW                                                           
+Sri Lankan rupee: LKR                                                           
+Sudanese dinar: SDD                                                             
+Surinam dollar: SRD                                                             
+Swedish krona: SEK                                                              
+Swiss franc: CHF                                                                
+Syrian pound: SYP                                                               
+Tajikistani somoni: TJS                                                         
+Taka: BDT                                                                       
+Tanzanian shilling: TZS                                                         
+Trinidad and Tobago dollar: TTD                                                 
+Tunisian dinar: TND                                                             
+Turkish lira: YTL                                                               
+Turkmen manat: TMM                                                              
+US Dollar: USD                                                                  
+Ugandan shilling: UGX                                                           
+Uruguayan peso: UYU                                                             
+Uzbekistani soum: UZS                                                           
+Yemeni rial: YER                                                                
+Zambian kwacha: ZMK                                                             
+Zimbabwean dollar: ZWD                                                          
+baht: THB                                                                       
+balboa: PAB                                                                     
+birr: ETB                                                                       
+bolivar: VEB                                                                    
+cedi: GHC                                                                       
+dalasi: GMD                                                                     
+dobra: STD                                                                      
+dong: VND                                                                       
+forint: HUF                                                                     
+gold cordoba: NIO                                                               
+gourde: HTG                                                                     
+guarani: PYG                                                                    
+hryvnia: UAH                                                                    
+kina: PGK                                                                       
+kip: LAK                                                                        
+kuna: HRK                                                                       
+lari: GEL                                                                       
+lempira: HNL                                                                    
+leone: SLL                                                                      
+leu: RON                                                                        
+lilangeni: SZL                                                                  
+litas: LTL                                                                      
+loti: LSL                                                                       
+metical: MZM                                                                    
+naira: NGN                                                                      
+nakfa: ERN                                                                      
+new Israeli shekel: ILS                                                         
+new Taiwan dollar: TWD                                                          
+nuevo sol: PEN                                                                  
+ouguiya: MRO                                                                    
+paanga: TOP                                                                     
+pataca: MOP                                                                     
+quetzal: GTQ                                                                    
+riel: KHR                                                                       
+ringgit: MYR                                                                    
+rufiyaa: MVR                                                                    
+tala: SAT                                                                       
+tenge: KZT                                                                      
+togrog/tugrik: MNT                                                              
+tolar: SIT                                                                      
+vatu: VUV                                                                       
+yen: JPY                                                                        
+yuan: CNY                                                                       
+zloty: PLN                                                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/5_1_4.sql
+SQL> --QUESTIONS 4 A to E
+SQL> /*
+SQL> DECLARE
+SQL> 	     CURSOR currencies_cur IS
+SQL> 		     SELECT * FROM (SELECT currency_code, currency_name FROM currencies ORDER BY currency_name) WHERE ROWNUM = 1;
+SQL> 	     v_cur_code currencies.currency_code%TYPE;
+SQL> 	     v_cur_name currencies.currency_name%TYPE;
+SQL> BEGIN
+SQL> 	     OPEN currencies_cur;
+SQL> 		     FETCH currencies_cur INTO v_cur_code, v_cur_name;
+SQL> 		     DBMS_OUTPUT.PUT_LINE
+SQL> 		     (v_cur_name||': '||v_cur_code);
+SQL> 	     CLOSE currencies_cur;
+SQL> END;
+SQL> /
+SQL> 
+SQL> --QUESTIONS 4 F
+SQL> DECLARE
+SQL> 	     CURSOR currencies_cur IS
+SQL> 		     SELECT currency_code, currency_name
+SQL> 		     FROM currencies ORDER BY currency_name ASC;
+SQL> 	     v_cur_code currencies.currency_code%TYPE;
+SQL> 	     v_cur_name currencies.currency_name%TYPE;
+SQL> BEGIN
+SQL> 	     OPEN currencies_cur;
+SQL> 	     LOOP
+SQL> 		     FETCH currencies_cur INTO v_cur_code, v_cur_name;
+SQL> 		     EXIT WHEN currencies_cur%NOTFOUND;
+SQL> 		     DBMS_OUTPUT.PUT_LINE
+SQL> 		     (v_cur_name||': '||v_cur_code);
+SQL> 	     END LOOP;
+SQL> 	     CLOSE currencies_cur;
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- QUESTIONS 4 G
+SQL> DECLARE
+  2  	     CURSOR cur_country_holi IS
+  3  		     SELECT country_name, national_holiday_date, national_holiday_name
+  4  		     FROM countries WHERE region_id = 5 AND national_holiday_date IS NOT NULL;
+  5  	     v_country_name countries.country_name%TYPE;
+  6  	     v_nat_holi_date countries.national_holiday_date%TYPE;
+  7  	     v_nat_holi_name countries.national_holiday_name%TYPE;
+  8  BEGIN
+  9  	     OPEN cur_country_holi;
+ 10  	     LOOP
+ 11  		     FETCH cur_country_holi INTO v_country_name, v_nat_holi_date, v_nat_holi_name;
+ 12  		     EXIT WHEN cur_country_holi%NOTFOUND;
+ 13  		     DBMS_OUTPUT.PUT_LINE(v_country_name
+ 14  					     ||': '
+ 15  					     ||v_nat_holi_name
+ 16  					     ||' - '
+ 17  					     ||v_nat_holi_date);
+ 18  	     END LOOP;
+ 19  	     CLOSE cur_country_holi;
+ 20  END;
+ 21  /
+Republic of Bolivia: Independence Day - 6-Aug                                   
+Federative Republic of Brazil: Independence Day - 7-Sep                         
+Falkland Islands: Liberation Day - 14-Jun                                       
+Co-operative Republic of Guyana: Republic Day - 23-Feb                          
+Republic of Peru: Independence Day - 28-Jul                                     
+Republic of Paraguay: Independence Day - 15-May                                 
+Argentine Republic: Revolution Day - 25-May                                     
+Republic of Ecuador: Independence Day - 10-Aug                                  
+Oriental Republic of Uruguay: Independence Day - 25-Aug                         
+Bolivarian Republic of Venezuela: Independence Day - 5-Jul                      
+Republic of Chile: Independence Day - 18-Sep                                    
+Republic of Colombia: Independence Day - 20-Jul                                 
+Republic of Suriname: Independence Day - 25-Nov                                 
+Department of Guiana: Bastille Day - 14-Jul                                     
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/5_1_6.sql
+SQL> -- Answer for Question PL/SQL 5_1 #6
+SQL> 
+SQL> DECLARE
+  2  	     CURSOR cur_countries_region_name IS
+  3  		     SELECT countries.country_name, regions.region_name
+  4  		     FROM countries
+  5  		     INNER JOIN regions ON countries.region_id = regions.region_id
+  6  		     INNER JOIN (
+  7  		     SELECT region_id
+  8  		     FROM
+  9  			     (
+ 10  			     SELECT COUNT(country_name) countNum, region_id
+ 11  			     FROM countries GROUP BY region_id
+ 12  			     )
+ 13  		     WHERE countNum >= 10) cri ON regions.region_id = cri.region_id
+ 14  		     ORDER BY regions.region_name ASC;
+ 15  
+ 16  	     v_countries_name countries.country_name%TYPE;
+ 17  	     v_region_name regions.region_name%TYPE;
+ 18  	     v_region_id countries.region_id%TYPE;
+ 19  BEGIN
+ 20  	     DBMS_OUTPUT.PUT_LINE('Region Name with 10 countries or more');
+ 21  	     OPEN cur_countries_region_name;
+ 22  	     LOOP
+ 23  		     FETCH cur_countries_region_name INTO v_countries_name, v_region_name;
+ 24  		     EXIT WHEN cur_countries_region_name%NOTFOUND;
+ 25  		     DBMS_OUTPUT.PUT_LINE(v_region_name||': '||v_countries_name);
+ 26  	     END LOOP;
+ 27  	     CLOSE cur_countries_region_name;
+ 28  END;
+ 29  /
+Region Name with 10 countries or more                                           
+Caribbean: Barbados                                                             
+Caribbean: Republic of Trinidad and Tobago                                      
+Caribbean: Department of Martinique                                             
+Caribbean: Saint Vincent and the Grenadines                                     
+Caribbean: Federation of Saint Kitts and Nevis                                  
+Caribbean: Grenada                                                              
+Caribbean: Commonwealth of Dominica                                             
+Caribbean: Anguilla                                                             
+Caribbean: Antigua and Barbuda                                                  
+Caribbean: Montserrat                                                           
+Caribbean: United States Virgin Islands                                         
+Caribbean: British Virgin Islands                                               
+Caribbean: Turks and Caicos Islands                                             
+Caribbean: Republic of Haiti                                                    
+Caribbean: Jamaica                                                              
+Caribbean: Cayman Islands                                                       
+Caribbean: Department of Guadeloupe                                             
+Caribbean: Dominican Republic                                                   
+Caribbean: Netherlands Antilles                                                 
+Caribbean: Aruba                                                                
+Caribbean: Saint Lucia                                                          
+Caribbean: Republic of Cuba                                                     
+Caribbean: Commonwealth of The Bahamas                                          
+Caribbean: Commonwealth of Puerto Rico                                          
+Caribbean: Navassa Island                                                       
+Eastern Europe: Republic of Belarus                                             
+Eastern Europe: Republic of Moldova                                             
+Eastern Europe: Republic of Poland                                              
+Eastern Europe: Slovak Republic                                                 
+Eastern Europe: Republic of Hungary                                             
+Eastern Europe: Russian Federation                                              
+Eastern Europe: Republic of Estonia                                             
+Eastern Europe: Romania                                                         
+Eastern Europe: Ukraine                                                         
+Eastern Europe: Czech Republic                                                  
+Eastern Europe: Republic of Lithuania                                           
+Eastern Europe: Republic of Latvia                                              
+Eastern Europe: Republic of Turkey                                              
+Oceania: Coral Sea Islands Territory                                            
+Oceania: Republic of Palau                                                      
+Oceania: Cook Islands                                                           
+Oceania: Niue                                                                   
+Oceania: Pitcairn, Henderson, Ducie, and Oeno Islands                           
+Oceania: New Zealand                                                            
+Oceania: Independent State of Papua New Guinea                                  
+Oceania: Solomon Islands                                                        
+Oceania: Republic of Seychelles                                                 
+Oceania: Territory of the Wallis and Futuna Islands                             
+Oceania: Overseas Lands of French Polynesia                                     
+Oceania: Republic of the Fiji Islands                                           
+Oceania: Kingdom of Tonga                                                       
+Oceania: Republic of the Marshall Islands                                       
+Oceania: Tokelau                                                                
+Oceania: Tuvalu                                                                 
+Oceania: Commonwealth of Australia                                              
+Oceania: Territory of Norfolk Island                                            
+Oceania: Republic of Kiribati                                                   
+Oceania: Territory of Guam                                                      
+Oceania: Federated States of Micronesia                                         
+Oceania: Commonwealth of the Northern Mariana Islands                           
+Oceania: Territory of American Samoa                                            
+Oceania: Republic of Vanuatu                                                    
+Oceania: Republic of Nauru                                                      
+Oceania: Independent State of Samoa                                             
+Oceania: Territory of New Caledonia and Dependencies                            
+Oceania: Antarctica                                                             
+South America: Republic of Bolivia                                              
+South America: Federative Republic of Brazil                                    
+South America: Department of Guiana                                             
+South America: Republic of Suriname                                             
+South America: Republic of Colombia                                             
+South America: Republic of Chile                                                
+South America: Bolivarian Republic of Venezuela                                 
+South America: Oriental Republic of Uruguay                                     
+South America: Republic of Ecuador                                              
+South America: Argentine Republic                                               
+South America: Republic of Paraguay                                             
+South America: Republic of Peru                                                 
+South America: Co-operative Republic of Guyana                                  
+South America: Falkland Islands                                                 
+South America: South Georgia and the South Sandwich Islands                     
+South-Eastern Asia: Territory of Cocos (Keeling) Islands                        
+South-Eastern Asia: Lao Peoples Democratic Republic                             
+South-Eastern Asia: Socialist Republic of Vietnam                               
+South-Eastern Asia: Kingdom of Cambodia                                         
+South-Eastern Asia: Malaysia                                                    
+South-Eastern Asia: Union of Burma                                              
+South-Eastern Asia: Democratic Republic of Timor-Leste                          
+South-Eastern Asia: Republic of Singapore                                       
+South-Eastern Asia: Republic of the Philippines                                 
+South-Eastern Asia: Republic of Indonesia                                       
+South-Eastern Asia: Kingdom of Thailand                                         
+South-Eastern Asia: Paracel Islands                                             
+South-Eastern Asia: Spratly Islands                                             
+South-Eastern Asia: Territory of Ashmore and Cartier Islands                    
+South-Eastern Asia: Negara Brunei Darussalam                                    
+South-Eastern Asia: Territory of Christmas Island                               
+Southern Africa: Republic of Namibia                                            
+Southern Africa: Kingdom of Lesotho                                             
+Southern Africa: Republic of Malawi                                             
+Southern Africa: Republic of Mozambique                                         
+Southern Africa: Republic of South Africa                                       
+Southern Africa: Republic of Zambia                                             
+Southern Africa: Territorial Collectivity of Mayotte                            
+Southern Africa: Kingdom of Swaziland                                           
+Southern Africa: Republic of Angola                                             
+Southern Africa: Republic of Zimbabwe                                           
+Southern Africa: Europa Island                                                  
+Southern Africa: Union of the Comoros                                           
+Southern Africa: Department of Reunion                                          
+Southern Africa: Juan de Nova Island                                            
+Southern Africa: Republic of Mauritius                                          
+Southern Africa: Republic of Botswana                                           
+Southern Africa: Republic of Madagascar                                         
+Southern Europe: Gibraltar                                                      
+Southern Europe: Republic of Bulgaria                                           
+Southern Europe: Republic of Malta                                              
+Southern Europe: Republic of Slovenia                                           
+Southern Europe: Republic of Croatia                                            
+Southern Europe: Principality of Andorra                                        
+Southern Europe: Portuguese Republic                                            
+Southern Europe: Republic of Montenegro                                         
+Southern Europe: The Holy See (State of the Vatican City)                       
+Southern Europe: Kingdom of Spain                                               
+Southern Europe: Republic of San Marino                                         
+Southern Europe: Republic of Albania                                            
+Southern Europe: Bosnia and Herzegovina                                         
+Southern Europe: Italian Republic                                               
+Southern Europe: Hellenic Republic                                              
+Southern Europe: Republic of Macedonia                                          
+Western Africa: Federal Republic of Nigeria                                     
+Western Africa: Republic of Ghana                                               
+Western Africa: Burkina Faso                                                    
+Western Africa: Republic of Benin                                               
+Western Africa: Togolese Republic                                               
+Western Africa: Republic of Liberia                                             
+Western Africa: Republic of Sierra Leone                                        
+Western Africa: Gabonese Republic                                               
+Western Africa: Republic of Guinea-Bissau                                       
+Western Africa: Republic of Equatorial Guinea                                   
+Western Africa: Republic of Niger                                               
+Western Africa: Republic of Cameroon                                            
+Western Africa: Republic of Cape Verde                                          
+Western Africa: Saint Helena                                                    
+Western Africa: Republic of Mali                                                
+Western Africa: Republic of the Congo                                           
+Western Africa: Democratic Republic of Sao Tome and Principe                    
+Western Africa: Republic of Cote d Ivoire                                       
+Western Africa: Republic of Senegal                                             
+Western Africa: Republic of The Gambia                                          
+Western Africa: Republic of Guinea                                              
+Western Asia: Republic of Cyprus                                                
+Western Asia: Republic of Azerbaijan                                            
+Western Asia: Republic of Iraq                                                  
+Western Asia: Lebanese Republic                                                 
+Western Asia: Georgia                                                           
+Western Asia: Kingdom of Saudi Arabia                                           
+Western Asia: Sultanate of Oman                                                 
+Western Asia: Kingdom of Bahrain                                                
+Western Asia: Republic of Yemen                                                 
+Western Asia: State of Israel                                                   
+Western Asia: United Arab Emirates                                              
+Western Asia: State of Qatar                                                    
+Western Asia: State of Kuwait                                                   
+Western Asia: Hashemite Kingdom of Jordan                                       
+Western Asia: Syrian Arab Republic                                              
+Western Asia: Republic of Armenia                                               
+Western Europe: Bailiwick of Jersey                                             
+Western Europe: Kingdom of the Netherlands                                      
+Western Europe: Grand Duchy of Luxembourg                                       
+Western Europe: Isle of Man                                                     
+Western Europe: United Kingdom of Great Britain and Northern Ireland            
+Western Europe: Principality of Liechtenstein                                   
+Western Europe: Bailiwick of Guernsey                                           
+Western Europe: Kingdom of Belgium                                              
+Western Europe: French Republic                                                 
+Western Europe: Republic of Ireland                                             
+Western Europe: Swiss Confederation                                             
+Western Europe: Republic of Austria                                             
+Western Europe: Principality of Monaco                                          
+Western Europe: Federal Republic of Germany                                     
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off

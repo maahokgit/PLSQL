@@ -1,0 +1,302 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/7_3_1.sql
+SQL> -- Scripts for Question 1 Section 7_3
+SQL> DECLARE
+  2  	     e_invalid_dept EXCEPTION;
+  3  	     v_error_code NUMBER;
+  4  	     v_error_message VARCHAR2(255);
+  5  	     v_deptno NUMBER := 20;-- 20, 30,40
+  6  BEGIN
+  7  	     UPDATE excep_emps
+  8  		     SET salary = 10000
+  9  		     WHERE department_id = v_deptno;
+ 10  	     IF SQL%NOTFOUND THEN
+ 11  		     RAISE e_invalid_dept;
+ 12  	     END IF;
+ 13  EXCEPTION
+ 14  	     WHEN e_invalid_dept THEN
+ 15  		     v_error_code := SQLCODE;
+ 16  		     v_error_message := SQLERRM;
+ 17  		     DBMS_OUTPUT.PUT_LINE('Invalid Department ID. Error Code: '||v_error_code||'. Error Message: '||v_error_message||'.');
+ 18  END;
+ 19  /
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_3_1.sql
+SQL> -- Scripts for Question 1 Section 7_3
+SQL> DECLARE
+  2  	     e_invalid_dept EXCEPTION;
+  3  	     v_error_code NUMBER;
+  4  	     v_error_message VARCHAR2(255);
+  5  	     v_deptno NUMBER := 30;-- 20, 30,40
+  6  BEGIN
+  7  	     UPDATE excep_emps
+  8  		     SET salary = 10000
+  9  		     WHERE department_id = v_deptno;
+ 10  	     IF SQL%NOTFOUND THEN
+ 11  		     RAISE e_invalid_dept;
+ 12  	     END IF;
+ 13  EXCEPTION
+ 14  	     WHEN e_invalid_dept THEN
+ 15  		     v_error_code := SQLCODE;
+ 16  		     v_error_message := SQLERRM;
+ 17  		     DBMS_OUTPUT.PUT_LINE('Invalid Department ID. Error Code: '||v_error_code||'. Error Message: '||v_error_message||'.');
+ 18  END;
+ 19  /
+Invalid Department ID. Error Code: 1. Error Message: User-Defined Exception.    
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_3_1.sql
+SQL> -- Scripts for Question 1 Section 7_3
+SQL> DECLARE
+  2  	     e_invalid_dept EXCEPTION;
+  3  	     v_error_code NUMBER;
+  4  	     v_error_message VARCHAR2(255);
+  5  	     v_deptno NUMBER := 40;-- 20, 30,40
+  6  BEGIN
+  7  	     UPDATE excep_emps
+  8  		     SET salary = 10000
+  9  		     WHERE department_id = v_deptno;
+ 10  	     IF SQL%NOTFOUND THEN
+ 11  		     RAISE e_invalid_dept;
+ 12  	     END IF;
+ 13  EXCEPTION
+ 14  	     WHEN e_invalid_dept THEN
+ 15  		     v_error_code := SQLCODE;
+ 16  		     v_error_message := SQLERRM;
+ 17  		     DBMS_OUTPUT.PUT_LINE('Invalid Department ID. Error Code: '||v_error_code||'. Error Message: '||v_error_message||'.');
+ 18  END;
+ 19  /
+Invalid Department ID. Error Code: 1. Error Message: User-Defined Exception.    
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT * FROM excep_emps WHERE department_id = 20;
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME                                      
+----------- -------------------- -------------------------                      
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY  
+------------------------- -------------------- --------- ---------- ----------  
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID BONUS                                   
+-------------- ---------- ------------- -----                                   
+        201 Michael              Hartstein                                      
+MHARTSTE                  515.123.5555         17-FEB-11 MK_MAN          10000  
+                      100            20                                         
+                                                                                
+        202 Pat                  Fay                                            
+PFAY                      603.123.6666         17-AUG-13 MK_REP          10000  
+                      201            20                                         
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME                                      
+----------- -------------------- -------------------------                      
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY  
+------------------------- -------------------- --------- ---------- ----------  
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID BONUS                                   
+-------------- ---------- ------------- -----                                   
+                                                                                
+        215 Donna                Steiner                                        
+DSTEINER                  843.452.5959         02-NOV-04 SR_MK_REP       10000  
+                      201            20                                         
+                                                                                
+        217 Lisa                 TAYLOR                                         
+LTAYLOR                   417.730.8202         09-FEB-13 MK_REP          10000  
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME                                      
+----------- -------------------- -------------------------                      
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY  
+------------------------- -------------------- --------- ---------- ----------  
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID BONUS                                   
+-------------- ---------- ------------- -----                                   
+                      201            20                                         
+                                                                                
+        219 Michael              Stocks                                         
+MSTOCKS                   662.314.6844         16-DEC-15 MK_REP          10000  
+                      201            20                                         
+                                                                                
+        228 Nabil                Safwah                                         
+
+EMPLOYEE_ID FIRST_NAME           LAST_NAME                                      
+----------- -------------------- -------------------------                      
+EMAIL                     PHONE_NUMBER         HIRE_DATE JOB_ID         SALARY  
+------------------------- -------------------- --------- ---------- ----------  
+COMMISSION_PCT MANAGER_ID DEPARTMENT_ID BONUS                                   
+-------------- ---------- ------------- -----                                   
+NSAFWAH                   720.863.0485         06-JAN-97 MK_REP          10000  
+                      201            20                                         
+                                                                                
+        235 Alice                Newton                                         
+ANEWTON                   314.248.7709         16-DEC-15 MK_REP          10000  
+                      201            20                                         
+                                                                                
+
+7 rows selected.
+
+SQL> @scripts/7_3_2.sql
+SQL> -- Scripts for Question 2 Section 7_3
+SQL> DECLARE
+  2  	     e_invalid_dept EXCEPTION;
+  3  	     PRAGMA EXCEPTION_INIT (e_invalid_dept, -20202);
+  4  	     v_error_code NUMBER;
+  5  	     v_error_message VARCHAR2(255);
+  6  	     v_deptno NUMBER := 40;-- 20, 30,40
+  7  BEGIN
+  8  	     UPDATE excep_emps
+  9  		     SET salary = 10000
+ 10  		     WHERE department_id = v_deptno;
+ 11  	     IF SQL%NOTFOUND THEN
+ 12  		     RAISE_APPLICATION_ERROR(-20202,'');
+ 13  	     END IF;
+ 14  EXCEPTION
+ 15  	     WHEN e_invalid_dept THEN
+ 16  		     v_error_code := SQLCODE;
+ 17  		     v_error_message := SQLERRM;
+ 18  		     DBMS_OUTPUT.PUT_LINE('Invalid Department ID. Error Code: '||v_error_code||'. Error Message: '||v_error_message||'.');
+ 19  END;
+ 20  /
+Invalid Department ID. Error Code: -20202. Error Message: ORA-20202: .          
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_3_3.sql
+SQL> -- Scripts for Question 3 Section 7_3
+SQL> DECLARE
+  2  	     e_invalid_dept EXCEPTION;
+  3  	     PRAGMA EXCEPTION_INIT (e_invalid_dept, -20202);
+  4  	     v_error_code NUMBER;
+  5  	     v_error_message VARCHAR2(255);
+  6  	     v_deptno NUMBER := 40;-- 20, 30,40
+  7  BEGIN
+  8  	     UPDATE excep_emps
+  9  	     SET salary = 10000
+ 10  	     WHERE department_id = v_deptno;
+ 11  	     IF SQL%NOTFOUND THEN
+ 12  		     RAISE_APPLICATION_ERROR(-20202, 'Invalid Department ID');
+ 13  	     END IF;
+ 14  END;
+ 15  /
+DECLARE
+*
+ERROR at line 1:
+ORA-20202: Invalid Department ID 
+ORA-06512: at line 12 
+
+
+SQL> @scripts/7_3_4.sql
+SQL> -- ANSWER TO QUESTION 4B SECTION 7_3
+SQL> DECLARE
+  2  	     e_zero_select EXCEPTION;
+  3  	     e_zero_delete EXCEPTION;
+  4  	     v_dept_id excep_emps.department_id%TYPE;
+  5  	     v_count NUMBER;
+  6  BEGIN
+  7  	     v_dept_id := 40;
+  8  	     SELECT COUNT(*) INTO v_count
+  9  	     FROM excep_emps
+ 10  	     WHERE department_id = v_dept_id;
+ 11  
+ 12  	     IF v_count = 0 THEN
+ 13  		     RAISE e_zero_select;
+ 14  	     ELSE
+ 15  		     DBMS_OUTPUT.PUT_LINE('There are ' || v_count || ' employees');
+ 16  	     END IF;
+ 17  
+ 18  	     DELETE FROM excep_emps
+ 19  	     WHERE department_id = v_dept_id;
+ 20  
+ 21  	     IF SQL%ROWCOUNT = 0 THEN
+ 22  		     RAISE e_zero_delete;
+ 23  	     ELSE
+ 24  		     DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' employees were deleted');
+ 25  	     END IF;
+ 26  	     ROLLBACK;
+ 27  EXCEPTION
+ 28  	     WHEN e_zero_select THEN
+ 29  		     DBMS_OUTPUT.PUT_LINE('ERROR: Zero row select, do you have the correcnt department number?');
+ 30  	     WHEN e_zero_delete THEN
+ 31  		     DBMS_OUTPUT.PUT_LINE('ERROR: Zero row delete, do you have the correcnt department number?');
+ 32  END;
+ 33  /
+ERROR: Zero row select, do you have the correcnt department number?             
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_3_4.sql
+SQL> -- ANSWER TO QUESTION 4B SECTION 7_3
+SQL> /*
+SQL> DECLARE
+SQL> 	     e_zero_select EXCEPTION;
+SQL> 	     e_zero_delete EXCEPTION;
+SQL> 	     v_dept_id excep_emps.department_id%TYPE;
+SQL> 	     v_count NUMBER;
+SQL> BEGIN
+SQL> 	     v_dept_id := 40;
+SQL> 	     SELECT COUNT(*) INTO v_count
+SQL> 	     FROM excep_emps
+SQL> 	     WHERE department_id = v_dept_id;
+SQL> 
+SQL> 	     IF v_count = 0 THEN
+SQL> 		     RAISE e_zero_select;
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE('There are ' || v_count || ' employees');
+SQL> 	     END IF;
+SQL> 
+SQL> 	     DELETE FROM excep_emps
+SQL> 	     WHERE department_id = v_dept_id;
+SQL> 
+SQL> 	     IF SQL%ROWCOUNT = 0 THEN
+SQL> 		     RAISE e_zero_delete;
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' employees were deleted');
+SQL> 	     END IF;
+SQL> 	     ROLLBACK;
+SQL> EXCEPTION
+SQL> 	     WHEN e_zero_select THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('ERROR: Zero row select, do you have the correcnt department number?');
+SQL> 	     WHEN e_zero_delete THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('ERROR: Zero row delete, do you have the correcnt department number?');
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- ANSWER QUESTION 4C Section 7_3
+SQL> DECLARE
+  2  	     e_zero_select EXCEPTION;
+  3  	     PRAGMA EXCEPTION_INIT (e_zero_select, -20203);
+  4  	     e_zero_delete EXCEPTION;
+  5  	     PRAGMA EXCEPTION_INIT (e_zero_delete, -20204);
+  6  	     v_dept_id excep_emps.department_id%TYPE;
+  7  	     v_count NUMBER;
+  8  BEGIN
+  9  	     v_dept_id := 40;
+ 10  
+ 11  	     SELECT COUNT(*) INTO v_count
+ 12  	     FROM excep_emps
+ 13  	     WHERE department_id = v_dept_id;
+ 14  
+ 15  	     IF v_count = 0 THEN
+ 16  		     RAISE_APPLICATION_ERROR(-20203, 'Total Row Count is '||v_count);
+ 17  	     ELSE
+ 18  		     DBMS_OUTPUT.PUT_LINE('There are ' || v_count || ' employees');
+ 19  	     END IF;
+ 20  
+ 21  	     DELETE FROM excep_emps
+ 22  	     WHERE department_id = v_dept_id;
+ 23  	     IF SQL%ROWCOUNT = 0 THEN
+ 24  		     RAISE_APPLICATION_ERROR(-20203, 'ROWCOUNT is Zero');
+ 25  	     ELSE
+ 26  		     DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' employees were deleted');
+ 27  	     END IF;
+ 28  
+ 29  	     ROLLBACK;
+ 30  END;
+ 31  /
+DECLARE
+*
+ERROR at line 1:
+ORA-20203: Total Row Count is 0 
+ORA-06512: at line 16 
+
+
+SQL> spool off

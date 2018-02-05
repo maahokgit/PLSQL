@@ -1,0 +1,207 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/7_1_4B.sql
+SQL> -- Answer for Qustion 4B Section 7_1
+SQL> DECLARE
+  2  	     v_jobid employees.job_id%TYPE;
+  3  BEGIN
+  4  	     SELECT job_id INTO v_jobid
+  5  	     FROM employees
+  6  	     WHERE department_id = 80;
+  7  EXCEPTION
+  8  	     WHEN TOO_MANY_ROWS THEN
+  9  	     DBMS_OUTPUT.PUT_LINE('Query give more than one row. Maybe use a cursor?');
+ 10  END;
+ 11  /
+Query give more than one row. Maybe use a cursor?                               
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_1_5.sql
+SQL> BEGIN
+  2  	     INSERT INTO departments (department_id, department_name,
+  3  	     manager_id, location_id)
+  4  	     VALUES (50, 'A new department', 100, 1500);
+  5  	     DBMS_OUTPUT.PUT_LINE('The new department was inserted');
+  6  EXCEPTION
+  7  	     WHEN OTHERS THEN
+  8  	     DBMS_OUTPUT.PUT_LINE ('An exception has occurred.');
+  9  END;
+ 10  /
+An exception has occurred.                                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_1_6.sql
+SQL> -- Answer for Question 6 Section 7_1
+SQL> DECLARE
+  2  
+  3  	     v_employee_id employees.employee_id%TYPE;
+  4  	     v_last_name employees.last_name%TYPE;
+  5  
+  6  BEGIN
+  7  
+  8  	     SELECT employee_id, last_name INTO v_employee_id, v_last_name
+  9  	     FROM employees
+ 10  	     WHERE department_id = 20; -- run with values 10, 20, and 30
+ 11  
+ 12  	     DBMS_OUTPUT.PUT_LINE('The SELECT was successful');
+ 13  
+ 14  EXCEPTION
+ 15  
+ 16  	     WHEN OTHERS THEN
+ 17  	     DBMS_OUTPUT.PUT_LINE('An exception has occurred');
+ 18  
+ 19  END;
+ 20  /
+An exception has occurred                                                       
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_1_7.sql
+SQL> -- Answer for Question 7 Section 7_1
+SQL> DECLARE
+  2  
+  3  	     v_employee_id employees.employee_id%TYPE;
+  4  	     v_last_name employees.last_name%TYPE;
+  5  
+  6  BEGIN
+  7  
+  8  	     SELECT employee_id, last_name INTO v_employee_id, v_last_name
+  9  	     FROM employees
+ 10  	     WHERE department_id = 30; -- run with values 10, 20, and 30
+ 11  
+ 12  	     DBMS_OUTPUT.PUT_LINE('The SELECT was successful');
+ 13  
+ 14  EXCEPTION
+ 15  	     WHEN NO_DATA_FOUND THEN
+ 16  	     DBMS_OUTPUT.PUT_LINE('An exception: NO_DATA_FOUND has occurred');
+ 17  
+ 18  	     WHEN TOO_MANY_ROWS THEN
+ 19  	     DBMS_OUTPUT.PUT_LINE('An exception: TOO_MANY_ROWS has occurred');
+ 20  
+ 21  	     WHEN OTHERS THEN
+ 22  	     DBMS_OUTPUT.PUT_LINE('An exception has occurred');
+ 23  
+ 24  END;
+ 25  /
+An exception: NO_DATA_FOUND has occurred                                        
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_1_7.sql
+SQL> -- Answer for Question 7 Section 7_1
+SQL> DECLARE
+  2  
+  3  	     v_employee_id employees.employee_id%TYPE;
+  4  	     v_last_name employees.last_name%TYPE;
+  5  
+  6  BEGIN
+  7  
+  8  	     SELECT employee_id, last_name INTO v_employee_id, v_last_name
+  9  	     FROM employees
+ 10  	     WHERE department_id = 20; -- run with values 10, 20, and 30
+ 11  
+ 12  	     DBMS_OUTPUT.PUT_LINE('The SELECT was successful');
+ 13  
+ 14  EXCEPTION
+ 15  	     WHEN NO_DATA_FOUND THEN
+ 16  	     DBMS_OUTPUT.PUT_LINE('An exception: NO_DATA_FOUND has occurred');
+ 17  
+ 18  	     WHEN TOO_MANY_ROWS THEN
+ 19  	     DBMS_OUTPUT.PUT_LINE('An exception: TOO_MANY_ROWS has occurred');
+ 20  
+ 21  	     WHEN OTHERS THEN
+ 22  	     DBMS_OUTPUT.PUT_LINE('An exception has occurred');
+ 23  
+ 24  END;
+ 25  /
+An exception: TOO_MANY_ROWS has occurred                                        
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_1_7.sql
+SQL> -- Answer for Question 7 Section 7_1
+SQL> DECLARE
+  2  
+  3  	     v_employee_id employees.employee_id%TYPE;
+  4  	     v_last_name employees.last_name%TYPE;
+  5  
+  6  BEGIN
+  7  
+  8  	     SELECT employee_id, last_name INTO v_employee_id, v_last_name
+  9  	     FROM employees
+ 10  	     WHERE department_id = 10; -- run with values 10, 20, and 30
+ 11  
+ 12  	     DBMS_OUTPUT.PUT_LINE('The SELECT was successful');
+ 13  
+ 14  EXCEPTION
+ 15  	     WHEN NO_DATA_FOUND THEN
+ 16  	     DBMS_OUTPUT.PUT_LINE('An exception: NO_DATA_FOUND has occurred');
+ 17  
+ 18  	     WHEN TOO_MANY_ROWS THEN
+ 19  	     DBMS_OUTPUT.PUT_LINE('An exception: TOO_MANY_ROWS has occurred');
+ 20  
+ 21  	     WHEN OTHERS THEN
+ 22  	     DBMS_OUTPUT.PUT_LINE('An exception has occurred');
+ 23  
+ 24  END;
+ 25  /
+An exception: TOO_MANY_ROWS has occurred                                        
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_1_9.sql
+SQL> -- Answer for Question 9 Section 7_1
+SQL> DECLARE
+  2  	     v_number NUMBER(2);
+  3  BEGIN
+  4  	     v_number := 9999;
+  5  EXCEPTION
+  6  	     WHEN OTHERS THEN
+  7  		     DBMS_OUTPUT.PUT_LINE('An exception has occurred');
+  8  END;
+  9  /
+An exception has occurred                                                       
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_1_10.sql
+SQL> -- Answer for Question 10 Section 7_1
+SQL> DECLARE
+  2  	     v_number NUMBER(2);
+  3  BEGIN
+  4  	     v_number := 9999;
+  5  END;
+  6  /
+DECLARE
+*
+ERROR at line 1:
+ORA-06502: PL/SQL: numeric or value error: number precision too large 
+ORA-06512: at line 4 
+
+
+SQL> @scripts/7_1_11.sql
+SQL> -- Answer for Question 11 Section 7_1
+SQL> DECLARE
+  2  	     v_number NUMBER(4);
+  3  BEGIN
+  4  	     v_number := 1234;
+  5  	     DECLARE
+  6  		     v_number NUMBER(4);
+  7  	     BEGIN
+  8  		     v_number := 5678;
+  9  		     v_number := 'A character string';
+ 10  	     END;
+ 11  EXCEPTION
+ 12  	     WHEN OTHERS THEN
+ 13  		     DBMS_OUTPUT.PUT_LINE('An exception has occurred');
+ 14  		     DBMS_OUTPUT.PUT_LINE('The number is: ' || v_number);
+ 15  END;
+ 16  /
+An exception has occurred                                                       
+The number is: 1234                                                             
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off

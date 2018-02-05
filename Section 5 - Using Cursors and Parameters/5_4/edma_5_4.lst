@@ -1,0 +1,205 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/5_4_2.sql
+SQL> -- ANSWER FOR QUESTION 2 in SECTION 5_4
+SQL> DECLARE
+  2  	     CURSOR cur_country_area (p_region_id NUMBER) IS
+  3  		     SELECT country_name, area FROM countries
+  4  		     WHERE region_id = p_region_id;
+  5  	     v_country_name countries.country_name%TYPE;
+  6  	     v_country_area countries.area%TYPE;
+  7  BEGIN -- chr(13)||chr(10) to break lines so it will look nice.
+  8  	     DBMS_OUTPUT.PUT_LINE('Area of Country with Region ID 5'||chr(13)||chr(10));
+  9  	     OPEN cur_country_area (5);
+ 10  		     LOOP
+ 11  			     FETCH cur_country_area INTO v_country_name, v_country_area;
+ 12  			     EXIT WHEN cur_country_area%NOTFOUND;
+ 13  			     DBMS_OUTPUT.PUT_LINE(v_country_name ||' have the area of '|| v_country_area);
+ 14  		     END LOOP;
+ 15  	     CLOSE cur_country_area;
+ 16  
+ 17  	     DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10)||'Area of Country with Region ID 30'||chr(13)||chr(10));
+ 18  	     OPEN cur_country_area (30);
+ 19  		     LOOP
+ 20  			     FETCH cur_country_area INTO v_country_name, v_country_area;
+ 21  			     EXIT WHEN cur_country_area%NOTFOUND;
+ 22  			     DBMS_OUTPUT.PUT_LINE(v_country_name ||' have the area of '|| v_country_area);
+ 23  		     END LOOP;
+ 24  	     CLOSE cur_country_area;
+ 25  END;
+ 26  /
+Area of Country with Region ID 5
+                                              
+Republic of Bolivia have the area of 1098580                                    
+Federative Republic of Brazil have the area of 8511965                          
+South Georgia and the South Sandwich Islands have the area of 3903              
+Falkland Islands have the area of 12173                                         
+Co-operative Republic of Guyana have the area of 214970                         
+Republic of Peru have the area of 1285220                                       
+Republic of Paraguay have the area of 406750                                    
+Argentine Republic have the area of 2766890                                     
+Republic of Ecuador have the area of 283560                                     
+Oriental Republic of Uruguay have the area of 176220                            
+Bolivarian Republic of Venezuela have the area of 912050                        
+Republic of Chile have the area of 756950                                       
+Republic of Colombia have the area of 1138910                                   
+Republic of Suriname have the area of 163270                                    
+Department of Guiana have the area of 91000                                     
+
+Area of Country with Region ID 30
+                                           
+Mongolia have the area of 1564116                                               
+Macau Special Administrative Region have the area of 28                         
+Hong Kong Special Administrative Region have the area of 1092                   
+Republic of Korea have the area of 98480                                        
+Democratic Peoples Republic of Korea have the area of 120540                    
+Japan have the area of 377835                                                   
+Peoples Republic of China have the area of 9596960                              
+Taiwan have the area of 35980                                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/5_4_3.sql
+SQL> -- ANSWER FOR QUESTION 3 in SECTION 5_4
+SQL> DECLARE
+  2  
+  3  	     CURSOR cur_country_area (p_region_id NUMBER) IS
+  4  		     SELECT country_name, area FROM countries
+  5  		     WHERE region_id = p_region_id;
+  6  
+  7  BEGIN -- chr(13)||chr(10) to break lines so it will look nice.
+  8  
+  9  	     DBMS_OUTPUT.PUT_LINE('Area of Country with Region ID 5'||chr(13)||chr(10));
+ 10  	     FOR v_regionFive IN cur_country_area(5)
+ 11  		     LOOP
+ 12  			     DBMS_OUTPUT.PUT_LINE(v_regionFive.country_name || ' have the area of ' ||v_regionFive.area);
+ 13  		     END LOOP;
+ 14  
+ 15  	     DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10)||'Area of Country with Region ID 30'||chr(13)||chr(10));
+ 16  	     FOR v_regionThirty IN cur_country_area(30)
+ 17  		     LOOP
+ 18  			     DBMS_OUTPUT.PUT_LINE(v_regionThirty.country_name || ' have the area of ' ||v_regionThirty.area);
+ 19  		     END LOOP;
+ 20  END;
+ 21  /
+Area of Country with Region ID 5
+                                              
+Republic of Bolivia have the area of 1098580                                    
+Federative Republic of Brazil have the area of 8511965                          
+South Georgia and the South Sandwich Islands have the area of 3903              
+Falkland Islands have the area of 12173                                         
+Co-operative Republic of Guyana have the area of 214970                         
+Republic of Peru have the area of 1285220                                       
+Republic of Paraguay have the area of 406750                                    
+Argentine Republic have the area of 2766890                                     
+Republic of Ecuador have the area of 283560                                     
+Oriental Republic of Uruguay have the area of 176220                            
+Bolivarian Republic of Venezuela have the area of 912050                        
+Republic of Chile have the area of 756950                                       
+Republic of Colombia have the area of 1138910                                   
+Republic of Suriname have the area of 163270                                    
+Department of Guiana have the area of 91000                                     
+
+Area of Country with Region ID 30
+                                           
+Mongolia have the area of 1564116                                               
+Macau Special Administrative Region have the area of 28                         
+Hong Kong Special Administrative Region have the area of 1092                   
+Republic of Korea have the area of 98480                                        
+Democratic Peoples Republic of Korea have the area of 120540                    
+Japan have the area of 377835                                                   
+Peoples Republic of China have the area of 9596960                              
+Taiwan have the area of 35980                                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/5_4_4.sql
+SQL> -- ANSWER FOR QUESTION 4 in SECTION 5_4
+SQL> DECLARE
+  2  
+  3  	     CURSOR cur_country_area (p_area NUMBER) IS
+  4  		     SELECT country_name, area FROM countries
+  5  		     WHERE region_id = 5 AND area > p_area;
+  6  
+  7  BEGIN -- chr(13)||chr(10) to break lines so it will look nice.
+  8  
+  9  	     DBMS_OUTPUT.PUT_LINE('Country with area over 200,000.'||chr(13)||chr(10));
+ 10  	     FOR v_areaTwoHundThous IN cur_country_area(200000)
+ 11  		     LOOP
+ 12  			     DBMS_OUTPUT.PUT_LINE(v_areaTwoHundThous.country_name || ' have the area of ' ||v_areaTwoHundThous.area);
+ 13  		     END LOOP;
+ 14  
+ 15  	     DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10)||'Country with area over 1,000,000'||chr(13)||chr(10));
+ 16  	     FOR v_areaOneMil IN cur_country_area(1000000)
+ 17  		     LOOP
+ 18  			     DBMS_OUTPUT.PUT_LINE(v_areaOneMil.country_name || ' have the area of ' ||v_areaOneMil.area);
+ 19  		     END LOOP;
+ 20  END;
+ 21  /
+Country with area over 200,000.
+                                               
+Republic of Bolivia have the area of 1098580                                    
+Federative Republic of Brazil have the area of 8511965                          
+Co-operative Republic of Guyana have the area of 214970                         
+Republic of Peru have the area of 1285220                                       
+Republic of Paraguay have the area of 406750                                    
+Argentine Republic have the area of 2766890                                     
+Republic of Ecuador have the area of 283560                                     
+Bolivarian Republic of Venezuela have the area of 912050                        
+Republic of Chile have the area of 756950                                       
+Republic of Colombia have the area of 1138910                                   
+
+Country with area over 1,000,000
+                                            
+Republic of Bolivia have the area of 1098580                                    
+Federative Republic of Brazil have the area of 8511965                          
+Republic of Peru have the area of 1285220                                       
+Argentine Republic have the area of 2766890                                     
+Republic of Colombia have the area of 1138910                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/5_4_5.sql
+SQL> -- ANSWER FOR QUESTION 4 in SECTION 5_4
+SQL> DECLARE
+  2  
+  3  	     CURSOR cur_country_area (p_region_id NUMBER, p_area NUMBER) IS
+  4  		     SELECT country_name, area FROM countries
+  5  		     WHERE region_id = p_region_id AND area > p_area;
+  6  
+  7  BEGIN -- chr(13)||chr(10) to break lines so it will look nice.
+  8  
+  9  	     DBMS_OUTPUT.PUT_LINE('Region: 5 Minimum Area: 200,000'||chr(13)||chr(10));
+ 10  	     FOR v_areaFive2K IN cur_country_area(5, 200000)
+ 11  		     LOOP
+ 12  			     DBMS_OUTPUT.PUT_LINE(v_areaFive2K.country_name || ' have the area of ' ||v_areaFive2K.area);
+ 13  		     END LOOP;
+ 14  	     DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10)||'Region: 5. Minimum Area: 1,000,000'||chr(13)||chr(10));
+ 15  
+ 16  	     FOR v_areaThirty1Mil IN cur_country_area(30, 1000000)
+ 17  		     LOOP
+ 18  			     DBMS_OUTPUT.PUT_LINE(v_areaThirty1Mil.country_name || ' have the area of ' ||v_areaThirty1Mil.area);
+ 19  		     END LOOP;
+ 20  END;
+ 21  /
+Region: 5 Minimum Area: 200,000
+                                               
+Republic of Bolivia have the area of 1098580                                    
+Federative Republic of Brazil have the area of 8511965                          
+Co-operative Republic of Guyana have the area of 214970                         
+Republic of Peru have the area of 1285220                                       
+Republic of Paraguay have the area of 406750                                    
+Argentine Republic have the area of 2766890                                     
+Republic of Ecuador have the area of 283560                                     
+Bolivarian Republic of Venezuela have the area of 912050                        
+Republic of Chile have the area of 756950                                       
+Republic of Colombia have the area of 1138910                                   
+
+Region: 5. Minimum Area: 1,000,000
+                                          
+Mongolia have the area of 1564116                                               
+Peoples Republic of China have the area of 9596960                              
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off

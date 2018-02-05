@@ -1,0 +1,151 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/5_5_table.sql
+SQL> -- Table Creation Script for Section 5_5
+SQL> DROP TABLE proposed_raises;
+
+Table dropped.
+
+SQL> 
+SQL> CREATE TABLE proposed_raises
+  2  (
+  3  	     date_proposed DATE,
+  4  	     date_approved DATE,
+  5  	     employee_id NUMBER(6),
+  6  	     department_id NUMBER(4),
+  7  	     original_salary NUMBER(8,2),
+  8  	     proposed_new_salary NUMBER(8,2)
+  9  );
+
+Table created.
+
+SQL> @scripts/5_5_1.sql
+SQL> -- Answer for Question 1 in Section 5_5
+SQL> 
+SQL> DECLARE
+  2  	     CURSOR cur_emp IS
+  3  		     SELECT employee_id, department_id, salary
+  4  		     FROM employees WHERE salary < 5000 FOR UPDATE NOWAIT;
+  5  	     v_emp_rec cur_emp%ROWTYPE;
+  6  	     v_date proposed_raises.date_proposed%TYPE := SYSDATE;
+  7  	     v_new_salary proposed_raises.proposed_new_salary%TYPE;
+  8  BEGIN
+  9  	     OPEN cur_emp;
+ 10  		     LOOP
+ 11  			     FETCH cur_emp INTO v_emp_rec;
+ 12  			     EXIT WHEN cur_emp%NOTFOUND;
+ 13  			     v_new_salary := v_emp_rec.salary*1.05;
+ 14  			     INSERT INTO proposed_raises(date_proposed,
+ 15  					     employee_id,
+ 16  					     department_id,
+ 17  					     original_salary,
+ 18  					     proposed_new_salary)
+ 19  			     VALUES(v_date,
+ 20  				     v_emp_rec.employee_id,
+ 21  				     v_emp_rec.department_id,
+ 22  				     v_emp_rec.salary,
+ 23  				     v_new_salary);
+ 24  		     END LOOP;
+ 25  	     CLOSE cur_emp;
+ 26  END;
+ 27  /
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/5_5_3.sql
+SQL> -- Answer for Question 3A in Section 5_5
+SQL> DECLARE
+  2  	     CURSOR cur_emp IS
+  3  		     SELECT date_approved
+  4  		     FROM proposed_raises
+  5  		     FOR UPDATE OF date_approved NOWAIT;
+  6  	     --v_emp_rec cur_emp%ROWTYPE;
+  7  	     v_approveddate proposed_raises.date_approved%TYPE := SYSDATE;
+  8  	     --v_new_salary proposed_raises.proposed_new_salary%TYPE;
+  9  BEGIN
+ 10  	     FOR v_emp_rec IN cur_emp
+ 11  	     LOOP
+ 12  		     UPDATE proposed_raises
+ 13  		     SET date_approved = v_approveddate
+ 14  		     WHERE CURRENT OF cur_emp;
+ 15  	     END LOOP;
+ 16  END;
+ 17  /
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT * FROM proposed_raises;
+
+DATE_PROP DATE_APPR EMPLOYEE_ID DEPARTMENT_ID ORIGINAL_SALARY                   
+--------- --------- ----------- ------------- ---------------                   
+PROPOSED_NEW_SALARY                                                             
+-------------------                                                             
+26-OCT-17 26-OCT-17         200            10            4400                   
+               4620                                                             
+                                                                                
+26-OCT-17 26-OCT-17         141            50            3500                   
+               3675                                                             
+                                                                                
+26-OCT-17 26-OCT-17         142            50            3100                   
+               3255                                                             
+                                                                                
+
+DATE_PROP DATE_APPR EMPLOYEE_ID DEPARTMENT_ID ORIGINAL_SALARY                   
+--------- --------- ----------- ------------- ---------------                   
+PROPOSED_NEW_SALARY                                                             
+-------------------                                                             
+26-OCT-17 26-OCT-17         143            50            2600                   
+               2730                                                             
+                                                                                
+26-OCT-17 26-OCT-17         144            50            2500                   
+               2625                                                             
+                                                                                
+26-OCT-17 26-OCT-17         107            60            4200                   
+               4410                                                             
+                                                                                
+
+DATE_PROP DATE_APPR EMPLOYEE_ID DEPARTMENT_ID ORIGINAL_SALARY                   
+--------- --------- ----------- ------------- ---------------                   
+PROPOSED_NEW_SALARY                                                             
+-------------------                                                             
+26-OCT-17 26-OCT-17         202            20            3900                   
+               4095                                                             
+                                                                                
+26-OCT-17 26-OCT-17         216            50            3500                   
+               3675                                                             
+                                                                                
+26-OCT-17 26-OCT-17         217            20            4000                   
+               4200                                                             
+                                                                                
+
+DATE_PROP DATE_APPR EMPLOYEE_ID DEPARTMENT_ID ORIGINAL_SALARY                   
+--------- --------- ----------- ------------- ---------------                   
+PROPOSED_NEW_SALARY                                                             
+-------------------                                                             
+26-OCT-17 26-OCT-17         219            20            3700                   
+               3885                                                             
+                                                                                
+26-OCT-17 26-OCT-17         220            50            2600                   
+               2730                                                             
+                                                                                
+26-OCT-17 26-OCT-17         225            10            4300                   
+               4515                                                             
+                                                                                
+
+DATE_PROP DATE_APPR EMPLOYEE_ID DEPARTMENT_ID ORIGINAL_SALARY                   
+--------- --------- ----------- ------------- ---------------                   
+PROPOSED_NEW_SALARY                                                             
+-------------------                                                             
+26-OCT-17 26-OCT-17         226            10            4100                   
+               4305                                                             
+                                                                                
+26-OCT-17 26-OCT-17         227            10            4400                   
+               4620                                                             
+                                                                                
+26-OCT-17 26-OCT-17         235            20            4900                   
+               5145                                                             
+                                                                                
+
+15 rows selected.
+
+SQL> spool off

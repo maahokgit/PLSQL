@@ -1,0 +1,118 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/5_2_2.sql
+SQL> DECLARE
+  2  	     CURSOR cur_country_holi IS
+  3  		     SELECT country_name, national_holiday_date, national_holiday_name
+  4  		     FROM countries WHERE region_id = 5;
+  5  	     v_holiday_record cur_country_holi%ROWTYPE;
+  6  BEGIN
+  7  	     OPEN cur_country_holi;
+  8  	     LOOP
+  9  		     FETCH cur_country_holi INTO v_holiday_record;
+ 10  		     EXIT WHEN cur_country_holi%NOTFOUND;
+ 11  		     DBMS_OUTPUT.PUT_LINE(v_holiday_record.country_name
+ 12  					     ||': '
+ 13  					     ||v_holiday_record.national_holiday_name
+ 14  					     ||' - '
+ 15  					     ||v_holiday_record.national_holiday_date);
+ 16  	     END LOOP;
+ 17  	     CLOSE cur_country_holi;
+ 18  END;
+ 19  /
+Republic of Bolivia: Independence Day - 6-Aug                                   
+Federative Republic of Brazil: Independence Day - 7-Sep                         
+South Georgia and the South Sandwich Islands:  -                                
+Falkland Islands: Liberation Day - 14-Jun                                       
+Co-operative Republic of Guyana: Republic Day - 23-Feb                          
+Republic of Peru: Independence Day - 28-Jul                                     
+Republic of Paraguay: Independence Day - 15-May                                 
+Argentine Republic: Revolution Day - 25-May                                     
+Republic of Ecuador: Independence Day - 10-Aug                                  
+Oriental Republic of Uruguay: Independence Day - 25-Aug                         
+Bolivarian Republic of Venezuela: Independence Day - 5-Jul                      
+Republic of Chile: Independence Day - 18-Sep                                    
+Republic of Colombia: Independence Day - 20-Jul                                 
+Republic of Suriname: Independence Day - 25-Nov                                 
+Department of Guiana: Bastille Day - 14-Jul                                     
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/5_2_3.sql
+SQL> DECLARE
+  2  	     CURSOR cur_emp_salary IS
+  3  			     SELECT first_name, last_name, job_id, salary
+  4  			     FROM employees ORDER BY salary DESC;
+  5  	     v_emp_salary cur_emp_salary%ROWTYPE;
+  6  BEGIN
+  7  	     OPEN cur_emp_salary;
+  8  	     LOOP
+  9  		     FETCH cur_emp_salary INTO v_emp_salary;
+ 10  		     EXIT WHEN cur_emp_salary%ROWCOUNT > 6 OR cur_emp_salary%NOTFOUND;
+ 11  		     DBMS_OUTPUT.PUT_LINE(v_emp_salary.first_name
+ 12  					     ||' '
+ 13  					     ||v_emp_salary.last_name
+ 14  					     ||' - '
+ 15  					     ||v_emp_salary.job_id
+ 16  					     ||' - '
+ 17  					     ||v_emp_salary.salary);
+ 18  	     END LOOP;
+ 19  	     CLOSE cur_emp_salary;
+ 20  END;
+ 21  /
+Steven King - AD_PRES - 24000                                                   
+Neena Kochhar - AD_VP - 17000                                                   
+Lex De Haan - AD_VP - 17000                                                     
+Michael Hartstein - MK_MAN - 13000                                              
+Shelley Higgins - AC_MGR - 12000                                                
+Ellen Abel - SA_REP - 11000                                                     
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/5_2_4.sql
+SQL> DECLARE
+  2  	     CURSOR cur_emp_salary IS
+  3  			     SELECT first_name, last_name, job_id, salary
+  4  			     FROM employees ORDER BY salary DESC;
+  5  	     v_emp_salary cur_emp_salary%ROWTYPE;
+  6  BEGIN
+  7  	     OPEN cur_emp_salary;
+  8  	     LOOP
+  9  		     FETCH cur_emp_salary INTO v_emp_salary;
+ 10  		     EXIT WHEN cur_emp_salary%ROWCOUNT > 21 OR cur_emp_salary%NOTFOUND;
+ 11  		     DBMS_OUTPUT.PUT_LINE(v_emp_salary.first_name
+ 12  					     ||' '
+ 13  					     ||v_emp_salary.last_name
+ 14  					     ||' - '
+ 15  					     ||v_emp_salary.job_id
+ 16  					     ||' - '
+ 17  					     ||v_emp_salary.salary);
+ 18  	     END LOOP;
+ 19  	     CLOSE cur_emp_salary;
+ 20  END;
+ 21  /
+Steven King - AD_PRES - 24000                                                   
+Neena Kochhar - AD_VP - 17000                                                   
+Lex De Haan - AD_VP - 17000                                                     
+Michael Hartstein - MK_MAN - 13000                                              
+Shelley Higgins - AC_MGR - 12000                                                
+Ellen Abel - SA_REP - 11000                                                     
+Eleni Zlotkey - SA_MAN - 10500                                                  
+Nick Hooper - SR_SA_REP - 9600                                                  
+Sophia Barbosa Souza - SR_SA_REP - 9500                                         
+Alexander Hunold - IT_PROG - 9000                                               
+Jonathon Taylor - SA_REP - 8600                                                 
+Donna Steiner - SR_MK_REP - 8600                                                
+William Gietz - AC_ACCOUNT - 8300                                               
+Matthias Reinhard - AC_ACCOUNT - 8100                                           
+Chen Li - IT_PROG - 8000                                                        
+Alain Fontaine - IT_PROG - 7800                                                 
+Diego Silva Pinto - SA_REP - 7500                                               
+Sarah Alves Rocha - SA_REP - 7300                                               
+Lucas Almeida Castro - SA_REP - 7300                                            
+Kimberely Grant - SA_REP - 7000                                                 
+Bruce Ernst - IT_PROG - 6000                                                    
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off

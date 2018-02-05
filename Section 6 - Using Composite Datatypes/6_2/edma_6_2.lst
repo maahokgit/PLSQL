@@ -1,0 +1,405 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/6_2_2.sql
+SQL> -- ANSWER TO QUESTION 2A FOR SECTION 6_2
+SQL> DECLARE
+  2  	     TYPE t_country_name IS TABLE OF countries.country_name%TYPE
+  3  	     INDEX BY BINARY_INTEGER;
+  4  
+  5  	     v_country_name_tab t_country_name;
+  6  BEGIN
+  7  	     FOR country_rec IN (SELECT country_name, country_id FROM countries WHERE region_id = 5 ORDER BY country_name ASC)
+  8  	     LOOP
+  9  		     v_country_name_tab(country_rec.country_id) := country_rec.country_name;
+ 10  	     END LOOP;
+ 11  END;
+ 12  /
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> @scripts/6_2_2.sql
+SQL> -- ANSWER TO QUESTION 2A FOR SECTION 6_2
+SQL> /*
+SQL> DECLARE
+SQL> 	     TYPE t_country_name IS TABLE OF countries.country_name%TYPE
+SQL> 	     INDEX BY BINARY_INTEGER;
+SQL> 
+SQL> 	     v_country_name_tab t_country_name;
+SQL> BEGIN
+SQL> 	     FOR country_rec IN (SELECT country_name, country_id FROM countries WHERE region_id = 5 ORDER BY country_name ASC)
+SQL> 	     LOOP
+SQL> 		     v_country_name_tab(country_rec.country_id) := country_rec.country_name;
+SQL> 	     END LOOP;
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- ANSWER FOR 2B
+SQL> DECLARE
+  2  	     TYPE t_country_name IS TABLE OF countries.country_name%TYPE
+  3  	     INDEX BY BINARY_INTEGER;
+  4  
+  5  	     v_country_name_tab t_country_name;
+  6  BEGIN
+  7  	     FOR country_rec IN (SELECT country_name, country_id FROM countries WHERE region_id = 5 ORDER BY country_name ASC)
+  8  	     LOOP
+  9  		     v_country_name_tab(country_rec.country_id) := country_rec.country_name;
+ 10  	     END LOOP;
+ 11  
+ 12  	     FOR i IN v_country_name_tab.FIRST..v_country_name_tab.LAST
+ 13  	     LOOP
+ 14  		     IF v_country_name_tab.EXISTS(i) THEN
+ 15  			     DBMS_OUTPUT.PUT_LINE('Country ID: '||i);
+ 16  			     DBMS_OUTPUT.PUT_LINE('Country Name: '||v_country_name_tab(i)||chr(13)||chr(10));
+ 17  		     END IF;
+ 18  	     END LOOP;
+ 19  END;
+ 20  /
+Country ID: 51                                                                  
+Country Name: Republic of Peru
+                                                
+Country ID: 54                                                                  
+Country Name: Argentine Republic
+                                              
+Country ID: 55                                                                  
+Country Name: Federative Republic of Brazil
+                                   
+Country ID: 56                                                                  
+Country Name: Republic of Chile
+                                               
+Country ID: 57                                                                  
+Country Name: Republic of Colombia
+                                            
+Country ID: 58                                                                  
+Country Name: Bolivarian Republic of Venezuela
+                                
+Country ID: 280                                                                 
+Country Name: South Georgia and the South Sandwich Islands
+                    
+Country ID: 500                                                                 
+Country Name: Falkland Islands
+                                                
+Country ID: 591                                                                 
+Country Name: Republic of Bolivia
+                                             
+Country ID: 592                                                                 
+Country Name: Co-operative Republic of Guyana
+                                 
+Country ID: 593                                                                 
+Country Name: Republic of Ecuador
+                                             
+Country ID: 594                                                                 
+Country Name: Department of Guiana
+                                            
+Country ID: 595                                                                 
+Country Name: Republic of Paraguay
+                                            
+Country ID: 597                                                                 
+Country Name: Republic of Suriname
+                                            
+Country ID: 598                                                                 
+Country Name: Oriental Republic of Uruguay
+                                    
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/6_2_2.sql
+SQL> -- ANSWER TO QUESTION 2A FOR SECTION 6_2
+SQL> /*
+SQL> DECLARE
+SQL> 	     TYPE t_country_name IS TABLE OF countries.country_name%TYPE
+SQL> 	     INDEX BY BINARY_INTEGER;
+SQL> 
+SQL> 	     v_country_name_tab t_country_name;
+SQL> BEGIN
+SQL> 	     FOR country_rec IN (SELECT country_name, country_id FROM countries WHERE region_id = 5 ORDER BY country_name ASC)
+SQL> 	     LOOP
+SQL> 		     v_country_name_tab(country_rec.country_id) := country_rec.country_name;
+SQL> 	     END LOOP;
+SQL> END;
+SQL> /
+SQL> -- ANSWER FOR 2B
+SQL> DECLARE
+SQL> 	     TYPE t_country_name IS TABLE OF countries.country_name%TYPE
+SQL> 	     INDEX BY BINARY_INTEGER;
+SQL> 
+SQL> 	     v_country_name_tab t_country_name;
+SQL> BEGIN
+SQL> 	     FOR country_rec IN (SELECT country_name, country_id FROM countries WHERE region_id = 5 ORDER BY country_name ASC)
+SQL> 	     LOOP
+SQL> 		     v_country_name_tab(country_rec.country_id) := country_rec.country_name;
+SQL> 	     END LOOP;
+SQL> 
+SQL> 	     FOR i IN v_country_name_tab.FIRST..v_country_name_tab.LAST
+SQL> 	     LOOP
+SQL> 		     IF v_country_name_tab.EXISTS(i) THEN
+SQL> 			     DBMS_OUTPUT.PUT_LINE('Country ID: '||i);
+SQL> 			     DBMS_OUTPUT.PUT_LINE('Country Name: '||v_country_name_tab(i)||chr(13)||chr(10));
+SQL> 		     END IF;
+SQL> 	     END LOOP;
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- ANSWER FOR 2C
+SQL> DECLARE
+  2  	     TYPE t_country_name IS TABLE OF countries.country_name%TYPE
+  3  	     INDEX BY BINARY_INTEGER;
+  4  
+  5  	     v_country_name_tab t_country_name;
+  6  	     v_first NUMBER;
+  7  	     v_last NUMBER;
+  8  BEGIN
+  9  	     FOR country_rec IN (SELECT country_name, country_id FROM countries WHERE region_id = 5 ORDER BY country_name ASC)
+ 10  	     LOOP
+ 11  		     v_country_name_tab(country_rec.country_id) := country_rec.country_name;
+ 12  	     END LOOP;
+ 13  
+ 14  	     v_first := v_country_name_tab.FIRST;
+ 15  	     v_last := v_country_name_tab.LAST;
+ 16  		     DBMS_OUTPUT.PUT_LINE('First Country on INDEX');
+ 17  		     DBMS_OUTPUT.PUT_LINE('Country ID: '||v_first);
+ 18  		     DBMS_OUTPUT.PUT_LINE('Country Name: '||v_country_name_tab(v_first)||chr(13)||chr(10));
+ 19  
+ 20  		     DBMS_OUTPUT.PUT_LINE('Last Country on INDEX');
+ 21  		     DBMS_OUTPUT.PUT_LINE('Country ID: '||v_last);
+ 22  		     DBMS_OUTPUT.PUT_LINE('Country Name: '||v_country_name_tab(v_last));
+ 23  END;
+ 24  /
+First Country on INDEX                                                          
+Country ID: 51                                                                  
+Country Name: Republic of Peru
+                                                
+Last Country on INDEX                                                           
+Country ID: 598                                                                 
+Country Name: Oriental Republic of Uruguay                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/6_2_3.sql
+SQL> -- ANSWER FOR QUESTION 3A in SECTION 6_2
+SQL> DECLARE
+  2  	     CURSOR emp_cur IS
+  3  		     SELECT first_name, last_name, job_id, employee_id, salary
+  4  		     FROM employees ORDER BY employee_id ASC;
+  5  
+  6  	     TYPE t_emp_rec IS TABLE OF emp_cur%ROWTYPE
+  7  	     INDEX BY BINARY_INTEGER;
+  8  	     v_emp_rec_tab t_emp_rec;
+  9  BEGIN
+ 10  	     FOR emp_rec IN emp_cur
+ 11  	     LOOP
+ 12  		     v_emp_rec_tab(emp_rec.employee_id) := emp_rec;
+ 13  	     END LOOP;
+ 14  END;
+ 15  /
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/6_2_3.sql
+SQL> -- ANSWER FOR QUESTION 3A in SECTION 6_2
+SQL> /*
+SQL> DECLARE
+SQL> 	     CURSOR emp_cur IS
+SQL> 		     SELECT first_name, last_name, job_id, employee_id, salary
+SQL> 		     FROM employees ORDER BY employee_id ASC;
+SQL> 
+SQL> 	     TYPE t_emp_rec IS TABLE OF emp_cur%ROWTYPE
+SQL> 	     INDEX BY BINARY_INTEGER;
+SQL> 	     v_emp_rec_tab t_emp_rec;
+SQL> BEGIN
+SQL> 	     FOR emp_rec IN emp_cur
+SQL> 	     LOOP
+SQL> 		     v_emp_rec_tab(emp_rec.employee_id) := emp_rec;
+SQL> 	     END LOOP;
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- ANSWER FOR QUESTION 3B IN SECTION 6_2
+SQL> DECLARE
+  2  	     CURSOR emp_cur IS
+  3  		     SELECT first_name, last_name, job_id, employee_id, salary
+  4  		     FROM employees ORDER BY employee_id ASC;
+  5  
+  6  	     TYPE t_emp_rec IS TABLE OF emp_cur%ROWTYPE
+  7  	     INDEX BY BINARY_INTEGER;
+  8  	     v_emp_rec_tab t_emp_rec;
+  9  BEGIN
+ 10  	     FOR emp_rec IN emp_cur
+ 11  	     LOOP
+ 12  		     v_emp_rec_tab(emp_rec.employee_id) := emp_rec;
+ 13  	     END LOOP;
+ 14  
+ 15  	     FOR i IN v_emp_rec_tab.FIRST..v_emp_rec_tab.LAST
+ 16  	     LOOP
+ 17  		     IF v_emp_rec_tab.EXISTS(i) THEN
+ 18  			     DBMS_OUTPUT.PUT_LINE(v_emp_rec_tab(i).first_name||' '||v_emp_rec_tab(i).last_name);
+ 19  			     DBMS_OUTPUT.PUT_LINE('Job ID: '||v_emp_rec_tab(i).job_id);
+ 20  			     DBMS_OUTPUT.PUT_LINE('Salary: '||v_emp_rec_tab(i).salary||chr(13)||chr(10));
+ 21  		     END IF;
+ 22  	     END LOOP;
+ 23  END;
+ 24  /
+Steven King                                                                     
+Job ID: AD_PRES                                                                 
+Salary: 24000
+                                                                 
+Neena Kochhar                                                                   
+Job ID: AD_VP                                                                   
+Salary: 17000
+                                                                 
+Lex De Haan                                                                     
+Job ID: AD_VP                                                                   
+Salary: 17000
+                                                                 
+Alexander Hunold                                                                
+Job ID: IT_PROG                                                                 
+Salary: 9000
+                                                                  
+Bruce Ernst                                                                     
+Job ID: IT_PROG                                                                 
+Salary: 6000
+                                                                  
+Diana Lorentz                                                                   
+Job ID: IT_PROG                                                                 
+Salary: 4200
+                                                                  
+Kevin Mourgos                                                                   
+Job ID: ST_MAN                                                                  
+Salary: 5800
+                                                                  
+Trenna Rajs                                                                     
+Job ID: ST_CLERK                                                                
+Salary: 3500
+                                                                  
+Curtis Davies                                                                   
+Job ID: ST_CLERK                                                                
+Salary: 3100
+                                                                  
+Randall Matos                                                                   
+Job ID: ST_CLERK                                                                
+Salary: 2600
+                                                                  
+Peter Vargas                                                                    
+Job ID: ST_CLERK                                                                
+Salary: 2500
+                                                                  
+Eleni Zlotkey                                                                   
+Job ID: SA_MAN                                                                  
+Salary: 10500
+                                                                 
+Ellen Abel                                                                      
+Job ID: SA_REP                                                                  
+Salary: 11000
+                                                                 
+Jonathon Taylor                                                                 
+Job ID: SA_REP                                                                  
+Salary: 8600
+                                                                  
+Kimberely Grant                                                                 
+Job ID: SA_REP                                                                  
+Salary: 7000
+                                                                  
+Jennifer Whalen                                                                 
+Job ID: AD_ASST                                                                 
+Salary: 4400
+                                                                  
+Michael Hartstein                                                               
+Job ID: MK_MAN                                                                  
+Salary: 13000
+                                                                 
+Pat Fay                                                                         
+Job ID: MK_REP                                                                  
+Salary: 3900
+                                                                  
+Shelley Higgins                                                                 
+Job ID: AC_MGR                                                                  
+Salary: 12000
+                                                                 
+William Gietz                                                                   
+Job ID: AC_ACCOUNT                                                              
+Salary: 8300
+                                                                  
+Sophia Barbosa Souza                                                            
+Job ID: SR_SA_REP                                                               
+Salary: 9500
+                                                                  
+Diego Silva Pinto                                                               
+Job ID: SA_REP                                                                  
+Salary: 7500
+                                                                  
+Sarah Alves Rocha                                                               
+Job ID: SA_REP                                                                  
+Salary: 7300
+                                                                  
+Lucas Almeida Castro                                                            
+Job ID: SA_REP                                                                  
+Salary: 7300
+                                                                  
+Nick Hooper                                                                     
+Job ID: SR_SA_REP                                                               
+Salary: 9600
+                                                                  
+Donna Steiner                                                                   
+Job ID: SR_MK_REP                                                               
+Salary: 8600
+                                                                  
+George Bell                                                                     
+Job ID: SR_ST_CLRK                                                              
+Salary: 3500
+                                                                  
+Lisa TAYLOR                                                                     
+Job ID: MK_REP                                                                  
+Salary: 4000
+                                                                  
+Michael Stocks                                                                  
+Job ID: MK_REP                                                                  
+Salary: 3700
+                                                                  
+Tiffany Heiden                                                                  
+Job ID: ST_CLERK                                                                
+Salary: 2600
+                                                                  
+Chen Li                                                                         
+Job ID: IT_PROG                                                                 
+Salary: 8000
+                                                                  
+Alain Fontaine                                                                  
+Job ID: IT_PROG                                                                 
+Salary: 7800
+                                                                  
+Matthias Reinhard                                                               
+Job ID: AC_ACCOUNT                                                              
+Salary: 8100
+                                                                  
+Katia Hernandez                                                                 
+Job ID: AD_ASST                                                                 
+Salary: 4300
+                                                                  
+Guido Ricci                                                                     
+Job ID: AD_ASST                                                                 
+Salary: 4100
+                                                                  
+Mizuto Saikawa                                                                  
+Job ID: AD_ASST                                                                 
+Salary: 4400
+                                                                  
+Nabil Safwah                                                                    
+Job ID: MK_REP                                                                  
+Salary: 5000
+                                                                  
+Jelena Duric                                                                    
+Job ID: AC_ACCOUNT                                                              
+Salary: 5400
+                                                                  
+Jennifer Loermans                                                               
+Job ID: AC_ACCOUNT                                                              
+Salary: 5200
+                                                                  
+Alice Newton                                                                    
+Job ID: MK_REP                                                                  
+Salary: 4900
+                                                                  
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off

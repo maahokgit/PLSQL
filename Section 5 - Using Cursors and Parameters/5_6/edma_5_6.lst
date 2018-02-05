@@ -1,0 +1,291 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/5_6_1.sql
+SQL> DECLARE
+  2  	     CURSOR cur_depts IS
+  3  		     SELECT department_name, department_id
+  4  		     FROM departments ORDER BY department_id ASC;
+  5  
+  6  	     CURSOR cur_emps(p_dept_id departments.department_id%TYPE) IS
+  7  		     SELECT first_name, last_name, salary
+  8  		     FROM employees
+  9  		     WHERE department_id = p_dept_id
+ 10  		     ORDER BY last_name ASC;
+ 11  
+ 12  	     v_dept_rec cur_depts%ROWTYPE;
+ 13  	     v_emps_rec cur_emps%ROWTYPE;
+ 14  BEGIN
+ 15  	     FOR v_dept_rec IN cur_depts
+ 16  	     LOOP
+ 17  		     DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10)||v_dept_rec.department_id||' '||v_dept_rec.department_name);
+ 18  		     DBMS_OUTPUT.PUT_LINE('-----------------------------');
+ 19  		     FOR v_emps_rec IN cur_emps(v_dept_rec.department_id)
+ 20  		     LOOP
+ 21  			     DBMS_OUTPUT.PUT_LINE(v_emps_rec.first_name||' '||v_emps_rec.last_name||' '||v_emps_rec.salary);
+ 22  		     END LOOP;
+ 23  	     END LOOP;
+ 24  END;
+ 25  /
+
+10 Administration                                                             
+-----------------------------                                                   
+Katia Hernandez 4300                                                            
+Guido Ricci 4100                                                                
+Mizuto Saikawa 4400                                                             
+Jennifer Whalen 4400                                                            
+
+20 Marketing                                                                  
+-----------------------------                                                   
+Pat Fay 3900                                                                    
+Michael Hartstein 13000                                                         
+Alice Newton 4900                                                               
+Nabil Safwah 5000                                                               
+Donna Steiner 8600                                                              
+Michael Stocks 3700                                                             
+Lisa TAYLOR 4000                                                                
+
+50 Shipping                                                                   
+-----------------------------                                                   
+George Bell 3500                                                                
+Curtis Davies 3100                                                              
+Tiffany Heiden 2600                                                             
+Randall Matos 2600                                                              
+Kevin Mourgos 5800                                                              
+Trenna Rajs 3500                                                                
+Peter Vargas 2500                                                               
+
+60 IT                                                                         
+-----------------------------                                                   
+Bruce Ernst 6000                                                                
+Alain Fontaine 7800                                                             
+Alexander Hunold 9000                                                           
+Chen Li 8000                                                                    
+Diana Lorentz 4200                                                              
+
+80 Sales - Europe                                                             
+-----------------------------                                                   
+Ellen Abel 11000                                                                
+Nick Hooper 9600                                                                
+Jonathon Taylor 8600                                                            
+Eleni Zlotkey 10500                                                             
+
+85 Sales - Americas                                                           
+-----------------------------                                                   
+Lucas Almeida Castro 7300                                                       
+Sarah Alves Rocha 7300                                                          
+Sophia Barbosa Souza 9500                                                       
+Diego Silva Pinto 7500                                                          
+
+90 Executive                                                                  
+-----------------------------                                                   
+Lex De Haan 17000                                                               
+Steven King 24000                                                               
+Neena Kochhar 17000                                                             
+
+110 Accounting                                                                
+-----------------------------                                                   
+Jelena Duric 5400                                                               
+William Gietz 8300                                                              
+Shelley Higgins 12000                                                           
+Jennifer Loermans 5200                                                          
+Matthias Reinhard 8100                                                          
+
+190 Contracting                                                               
+-----------------------------                                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/5_6_2.sql
+SQL> DECLARE
+  2  	     CURSOR cur_region IS
+  3  		     SELECT region_name, region_id
+  4  		     FROM regions WHERE region_name LIKE '%America%' ORDER BY region_name ASC;
+  5  
+  6  	     CURSOR cur_country(p_region_id regions.region_id%TYPE) IS
+  7  		     SELECT country_name, area, population
+  8  		     FROM countries
+  9  		     WHERE region_id = p_region_id
+ 10  		     ORDER BY country_name ASC;
+ 11  
+ 12  	     v_region_rec cur_region%ROWTYPE;
+ 13  	     v_country_rec cur_country%ROWTYPE;
+ 14  BEGIN
+ 15  	     FOR v_region_rec IN cur_region
+ 16  	     LOOP
+ 17  		     DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10)||v_region_rec.region_id||' '||v_region_rec.region_name);
+ 18  		     DBMS_OUTPUT.PUT_LINE('-----------------------------');
+ 19  		     FOR v_country_rec IN cur_country(v_region_rec.region_id)
+ 20  		     LOOP
+ 21  			     DBMS_OUTPUT.PUT_LINE(v_country_rec.country_name||' '||v_country_rec.area||' '||v_country_rec.population);
+ 22  		     END LOOP;
+ 23  	     END LOOP;
+ 24  END;
+ 25  /
+
+13 Central America                                                            
+-----------------------------                                                   
+Belize 22966 287730                                                             
+Republic of Costa Rica 51100 4075261                                            
+Republic of El Salvador 21040 6822378                                           
+Republic of Guatemala 108890 12293545                                           
+Republic of Honduras 112090 7326496                                             
+Republic of Nicaragua 129494 5570129                                            
+Republic of Panama 78200 3191319                                                
+United Mexican States 1972550 107449525                                         
+
+21 North America                                                              
+-----------------------------                                                   
+Bermuda 53 65773                                                                
+Canada 9984670 33098932                                                         
+Greenland 2166086 56361                                                         
+Territorial Collectivity of Saint Pierre and Miquelon 242 7026                  
+United States of America 9631420 298444215                                      
+
+5 South America                                                               
+-----------------------------                                                   
+Argentine Republic 2766890 39921833                                             
+Bolivarian Republic of Venezuela 912050 25730435                                
+Co-operative Republic of Guyana 214970 767245                                   
+Department of Guiana 91000 199509                                               
+Falkland Islands 12173 2967                                                     
+Federative Republic of Brazil 8511965 188078227                                 
+Oriental Republic of Uruguay 176220 3431932                                     
+Republic of Bolivia 1098580 8989046                                             
+Republic of Chile 756950 16134219                                               
+Republic of Colombia 1138910 43593035                                           
+Republic of Ecuador 283560 13547510                                             
+Republic of Paraguay 406750 6506464                                             
+Republic of Peru 1285220 28302603                                               
+Republic of Suriname 163270 439117                                              
+South Georgia and the South Sandwich Islands 3903 0                             
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/5_6_3.sql
+SQL> DECLARE
+  2  	     CURSOR cur_region IS
+  3  		     SELECT region_name, region_id
+  4  		     FROM regions WHERE region_name LIKE '%America%' ORDER BY region_name ASC;
+  5  
+  6  	     CURSOR cur_country(p_region_id regions.region_id%TYPE) IS
+  7  		     SELECT country_name, area, population, country_id
+  8  		     FROM countries
+  9  		     WHERE region_id = p_region_id
+ 10  		     ORDER BY country_name ASC;
+ 11  	     CURSOR cur_language(p_country_id countries.country_id%TYPE) IS
+ 12  		     SELECT languages.language_name,spoken_languages.language_id FROM languages
+ 13  		     INNER JOIN spoken_languages ON languages.language_id = spoken_languages.language_id
+ 14  		     WHERE country_id = p_country_id AND official = 'Y';
+ 15  	     v_region_rec cur_region%ROWTYPE;
+ 16  	     v_country_rec cur_country%ROWTYPE;
+ 17  	     v_country_lang cur_language%ROWTYPE;
+ 18  BEGIN
+ 19  	     FOR v_region_rec IN cur_region
+ 20  	     LOOP
+ 21  		     DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10)||v_region_rec.region_id||' '||v_region_rec.region_name);
+ 22  		     DBMS_OUTPUT.PUT_LINE('-----------------------------');
+ 23  		     FOR v_country_rec IN cur_country(v_region_rec.region_id)
+ 24  		     LOOP
+ 25  			     DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10)||v_country_rec.country_name||' '||v_country_rec.area||' '||v_country_rec.population);
+ 26  			     FOR v_country_lang IN cur_language(v_country_rec.country_id)
+ 27  			     LOOP
+ 28  				     DBMS_OUTPUT.PUT_LINE('--- '||v_country_lang.language_name);
+ 29  			     END LOOP;
+ 30  		     END LOOP;
+ 31  	     END LOOP;
+ 32  END;
+ 33  /
+
+13 Central America                                                            
+-----------------------------                                                   
+
+Belize 22966 287730                                                           
+--- English                                                                     
+
+Republic of Costa Rica 51100 4075261                                          
+--- Spanish                                                                     
+
+Republic of El Salvador 21040 6822378                                         
+
+Republic of Guatemala 108890 12293545                                         
+
+Republic of Honduras 112090 7326496                                           
+
+Republic of Nicaragua 129494 5570129                                          
+--- Spanish                                                                     
+
+Republic of Panama 78200 3191319                                              
+--- Spanish                                                                     
+
+United Mexican States 1972550 107449525                                       
+
+21 North America                                                              
+-----------------------------                                                   
+
+Bermuda 53 65773                                                              
+--- English                                                                     
+
+Canada 9984670 33098932                                                       
+--- English                                                                     
+--- French                                                                      
+
+Greenland 2166086 56361                                                       
+
+Territorial Collectivity of Saint Pierre and Miquelon 242 7026                
+--- French                                                                      
+
+United States of America 9631420 298444215                                    
+--- English                                                                     
+
+5 South America                                                               
+-----------------------------                                                   
+
+Argentine Republic 2766890 39921833                                           
+--- Spanish                                                                     
+
+Bolivarian Republic of Venezuela 912050 25730435                              
+--- Spanish                                                                     
+
+Co-operative Republic of Guyana 214970 767245                                 
+
+Department of Guiana 91000 199509                                             
+--- French                                                                      
+
+Falkland Islands 12173 2967                                                   
+--- English                                                                     
+
+Federative Republic of Brazil 8511965 188078227                               
+--- Portuguese                                                                  
+
+Oriental Republic of Uruguay 176220 3431932                                   
+
+Republic of Bolivia 1098580 8989046                                           
+--- Spanish                                                                     
+--- Quechua                                                                     
+--- Aymara                                                                      
+
+Republic of Chile 756950 16134219                                             
+--- Spanish                                                                     
+
+Republic of Colombia 1138910 43593035                                         
+--- Spanish                                                                     
+
+Republic of Ecuador 283560 13547510                                           
+--- Spanish                                                                     
+
+Republic of Paraguay 406750 6506464                                           
+--- Spanish                                                                     
+--- Guavani                                                                     
+
+Republic of Peru 1285220 28302603                                             
+--- Spanish                                                                     
+--- Quechua                                                                     
+
+Republic of Suriname 163270 439117                                            
+--- Dutch                                                                       
+
+South Georgia and the South Sandwich Islands 3903 0                           
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off

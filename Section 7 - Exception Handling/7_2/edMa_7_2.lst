@@ -1,0 +1,649 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/7_2_3.sql
+SQL> -- ANSWER FOR QUESTION 3A
+SQL> DECLARE
+  2  	     v_number NUMBER(6, 2) := 100;
+  3  	     v_region_id regions.region_id%TYPE;
+  4  	     v_region_name regions.region_name%TYPE;
+  5  BEGIN
+  6  	     SELECT region_id, region_name INTO v_region_id, v_region_name
+  7  	     FROM regions
+  8  	     WHERE region_id = 1;
+  9  
+ 10  	     DBMS_OUTPUT.PUT_LINE('Region: ' || v_region_id || ' is: ' || v_region_name);
+ 11  	     v_number := v_number / 0;
+ 12  END;
+ 13  /
+DECLARE
+*
+ERROR at line 1:
+ORA-01403: no data found 
+ORA-06512: at line 6 
+
+
+SQL> 
+SQL> @scripts/7_2_3.sql
+SQL> -- ANSWER FOR QUESTION 3A
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_number NUMBER(6, 2) := 100;
+SQL> 	     v_region_id regions.region_id%TYPE;
+SQL> 	     v_region_name regions.region_name%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT region_id, region_name INTO v_region_id, v_region_name
+SQL> 	     FROM regions
+SQL> 	     WHERE region_id = 1;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Region: ' || v_region_id || ' is: ' || v_region_name);
+SQL> 	     v_number := v_number / 0;
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- ANSWER FOR QUESTION 3B
+SQL> DECLARE
+  2  	     v_number NUMBER(6, 2) := 100;
+  3  	     v_region_id regions.region_id%TYPE;
+  4  	     v_region_name regions.region_name%TYPE;
+  5  BEGIN
+  6  	     SELECT region_id, region_name INTO v_region_id, v_region_name
+  7  	     FROM regions
+  8  	     WHERE region_id = 1;
+  9  
+ 10  	     DBMS_OUTPUT.PUT_LINE('Region: ' || v_region_id || ' is: ' || v_region_name);
+ 11  	     v_number := v_number / 0;
+ 12  EXCEPTION
+ 13  	     WHEN NO_DATA_FOUND THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE('No Data found for this SELECT query...try again, mate');
+ 15  END;
+ 16  /
+No Data found for this SELECT query...try again, mate                           
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_2_3.sql
+SQL> -- ANSWER FOR QUESTION 3A
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_number NUMBER(6, 2) := 100;
+SQL> 	     v_region_id regions.region_id%TYPE;
+SQL> 	     v_region_name regions.region_name%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT region_id, region_name INTO v_region_id, v_region_name
+SQL> 	     FROM regions
+SQL> 	     WHERE region_id = 1;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Region: ' || v_region_id || ' is: ' || v_region_name);
+SQL> 	     v_number := v_number / 0;
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- ANSWER FOR QUESTION 3B
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_number NUMBER(6, 2) := 100;
+SQL> 	     v_region_id regions.region_id%TYPE;
+SQL> 	     v_region_name regions.region_name%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT region_id, region_name INTO v_region_id, v_region_name
+SQL> 	     FROM regions
+SQL> 	     WHERE region_id = 1;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Region: ' || v_region_id || ' is: ' || v_region_name);
+SQL> 	     v_number := v_number / 0;
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('No Data found for this SELECT query...try again, mate');
+SQL> END;
+SQL> /
+SQL> */
+SQL> --ANSWER FOR QUESTION 3C
+SQL> DECLARE
+  2  	     v_number NUMBER(6, 2) := 100;
+  3  	     v_region_id regions.region_id%TYPE;
+  4  	     v_region_name regions.region_name%TYPE;
+  5  BEGIN
+  6  	     SELECT region_id, region_name INTO v_region_id, v_region_name
+  7  	     FROM regions
+  8  	     WHERE region_id = 29;
+  9  
+ 10  	     DBMS_OUTPUT.PUT_LINE('Region: ' || v_region_id || ' is: ' || v_region_name);
+ 11  	     v_number := v_number / 0;
+ 12  EXCEPTION
+ 13  	     WHEN NO_DATA_FOUND THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE('No Data found for this SELECT query...try again, mate');
+ 15  END;
+ 16  /
+Region: 29 is: Caribbean                                                        
+DECLARE
+*
+ERROR at line 1:
+ORA-01476: divisor is equal to zero 
+ORA-06512: at line 11 
+
+
+SQL> @scripts/7_2_3.sql
+SQL> -- ANSWER FOR QUESTION 3A
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_number NUMBER(6, 2) := 100;
+SQL> 	     v_region_id regions.region_id%TYPE;
+SQL> 	     v_region_name regions.region_name%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT region_id, region_name INTO v_region_id, v_region_name
+SQL> 	     FROM regions
+SQL> 	     WHERE region_id = 1;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Region: ' || v_region_id || ' is: ' || v_region_name);
+SQL> 	     v_number := v_number / 0;
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- ANSWER FOR QUESTION 3B
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_number NUMBER(6, 2) := 100;
+SQL> 	     v_region_id regions.region_id%TYPE;
+SQL> 	     v_region_name regions.region_name%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT region_id, region_name INTO v_region_id, v_region_name
+SQL> 	     FROM regions
+SQL> 	     WHERE region_id = 1;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Region: ' || v_region_id || ' is: ' || v_region_name);
+SQL> 	     v_number := v_number / 0;
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('No Data found for this SELECT query...try again, mate');
+SQL> END;
+SQL> /
+SQL> */
+SQL> --ANSWER FOR QUESTION 3C
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_number NUMBER(6, 2) := 100;
+SQL> 	     v_region_id regions.region_id%TYPE;
+SQL> 	     v_region_name regions.region_name%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT region_id, region_name INTO v_region_id, v_region_name
+SQL> 	     FROM regions
+SQL> 	     WHERE region_id = 29;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Region: ' || v_region_id || ' is: ' || v_region_name);
+SQL> 	     v_number := v_number / 0;
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('No Data found for this SELECT query...try again, mate');
+SQL> END;
+SQL> /
+SQL> */
+SQL> --ANSWER FOR QUESTION 3D
+SQL> DECLARE
+  2  	     v_number NUMBER(6, 2) := 100;
+  3  	     v_region_id regions.region_id%TYPE;
+  4  	     v_region_name regions.region_name%TYPE;
+  5  BEGIN
+  6  	     SELECT region_id, region_name INTO v_region_id, v_region_name
+  7  	     FROM regions
+  8  	     WHERE region_id = 29;
+  9  
+ 10  	     DBMS_OUTPUT.PUT_LINE('Region: ' || v_region_id || ' is: ' || v_region_name);
+ 11  	     v_number := v_number / 0;
+ 12  EXCEPTION
+ 13  	     WHEN NO_DATA_FOUND THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE('No Data found for this SELECT query...try again, mate');
+ 15  	     WHEN ZERO_DIVIDE THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE('Cannot divide by zero... even if its zero');
+ 17  END;
+ 18  /
+Region: 29 is: Caribbean                                                        
+Cannot divide by zero... even if its zero                                       
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_2_4.sql
+SQL> -- Script for Question 4
+SQL> DECLARE
+  2  	     CURSOR regions_curs IS
+  3  		     SELECT * FROM regions
+  4  		     WHERE region_id < 20
+  5  		     ORDER BY region_id;
+  6  	     regions_rec regions_curs%ROWTYPE;
+  7  	     v_count NUMBER(6);
+  8  BEGIN
+  9  	     LOOP
+ 10  	     FETCH regions_curs INTO regions_rec;
+ 11  		     EXIT WHEN regions_curs%NOTFOUND;
+ 12  
+ 13  	     DBMS_OUTPUT.PUT_LINE('Region: ' || regions_rec.region_id
+ 14  	     || ' Name: ' || regions_rec.region_name);
+ 15  
+ 16  	     END LOOP;
+ 17  
+ 18  	     CLOSE regions_curs;
+ 19  
+ 20  	     SELECT COUNT(*) INTO v_count
+ 21  	     FROM regions
+ 22  	     WHERE region_id = 1;
+ 23  	     DBMS_OUTPUT.PUT_LINE('The number of regions is: ' || v_count);
+ 24  END;
+ 25  /
+DECLARE
+*
+ERROR at line 1:
+ORA-01001: invalid cursor 
+ORA-06512: at line 10 
+
+
+SQL> @scripts/7_2_4.sql
+SQL> -- Script for Question 4
+SQL> /*
+SQL> DECLARE
+SQL> 	     CURSOR regions_curs IS
+SQL> 		     SELECT * FROM regions
+SQL> 		     WHERE region_id < 20
+SQL> 		     ORDER BY region_id;
+SQL> 	     regions_rec regions_curs%ROWTYPE;
+SQL> 	     v_count NUMBER(6);
+SQL> BEGIN
+SQL> 	     LOOP
+SQL> 	     FETCH regions_curs INTO regions_rec;
+SQL> 		     EXIT WHEN regions_curs%NOTFOUND;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Region: ' || regions_rec.region_id
+SQL> 	     || ' Name: ' || regions_rec.region_name);
+SQL> 
+SQL> 	     END LOOP;
+SQL> 
+SQL> 	     CLOSE regions_curs;
+SQL> 
+SQL> 	     SELECT COUNT(*) INTO v_count
+SQL> 	     FROM regions
+SQL> 	     WHERE region_id = 1;
+SQL> 	     DBMS_OUTPUT.PUT_LINE('The number of regions is: ' || v_count);
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- ANSWER FOR QUESTION 4B
+SQL> DECLARE
+  2  	     CURSOR regions_curs IS
+  3  		     SELECT * FROM regions
+  4  		     WHERE region_id < 20
+  5  		     ORDER BY region_id;
+  6  	     regions_rec regions_curs%ROWTYPE;
+  7  	     v_count NUMBER(6);
+  8  BEGIN
+  9  	     LOOP
+ 10  	     FETCH regions_curs INTO regions_rec;
+ 11  		     EXIT WHEN regions_curs%NOTFOUND;
+ 12  
+ 13  	     DBMS_OUTPUT.PUT_LINE('Region: ' || regions_rec.region_id
+ 14  	     || ' Name: ' || regions_rec.region_name);
+ 15  
+ 16  	     END LOOP;
+ 17  
+ 18  	     CLOSE regions_curs;
+ 19  
+ 20  	     SELECT COUNT(*) INTO v_count
+ 21  	     FROM regions
+ 22  	     WHERE region_id = 1;
+ 23  	     DBMS_OUTPUT.PUT_LINE('The number of regions is: ' || v_count);
+ 24  EXCEPTION
+ 25  	     WHEN INVALID_CURSOR THEN
+ 26  		     DBMS_OUTPUT.PUT_LINE('Invalid Cursor... Did you do it right?');
+ 27  END;
+ 28  /
+Invalid Cursor... Did you do it right?                                          
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_2_4.sql
+SQL> -- Script for Question 4
+SQL> /*
+SQL> DECLARE
+SQL> 	     CURSOR regions_curs IS
+SQL> 		     SELECT * FROM regions
+SQL> 		     WHERE region_id < 20
+SQL> 		     ORDER BY region_id;
+SQL> 	     regions_rec regions_curs%ROWTYPE;
+SQL> 	     v_count NUMBER(6);
+SQL> BEGIN
+SQL> 	     LOOP
+SQL> 	     FETCH regions_curs INTO regions_rec;
+SQL> 		     EXIT WHEN regions_curs%NOTFOUND;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Region: ' || regions_rec.region_id
+SQL> 	     || ' Name: ' || regions_rec.region_name);
+SQL> 
+SQL> 	     END LOOP;
+SQL> 
+SQL> 	     CLOSE regions_curs;
+SQL> 
+SQL> 	     SELECT COUNT(*) INTO v_count
+SQL> 	     FROM regions
+SQL> 	     WHERE region_id = 1;
+SQL> 	     DBMS_OUTPUT.PUT_LINE('The number of regions is: ' || v_count);
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- ANSWER FOR QUESTION 4B
+SQL> /*
+SQL> DECLARE
+SQL> 	     CURSOR regions_curs IS
+SQL> 		     SELECT * FROM regions
+SQL> 		     WHERE region_id < 20
+SQL> 		     ORDER BY region_id;
+SQL> 	     regions_rec regions_curs%ROWTYPE;
+SQL> 	     v_count NUMBER(6);
+SQL> BEGIN
+SQL> 	     LOOP
+SQL> 	     FETCH regions_curs INTO regions_rec;
+SQL> 		     EXIT WHEN regions_curs%NOTFOUND;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Region: ' || regions_rec.region_id
+SQL> 	     || ' Name: ' || regions_rec.region_name);
+SQL> 
+SQL> 	     END LOOP;
+SQL> 
+SQL> 	     CLOSE regions_curs;
+SQL> 
+SQL> 	     SELECT COUNT(*) INTO v_count
+SQL> 	     FROM regions
+SQL> 	     WHERE region_id = 1;
+SQL> 	     DBMS_OUTPUT.PUT_LINE('The number of regions is: ' || v_count);
+SQL> EXCEPTION
+SQL> 	     WHEN INVALID_CURSOR THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Invalid Cursor... Did you do it right?');
+SQL> END;
+SQL> */
+SQL> -- ANSWER FOR QUESTION 4C
+SQL> DECLARE
+  2  	     CURSOR regions_curs IS
+  3  		     SELECT * FROM regions
+  4  		     WHERE region_id < 20
+  5  		     ORDER BY region_id;
+  6  	     regions_rec regions_curs%ROWTYPE;
+  7  	     v_count NUMBER(6);
+  8  BEGIN
+  9  	     OPEN regions_curs;
+ 10  	     LOOP
+ 11  	     FETCH regions_curs INTO regions_rec;
+ 12  		     EXIT WHEN regions_curs%NOTFOUND;
+ 13  
+ 14  	     DBMS_OUTPUT.PUT_LINE('Region: ' || regions_rec.region_id
+ 15  	     || ' Name: ' || regions_rec.region_name);
+ 16  
+ 17  	     END LOOP;
+ 18  
+ 19  	     CLOSE regions_curs;
+ 20  
+ 21  	     SELECT COUNT(*) INTO v_count
+ 22  	     FROM regions
+ 23  	     WHERE region_id = 1;
+ 24  	     DBMS_OUTPUT.PUT_LINE('The number of regions is: ' || v_count);
+ 25  EXCEPTION
+ 26  	     WHEN INVALID_CURSOR THEN
+ 27  		     DBMS_OUTPUT.PUT_LINE('Invalid Cursor... Did you do it right?');
+ 28  END;
+ 29  /
+Region: 5 Name: South America                                                   
+Region: 9 Name: Oceania                                                         
+Region: 11 Name: Western Africa                                                 
+Region: 13 Name: Central America                                                
+Region: 14 Name: Eastern Africa                                                 
+Region: 15 Name: Northern Africa                                                
+Region: 17 Name: Middle Africa                                                  
+Region: 18 Name: Southern Africa                                                
+The number of regions is: 0                                                     
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_2_5.sql
+SQL> -- Script for Question 5B of Section 7_2
+SQL> DECLARE
+  2  	     v_language_id languages.language_id%TYPE;
+  3  	     v_language_name languages.language_name%TYPE;
+  4  BEGIN
+  5  	     SELECT language_id, language_name INTO v_language_id, v_language_name
+  6  	     FROM languages
+  7  	     WHERE LOWER(language_name) LIKE 'al%'; -- for example 'ab%'
+  8  
+  9  	     INSERT INTO languages(language_id, language_name)
+ 10  	     VALUES(80, null);
+ 11  EXCEPTION
+ 12  	     WHEN NO_DATA_FOUND THEN
+ 13  		     DBMS_OUTPUT.PUT_LINE('NO DATA FOUND Exception Triggered!');
+ 14  	     WHEN TOO_MANY_ROWS THEN
+ 15  		     DBMS_OUTPUT.PUT_LINE('TOO MANY ROWS Exception Triggered!');
+ 16  	     WHEN DUP_VAL_ON_INDEX THEN
+ 17  		     DBMS_OUTPUT.PUT_LINE('DUP VAL ON INDEX Exception Triggered!');
+ 18  END;
+ 19  /
+DECLARE
+*
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("DATADEV"."LANGUAGES"."LANGUAGE_NAME") 
+ORA-06512: at line 9 
+
+
+SQL> @scripts/7_2_5.sql
+SQL> -- Script for Question 5B of Section 7_2
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_language_id languages.language_id%TYPE;
+SQL> 	     v_language_name languages.language_name%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT language_id, language_name INTO v_language_id, v_language_name
+SQL> 	     FROM languages
+SQL> 	     WHERE LOWER(language_name) LIKE 'al%'; -- for example 'ab%'
+SQL> 
+SQL> 	     INSERT INTO languages(language_id, language_name)
+SQL> 	     VALUES(80, null);
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('NO DATA FOUND Exception Triggered!');
+SQL> 	     WHEN TOO_MANY_ROWS THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('TOO MANY ROWS Exception Triggered!');
+SQL> 	     WHEN DUP_VAL_ON_INDEX THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('DUP VAL ON INDEX Exception Triggered!');
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- Script for Question 5C
+SQL> DECLARE
+  2  	     e_insert_excep EXCEPTION;
+  3  	     PRAGMA EXCEPTION_INIT(e_insert_excep, -1400);
+  4  	     v_language_id languages.language_id%TYPE;
+  5  	     v_language_name languages.language_name%TYPE;
+  6  BEGIN
+  7  	     SELECT language_id, language_name INTO v_language_id, v_language_name
+  8  	     FROM languages
+  9  	     WHERE LOWER(language_name) LIKE 'al%'; -- for example 'ab%'
+ 10  
+ 11  	     INSERT INTO languages(language_id, language_name)
+ 12  	     VALUES(80, null);
+ 13  EXCEPTION
+ 14  	     WHEN NO_DATA_FOUND THEN
+ 15  		     DBMS_OUTPUT.PUT_LINE('NO DATA FOUND Exception Triggered!');
+ 16  	     WHEN TOO_MANY_ROWS THEN
+ 17  		     DBMS_OUTPUT.PUT_LINE('TOO MANY ROWS Exception Triggered!');
+ 18  	     WHEN DUP_VAL_ON_INDEX THEN
+ 19  		     DBMS_OUTPUT.PUT_LINE('DUP VAL ON INDEX Exception Triggered!');
+ 20  	     WHEN e_insert_excep THEN
+ 21  		     DBMS_OUTPUT.PUT_LINE('Insert Failed...');
+ 22  END;
+ 23  /
+Insert Failed...                                                                
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/7_2_5.sql
+SQL> -- Script for Question 5B of Section 7_2
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_language_id languages.language_id%TYPE;
+SQL> 	     v_language_name languages.language_name%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT language_id, language_name INTO v_language_id, v_language_name
+SQL> 	     FROM languages
+SQL> 	     WHERE LOWER(language_name) LIKE 'al%'; -- for example 'ab%'
+SQL> 
+SQL> 	     INSERT INTO languages(language_id, language_name)
+SQL> 	     VALUES(80, null);
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('NO DATA FOUND Exception Triggered!');
+SQL> 	     WHEN TOO_MANY_ROWS THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('TOO MANY ROWS Exception Triggered!');
+SQL> 	     WHEN DUP_VAL_ON_INDEX THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('DUP VAL ON INDEX Exception Triggered!');
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- Script for Question 5C
+SQL> /*
+SQL> DECLARE
+SQL> 	     e_insert_excep EXCEPTION;
+SQL> 	     PRAGMA EXCEPTION_INIT(e_insert_excep, -1400);
+SQL> 	     v_language_id languages.language_id%TYPE;
+SQL> 	     v_language_name languages.language_name%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT language_id, language_name INTO v_language_id, v_language_name
+SQL> 	     FROM languages
+SQL> 	     WHERE LOWER(language_name) LIKE 'al%'; -- for example 'ab%'
+SQL> 
+SQL> 	     INSERT INTO languages(language_id, language_name)
+SQL> 	     VALUES(80, null);
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('NO DATA FOUND Exception Triggered!');
+SQL> 	     WHEN TOO_MANY_ROWS THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('TOO MANY ROWS Exception Triggered!');
+SQL> 	     WHEN DUP_VAL_ON_INDEX THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('DUP VAL ON INDEX Exception Triggered!');
+SQL> 	     WHEN e_insert_excep THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Insert Failed...');
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- Scripts for Extension
+SQL> 
+SQL> DROP TABLE error_log;
+
+Table dropped.
+
+SQL> 
+SQL> CREATE TABLE error_log
+  2  (
+  3  	     who VARCHAR2(30),
+  4  	     when DATE,
+  5  	     error_code NUMBER(6),
+  6  	     error_message VARCHAR2(255)
+  7  );
+
+Table created.
+
+SQL> /
+CREATE TABLE error_log
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> @scripts/7_2_5.sql
+SQL> -- Script for Question 5B of Section 7_2
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_language_id languages.language_id%TYPE;
+SQL> 	     v_language_name languages.language_name%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT language_id, language_name INTO v_language_id, v_language_name
+SQL> 	     FROM languages
+SQL> 	     WHERE LOWER(language_name) LIKE 'al%'; -- for example 'ab%'
+SQL> 
+SQL> 	     INSERT INTO languages(language_id, language_name)
+SQL> 	     VALUES(80, null);
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('NO DATA FOUND Exception Triggered!');
+SQL> 	     WHEN TOO_MANY_ROWS THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('TOO MANY ROWS Exception Triggered!');
+SQL> 	     WHEN DUP_VAL_ON_INDEX THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('DUP VAL ON INDEX Exception Triggered!');
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- Script for Question 5C
+SQL> /*
+SQL> DECLARE
+SQL> 	     e_insert_excep EXCEPTION;
+SQL> 	     PRAGMA EXCEPTION_INIT(e_insert_excep, -1400);
+SQL> 	     v_language_id languages.language_id%TYPE;
+SQL> 	     v_language_name languages.language_name%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT language_id, language_name INTO v_language_id, v_language_name
+SQL> 	     FROM languages
+SQL> 	     WHERE LOWER(language_name) LIKE 'al%'; -- for example 'ab%'
+SQL> 
+SQL> 	     INSERT INTO languages(language_id, language_name)
+SQL> 	     VALUES(80, null);
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('NO DATA FOUND Exception Triggered!');
+SQL> 	     WHEN TOO_MANY_ROWS THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('TOO MANY ROWS Exception Triggered!');
+SQL> 	     WHEN DUP_VAL_ON_INDEX THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('DUP VAL ON INDEX Exception Triggered!');
+SQL> 	     WHEN e_insert_excep THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Insert Failed...');
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- Scripts for Extension
+SQL> /*
+SQL> DROP TABLE error_log;
+SQL> 
+SQL> CREATE TABLE error_log
+SQL> (
+SQL> 	     who VARCHAR2(30),
+SQL> 	     when DATE,
+SQL> 	     error_code NUMBER(6),
+SQL> 	     error_message VARCHAR2(255)
+SQL> );
+SQL> */
+SQL> DECLARE
+  2  	     v_error_code NUMBER;
+  3  	     v_error_message VARCHAR2(255);
+  4  	     v_language_id languages.language_id%TYPE;
+  5  	     v_language_name languages.language_name%TYPE;
+  6  BEGIN
+  7  	     SELECT language_id, language_name INTO v_language_id, v_language_name
+  8  	     FROM languages
+  9  	     WHERE LOWER(language_name) LIKE 'al%'; -- for example 'ab%'
+ 10  
+ 11  	     INSERT INTO languages(language_id, language_name)
+ 12  	     VALUES(80, null);
+ 13  EXCEPTION
+ 14  	     WHEN OTHERS THEN
+ 15  		     ROLLBACK;
+ 16  
+ 17  		     v_error_code := SQLCODE;
+ 18  		     v_error_message := SQLERRM;
+ 19  		     INSERT INTO error_log(who, when,error_code, error_message)
+ 20  			     VALUES(USER, SYSDATE, v_error_code, v_error_message);
+ 21  END;
+ 22  /
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT * FROM error_log;
+
+WHO                            WHEN      ERROR_CODE                             
+------------------------------ --------- ----------                             
+ERROR_MESSAGE                                                                   
+--------------------------------------------------------------------------------
+DATADEV                        08-NOV-17      -1400                             
+ORA-01400: cannot insert NULL into ("DATADEV"."LANGUAGES"."LANGUAGE_NAME")      
+                                                                                
+
+SQL> spool off

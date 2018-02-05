@@ -1,0 +1,73 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/6_1_1.sql
+SQL> -- ANSWER FOR THE ONLY QUESTION on SECTOIN 6_1
+SQL> DECLARE
+  2  	     v_dept_id departments.department_id%TYPE;
+  3  	     v_dept_name departments.department_name%TYPE;
+  4  	     v_mgr_id departments.manager_id%TYPE;
+  5  	     v_loc_id departments.location_id%TYPE;
+  6  BEGIN
+  7  	     SELECT department_id, department_name, manager_id, location_id
+  8  	     INTO v_dept_id, v_dept_name, v_mgr_id, v_loc_id
+  9  	     FROM departments
+ 10  	     WHERE department_id = 80;
+ 11  	     DBMS_OUTPUT.PUT_LINE(v_dept_id || ' ' || v_dept_name
+ 12  	     || ' ' || v_mgr_id || ' ' || v_loc_id);
+ 13  EXCEPTION
+ 14  	     WHEN NO_DATA_FOUND THEN
+ 15  	     DBMS_OUTPUT.PUT_LINE('This department does not exist');
+ 16  END;
+ 17  /
+80 Sales - Europe 149 2500                                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/6_1_1.sql
+SQL> -- ANSWER FOR THE ONLY QUESTION on SECTOIN 6_1
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_dept_id departments.department_id%TYPE;
+SQL> 	     v_dept_name departments.department_name%TYPE;
+SQL> 	     v_mgr_id departments.manager_id%TYPE;
+SQL> 	     v_loc_id departments.location_id%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT department_id, department_name, manager_id, location_id
+SQL> 	     INTO v_dept_id, v_dept_name, v_mgr_id, v_loc_id
+SQL> 	     FROM departments
+SQL> 	     WHERE department_id = 80;
+SQL> 	     DBMS_OUTPUT.PUT_LINE(v_dept_id || ' ' || v_dept_name
+SQL> 	     || ' ' || v_mgr_id || ' ' || v_loc_id);
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 	     DBMS_OUTPUT.PUT_LINE('This department does not exist');
+SQL> END;
+SQL> /
+SQL> */
+SQL> DECLARE
+  2  	     TYPE dept_rec IS RECORD
+  3  	     (
+  4  	     dept_id departments.department_id%TYPE,
+  5  	     dept_name departments.department_name%TYPE,
+  6  	     mgr_id departments.manager_id%TYPE,
+  7  	     loc_id departments.location_id%TYPE
+  8  	     );
+  9  
+ 10  	     v_dept_rec dept_rec;
+ 11  BEGIN
+ 12  	     SELECT d.department_id, d.department_name, d.manager_id, d.location_id
+ 13  	     INTO v_dept_rec
+ 14  	     FROM departments d
+ 15  	     WHERE department_id = 80;
+ 16  	     DBMS_OUTPUT.PUT_LINE(v_dept_rec.dept_id || ' ' || v_dept_rec.dept_name
+ 17  	     || ' ' || v_dept_rec.mgr_id || ' ' || v_dept_rec.loc_id);
+ 18  EXCEPTION
+ 19  	     WHEN NO_DATA_FOUND THEN
+ 20  	     DBMS_OUTPUT.PUT_LINE('This department does not exist');
+ 21  END;
+ 22  /
+80 Sales - Europe 149 2500                                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off

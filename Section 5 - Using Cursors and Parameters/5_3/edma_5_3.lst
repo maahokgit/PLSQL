@@ -1,0 +1,163 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/5_3_2.sql
+SQL> -- ANSWER FOR Question 2 on Section 5_3
+SQL> DECLARE
+  2  	     CURSOR countries_cur IS
+  3  		     SELECT country_name, national_holiday_name, national_holiday_date
+  4  		     FROM countries
+  5  		     WHERE region_id = 5;
+  6  	     v_countries_rec countries_cur%ROWTYPE;
+  7  BEGIN
+  8  	     FOR v_countries_rec IN countries_cur
+  9  		     LOOP
+ 10  		     EXIT WHEN countries_cur%NOTFOUND;
+ 11  			     DBMS_OUTPUT.PUT_LINE ('Country: '
+ 12  						     || v_countries_rec.country_name
+ 13  						     || ' National holiday: '
+ 14  						     || v_countries_rec.national_holiday_name
+ 15  						     || ', held on: '
+ 16  						     || v_countries_rec.national_holiday_date);
+ 17  	     END LOOP;
+ 18  END;
+ 19  /
+Country: Republic of Bolivia National holiday: Independence Day, held on: 6-Aug 
+Country: Federative Republic of Brazil National holiday: Independence Day, held 
+on: 7-Sep                                                                       
+Country: South Georgia and the South Sandwich Islands National holiday: , held  
+on:                                                                             
+Country: Falkland Islands National holiday: Liberation Day, held on: 14-Jun     
+Country: Co-operative Republic of Guyana National holiday: Republic Day, held   
+on: 23-Feb                                                                      
+Country: Republic of Peru National holiday: Independence Day, held on: 28-Jul   
+Country: Republic of Paraguay National holiday: Independence Day, held on:      
+15-May                                                                          
+Country: Argentine Republic National holiday: Revolution Day, held on: 25-May   
+Country: Republic of Ecuador National holiday: Independence Day, held on: 10-Aug
+Country: Oriental Republic of Uruguay National holiday: Independence Day, held  
+on: 25-Aug                                                                      
+Country: Bolivarian Republic of Venezuela National holiday: Independence Day,   
+held on: 5-Jul                                                                  
+Country: Republic of Chile National holiday: Independence Day, held on: 18-Sep  
+Country: Republic of Colombia National holiday: Independence Day, held on:      
+20-Jul                                                                          
+Country: Republic of Suriname National holiday: Independence Day, held on:      
+25-Nov                                                                          
+Country: Department of Guiana National holiday: Bastille Day, held on: 14-Jul   
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/5_3_3.sql
+SQL> -- ANSWER FOR Question 3 on Section 5_3
+SQL> BEGIN
+  2  	     FOR v_countries_rec IN (SELECT country_name,
+  3  					     national_holiday_name,
+  4  					     national_holiday_date
+  5  				     FROM countries WHERE region_id = 5)
+  6  		     LOOP
+  7  		     DBMS_OUTPUT.PUT_LINE ('Country: '
+  8  					     || v_countries_rec.country_name
+  9  					     || ' National holiday: '
+ 10  					     || v_countries_rec.national_holiday_name
+ 11  					     || ', held on: '
+ 12  					     || v_countries_rec.national_holiday_date);
+ 13  	     END LOOP;
+ 14  END;
+ 15  /
+Country: Republic of Bolivia National holiday: Independence Day, held on: 6-Aug 
+Country: Federative Republic of Brazil National holiday: Independence Day, held 
+on: 7-Sep                                                                       
+Country: South Georgia and the South Sandwich Islands National holiday: , held  
+on:                                                                             
+Country: Falkland Islands National holiday: Liberation Day, held on: 14-Jun     
+Country: Co-operative Republic of Guyana National holiday: Republic Day, held   
+on: 23-Feb                                                                      
+Country: Republic of Peru National holiday: Independence Day, held on: 28-Jul   
+Country: Republic of Paraguay National holiday: Independence Day, held on:      
+15-May                                                                          
+Country: Argentine Republic National holiday: Revolution Day, held on: 25-May   
+Country: Republic of Ecuador National holiday: Independence Day, held on: 10-Aug
+Country: Oriental Republic of Uruguay National holiday: Independence Day, held  
+on: 25-Aug                                                                      
+Country: Bolivarian Republic of Venezuela National holiday: Independence Day,   
+held on: 5-Jul                                                                  
+Country: Republic of Chile National holiday: Independence Day, held on: 18-Sep  
+Country: Republic of Colombia National holiday: Independence Day, held on:      
+20-Jul                                                                          
+Country: Republic of Suriname National holiday: Independence Day, held on:      
+25-Nov                                                                          
+Country: Department of Guiana National holiday: Bastille Day, held on: 14-Jul   
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/5_3_4.sql
+SQL> -- ANSWER FOR QUESTION 4 in SECTION 5_3
+SQL> BEGIN
+  2  	     FOR v_country_elevation IN (
+  3  				     SELECT country_name, highest_elevation, climate
+  4  				     FROM countries WHERE highest_elevation > 8000)
+  5  	     LOOP
+  6  		     DBMS_OUTPUT.PUT_LINE('Country: ' || v_country_elevation.country_name ||chr(13)||chr(10)||
+  7  					     'Highest Elevation: '|| v_country_elevation.highest_elevation ||chr(13)||chr(10)||
+  8  					     'Climate: ' || v_country_elevation.climate);
+  9  	     END LOOP;
+ 10  END;
+ 11  /
+Country: Kingdom of Nepal
+Highest Elevation: 8850
+Climate: varies from cool   
+summers and severe winters in north to subtropical summers and mild winters in  
+south                                                                           
+Country: Islamic Republic of Pakistan
+Highest Elevation: 8611
+Climate: mostly 
+hot, dry desert; temperate in northwest; arctic in north                        
+Country: Republic of India
+Highest Elevation: 8598
+Climate: varies from       
+tropical monsoon in south to temperate in north                                 
+Country: Peoples Republic of China
+Highest Elevation: 8850
+Climate: extremely 
+diverse; tropical in south to subarctic in north                                
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/5_3_5.sql
+SQL> -- ANSWER FOR QUESTION 5 in SECTION 5_3
+SQL> DECLARE
+  2  	     CURSOR cur_langcount IS
+  3  			     SELECT countries.country_name, idCount.langID FROM countries
+  4  			     INNER JOIN
+  5  				     (
+  6  				     SELECT * FROM
+  7  					     (
+  8  					     SELECT COUNT(language_id) langID, country_id
+  9  					     FROM spoken_languages GROUP BY country_id
+ 10  					     ) WHERE langID > 6
+ 11  				     ) idCount
+ 12  			     ON countries.country_ID = idCount.country_id;
+ 13  	     v_total_language NUMBER;
+ 14  BEGIN
+ 15  	     FOR v_country_lang IN cur_langcount
+ 16  	     LOOP
+ 17  		     v_total_language := cur_langcount%ROWCOUNT;
+ 18  		     DBMS_OUTPUT.PUT_LINE(v_country_lang.country_name ||' have '|| v_country_lang.langID ||' languages');
+ 19  	     END LOOP;
+ 20  		     DBMS_OUTPUT.PUT_LINE('Total Country: '|| v_total_language);
+ 21  END;
+ 22  /
+Republic of Malawi have 7 languages                                             
+Malaysia have 8 languages                                                       
+Republic of South Africa have 7 languages                                       
+Kingdom of Nepal have 8 languages                                               
+Republic of Croatia have 7 languages                                            
+Islamic Republic of Iran have 7 languages                                       
+Federal Democratic Republic of Ethiopia have 7 languages                        
+Republic of Singapore have 7 languages                                          
+Peoples Republic of China have 7 languages                                      
+Total Country: 9                                                                
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off
