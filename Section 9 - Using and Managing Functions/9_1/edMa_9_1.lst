@@ -1,0 +1,1724 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/9_1_2.sql
+SQL> -- 2
+SQL> CREATE OR REPLACE FUNCTION full_name
+  2  	     (p_last_name VARCHAR2,
+  3  	     p_first_name VARCHAR2)
+  4  	     RETURN VARCHAR2
+  5  	     IS
+  6  	     v_full_name VARCHAR2(50) := NULL;
+  7  BEGIN
+  8  	     v_full_name := p_last_name||', '||p_first_name;
+  9  	     RETURN v_full_name;
+ 10  END full_name;
+ 11  /
+
+Function created.
+
+SQL> @scripts/9_1_2.sql
+SQL> /* -- 2
+SQL> CREATE OR REPLACE FUNCTION full_name
+SQL> 	     (p_last_name VARCHAR2,
+SQL> 	     p_first_name VARCHAR2)
+SQL> 	     RETURN VARCHAR2
+SQL> 	     IS
+SQL> 	     v_full_name VARCHAR2(50) := NULL;
+SQL> BEGIN
+SQL> 	     v_full_name := p_last_name||', '||p_first_name;
+SQL> 	     RETURN v_full_name;
+SQL> END full_name;
+SQL> / */
+SQL> -- 2A
+SQL> DECLARE
+  2  	     v_last_name VARCHAR2(50) := 'Ma';
+  3  	     v_first_name VARCHAR2(50) := 'Edward';
+  4  	     v_full_name VARCHAR(50) := NULL;
+  5  BEGIN
+  6  	     v_full_name := full_name(v_last_name,v_first_name);
+  7  END;
+  8  /
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/9_1_2.sql
+SQL> /* -- 2
+SQL> CREATE OR REPLACE FUNCTION full_name
+SQL> 	     (p_last_name VARCHAR2,
+SQL> 	     p_first_name VARCHAR2)
+SQL> 	     RETURN VARCHAR2
+SQL> 	     IS
+SQL> 	     v_full_name VARCHAR2(50) := NULL;
+SQL> BEGIN
+SQL> 	     v_full_name := p_last_name||', '||p_first_name;
+SQL> 	     RETURN v_full_name;
+SQL> END full_name;
+SQL> /
+SQL> -- 2A
+SQL> DECLARE
+SQL> 	     v_last_name VARCHAR2(50) := 'Ma';
+SQL> 	     v_first_name VARCHAR2(50) := 'Edward';
+SQL> 	     v_full_name VARCHAR(50) := NULL;
+SQL> BEGIN
+SQL> 	     v_full_name := full_name(v_last_name,v_first_name);
+SQL> END;
+SQL> / */
+SQL> -- 2B
+SQL> BEGIN
+  2  	     DBMS_OUTPUT.PUT_LINE(full_name('Ma','Edward'));
+  3  END;
+  4  /
+Ma, Edward                                                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/9_1_2.sql
+SQL> /* -- 2
+SQL> CREATE OR REPLACE FUNCTION full_name
+SQL> 	     (p_last_name VARCHAR2,
+SQL> 	     p_first_name VARCHAR2)
+SQL> 	     RETURN VARCHAR2
+SQL> 	     IS
+SQL> 	     v_full_name VARCHAR2(50) := NULL;
+SQL> BEGIN
+SQL> 	     v_full_name := p_last_name||', '||p_first_name;
+SQL> 	     RETURN v_full_name;
+SQL> END full_name;
+SQL> /
+SQL> -- 2A
+SQL> DECLARE
+SQL> 	     v_last_name VARCHAR2(50) := 'Ma';
+SQL> 	     v_first_name VARCHAR2(50) := 'Edward';
+SQL> 	     v_full_name VARCHAR(50) := NULL;
+SQL> BEGIN
+SQL> 	     v_full_name := full_name(v_last_name,v_first_name);
+SQL> END;
+SQL> /
+SQL> -- 2B
+SQL> BEGIN
+SQL> 	     DBMS_OUTPUT.PUT_LINE(full_name('Ma','Edward'));
+SQL> END;
+SQL> / */
+SQL> -- 2C
+SQL> DECLARE
+  2  	     CURSOR cur_full_name (p_dept_id NUMBER) IS
+  3  		     SELECT first_name, last_name FROM employees
+  4  		     WHERE department_id = p_dept_id;
+  5  	     v_first_name employees.first_name%TYPE;
+  6  	     v_last_name employees.last_name%TYPE;
+  7  BEGIN -- chr(13)||chr(10) to break lines so it will look nice.
+  8  	     DBMS_OUTPUT.PUT_LINE('First Name | Last Name | Full Name');
+  9  	     OPEN cur_full_name(50);
+ 10  		     LOOP
+ 11  			     FETCH cur_full_name INTO v_first_name, v_last_name;
+ 12  			     EXIT WHEN cur_full_name%NOTFOUND;
+ 13  			     DBMS_OUTPUT.PUT_LINE(v_first_name||' | '||v_last_name||' | '||full_name(v_last_name, v_first_name));
+ 14  		     END LOOP;
+ 15  	     CLOSE cur_full_name;
+ 16  END;
+ 17  /
+First Name | Last Name | Full Name                                              
+Kevin | Mourgos | Mourgos, Kevin                                                
+Trenna | Rajs | Rajs, Trenna                                                    
+Curtis | Davies | Davies, Curtis                                                
+Randall | Matos | Matos, Randall                                                
+Peter | Vargas | Vargas, Peter                                                  
+George | Bell | Bell, George                                                    
+Tiffany | Heiden | Heiden, Tiffany                                              
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/9_1_3.sql
+SQL> -- 3
+SQL> CREATE OR REPLACE FUNCTION divide
+  2  	     (p_num_one NUMBER,
+  3  	     p_num_two NUMBER)
+  4  	     RETURN NUMBER
+  5  	     IS
+  6  	     v_divided NUMBER(38,2) := NULL;
+  7  BEGIN
+  8  	     v_divided := p_num_one / p_num_two;
+  9  	     RETURN v_divided;
+ 10  END divide;
+ 11  /
+
+Function created.
+
+SQL> @scripts/9_1_3.sql
+SQL> /* -- 3
+SQL> CREATE OR REPLACE FUNCTION divide
+SQL> 	     (p_num_one NUMBER,
+SQL> 	     p_num_two NUMBER)
+SQL> 	     RETURN NUMBER
+SQL> 	     IS
+SQL> 	     v_divided NUMBER(38,2) := NULL;
+SQL> BEGIN
+SQL> 	     v_divided := p_num_one / p_num_two;
+SQL> 	     RETURN v_divided;
+SQL> END divide;
+SQL> / */
+SQL> -- 3A
+SQL> BEGIN
+  2  	     DBMS_OUTPUT.PUT_LINE('50 / 2 = '||divide(50,2));
+  3  	     DBMS_OUTPUT.PUT_LINE('25 / 3 = '||divide(25,3));
+  4  END;
+  5  /
+50 / 2 = 25                                                                     
+25 / 3 = 8.33                                                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/9_1_3.sql
+SQL> /* -- 3
+SQL> CREATE OR REPLACE FUNCTION divide
+SQL> 	     (p_num_one NUMBER,
+SQL> 	     p_num_two NUMBER)
+SQL> 	     RETURN NUMBER
+SQL> 	     IS
+SQL> 	     v_divided NUMBER(38,2) := NULL;
+SQL> BEGIN
+SQL> 	     v_divided := p_num_one / p_num_two;
+SQL> 	     RETURN v_divided;
+SQL> END divide;
+SQL> /
+SQL> -- 3A
+SQL> BEGIN
+SQL> 	     DBMS_OUTPUT.PUT_LINE('50 / 2 = '||divide(50,2));
+SQL> 	     DBMS_OUTPUT.PUT_LINE('25 / 3 = '||divide(25,3));
+SQL> END;
+SQL> /
+SQL> -- 3B*/
+SQL> BEGIN
+  2  	     DBMS_OUTPUT.PUT_LINE('16 / 0 = '||divide(16,0));
+  3  END;
+  4  /
+BEGIN
+*
+ERROR at line 1:
+ORA-01476: divisor is equal to zero 
+ORA-06512: at "DATADEV.DIVIDE", line 8 
+ORA-06512: at line 2 
+
+
+SQL> @scripts/9_1_3.sql
+SQL> /* -- 3
+SQL> CREATE OR REPLACE FUNCTION divide
+SQL> 	     (p_num_one NUMBER,
+SQL> 	     p_num_two NUMBER)
+SQL> 	     RETURN NUMBER
+SQL> 	     IS
+SQL> 	     v_divided NUMBER(38,2) := NULL;
+SQL> BEGIN
+SQL> 	     v_divided := p_num_one / p_num_two;
+SQL> 	     RETURN v_divided;
+SQL> END divide;
+SQL> /
+SQL> -- 3A
+SQL> BEGIN
+SQL> 	     DBMS_OUTPUT.PUT_LINE('50 / 2 = '||divide(50,2));
+SQL> 	     DBMS_OUTPUT.PUT_LINE('25 / 3 = '||divide(25,3));
+SQL> END;
+SQL> /
+SQL> -- 3B
+SQL> BEGIN
+SQL> 	     DBMS_OUTPUT.PUT_LINE('16 / 0 = '||divide(16,0));
+SQL> END;
+SQL> / */
+SQL> -- 3C
+SQL> CREATE OR REPLACE FUNCTION divide
+  2  	     (p_num_one NUMBER,
+  3  	     p_num_two NUMBER)
+  4  	     RETURN NUMBER
+  5  	     IS
+  6  	     v_divided NUMBER(38,2) := NULL;
+  7  BEGIN
+  8  	     v_divided := p_num_one / p_num_two;
+  9  	     RETURN v_divided;
+ 10  EXCEPTION
+ 11  	     WHEN ZERO_DIVIDE THEN
+ 12  	     v_divided := 0;
+ 13  	     RETURN v_divided;
+ 14  END divide;
+ 15  /
+
+Function created.
+
+SQL> @scripts/9_1_3.sql
+SQL> /* -- 3
+SQL> CREATE OR REPLACE FUNCTION divide
+SQL> 	     (p_num_one NUMBER,
+SQL> 	     p_num_two NUMBER)
+SQL> 	     RETURN NUMBER
+SQL> 	     IS
+SQL> 	     v_divided NUMBER(38,2) := NULL;
+SQL> BEGIN
+SQL> 	     v_divided := p_num_one / p_num_two;
+SQL> 	     RETURN v_divided;
+SQL> END divide;
+SQL> /
+SQL> -- 3A
+SQL> BEGIN
+SQL> 	     DBMS_OUTPUT.PUT_LINE('50 / 2 = '||divide(50,2));
+SQL> 	     DBMS_OUTPUT.PUT_LINE('25 / 3 = '||divide(25,3));
+SQL> END;
+SQL> /
+SQL> -- 3B
+SQL> BEGIN
+SQL> 	     DBMS_OUTPUT.PUT_LINE('16 / 0 = '||divide(16,0));
+SQL> END;
+SQL> / */
+SQL> -- 3C
+SQL> CREATE OR REPLACE FUNCTION divide
+  2  	     (p_num_one NUMBER,
+  3  	     p_num_two NUMBER)
+  4  	     RETURN NUMBER
+  5  	     IS
+  6  	     v_divided NUMBER(38,2) := NULL;
+  7  BEGIN
+  8  	     v_divided := p_num_one / p_num_two;
+  9  	     RETURN v_divided;
+ 10  EXCEPTION
+ 11  	     WHEN ZERO_DIVIDE THEN
+ 12  	     v_divided := 0;
+ 13  	     RETURN v_divided;
+ 14  END divide;
+ 15  /
+
+Function created.
+
+SQL> @scripts/9_1_3.sql
+SQL> /* -- 3
+SQL> CREATE OR REPLACE FUNCTION divide
+SQL> 	     (p_num_one NUMBER,
+SQL> 	     p_num_two NUMBER)
+SQL> 	     RETURN NUMBER
+SQL> 	     IS
+SQL> 	     v_divided NUMBER(38,2) := NULL;
+SQL> BEGIN
+SQL> 	     v_divided := p_num_one / p_num_two;
+SQL> 	     RETURN v_divided;
+SQL> END divide;
+SQL> /
+SQL> -- 3A
+SQL> BEGIN
+SQL> 	     DBMS_OUTPUT.PUT_LINE('50 / 2 = '||divide(50,2));
+SQL> 	     DBMS_OUTPUT.PUT_LINE('25 / 3 = '||divide(25,3));
+SQL> END;
+SQL> /
+SQL> -- 3B
+SQL> BEGIN
+SQL> 	     DBMS_OUTPUT.PUT_LINE('16 / 0 = '||divide(16,0));
+SQL> END;
+SQL> /
+SQL> -- 3C
+SQL> CREATE OR REPLACE FUNCTION divide
+SQL> 	     (p_num_one NUMBER,
+SQL> 	     p_num_two NUMBER)
+SQL> 	     RETURN NUMBER
+SQL> 	     IS
+SQL> 	     v_divided NUMBER(38,2) := NULL;
+SQL> BEGIN
+SQL> 	     v_divided := p_num_one / p_num_two;
+SQL> 	     RETURN v_divided;
+SQL> EXCEPTION
+SQL> 	     WHEN ZERO_DIVIDE THEN
+SQL> 	     v_divided := 0;
+SQL> 	     RETURN v_divided;
+SQL> END divide;
+SQL> / */
+SQL> -- 3D
+SQL> BEGIN
+  2  	     DBMS_OUTPUT.PUT_LINE('16 / 0 = '||divide(16,0));
+  3  END;
+  4  /
+16 / 0 = 0                                                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/9_1_7.sql
+SQL> -- 7
+SQL> CREATE OR REPLACE FUNCTION reversing
+  2  	     (input VARCHAR2)
+  3  	     RETURN VARCHAR2 IS
+  4  	     reverse VARCHAR2(255);
+  5  BEGIN
+  6  	     FOR i in reverse 1..LENGTH(input)
+  7  	     LOOP
+  8  		     reverse := reverse||''||SUBSTR(input, i, 1);
+  9  	     END LOOP;
+ 10  	     RETURN reverse;
+ 11  END;
+ 12  /
+
+Function created.
+
+SQL> @scripts/9_1_7.sql
+SQL> /* -- 7
+SQL> CREATE OR REPLACE FUNCTION reversing
+SQL> 	     (input VARCHAR2)
+SQL> 	     RETURN VARCHAR2 IS
+SQL> 	     reverse VARCHAR2(255);
+SQL> BEGIN
+SQL> 	     FOR i in reverse 1..LENGTH(input)
+SQL> 	     LOOP
+SQL> 		     reverse := reverse||''||SUBSTR(input, i, 1);
+SQL> 	     END LOOP;
+SQL> 	     RETURN reverse;
+SQL> END;
+SQL> / */
+SQL> -- Running Function
+SQL> BEGIN
+  2  	     DBMS_OUTPUT.PUT_LINE('The reverse of Edward is '||reversing('Edward'));
+  3  END;
+  4  /
+The reverse of Edward is drawdE                                                 
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/9_1_8.sql
+SQL> -- 8
+SQL> SELECT last_name, reversing(last_name) FROM employees;
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+Abel                                                                            
+lebA                                                                            
+                                                                                
+Almeida Castro                                                                  
+ortsaC adiemlA                                                                  
+                                                                                
+Alves Rocha                                                                     
+ahcoR sevlA                                                                     
+                                                                                
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+Barbosa Souza                                                                   
+azuoS asobraB                                                                   
+                                                                                
+Bell                                                                            
+lleB                                                                            
+                                                                                
+Davies                                                                          
+seivaD                                                                          
+                                                                                
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+De Haan                                                                         
+naaH eD                                                                         
+                                                                                
+Duric                                                                           
+ciruD                                                                           
+                                                                                
+Ernst                                                                           
+tsnrE                                                                           
+                                                                                
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+Fay                                                                             
+yaF                                                                             
+                                                                                
+Fontaine                                                                        
+eniatnoF                                                                        
+                                                                                
+Gietz                                                                           
+zteiG                                                                           
+                                                                                
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+Grant                                                                           
+tnarG                                                                           
+                                                                                
+Hartstein                                                                       
+nietstraH                                                                       
+                                                                                
+Heiden                                                                          
+nedieH                                                                          
+                                                                                
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+Hernandez                                                                       
+zednanreH                                                                       
+                                                                                
+Higgins                                                                         
+sniggiH                                                                         
+                                                                                
+Hooper                                                                          
+repooH                                                                          
+                                                                                
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+Hunold                                                                          
+dlonuH                                                                          
+                                                                                
+King                                                                            
+gniK                                                                            
+                                                                                
+Kochhar                                                                         
+rahhcoK                                                                         
+                                                                                
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+Li                                                                              
+iL                                                                              
+                                                                                
+Loermans                                                                        
+snamreoL                                                                        
+                                                                                
+Lorentz                                                                         
+ztneroL                                                                         
+                                                                                
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+Matos                                                                           
+sotaM                                                                           
+                                                                                
+Mourgos                                                                         
+sogruoM                                                                         
+                                                                                
+Newton                                                                          
+notweN                                                                          
+                                                                                
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+Rajs                                                                            
+sjaR                                                                            
+                                                                                
+Reinhard                                                                        
+drahnieR                                                                        
+                                                                                
+Ricci                                                                           
+icciR                                                                           
+                                                                                
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+Safwah                                                                          
+hawfaS                                                                          
+                                                                                
+Saikawa                                                                         
+awakiaS                                                                         
+                                                                                
+Silva Pinto                                                                     
+otniP avliS                                                                     
+                                                                                
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+Steiner                                                                         
+renietS                                                                         
+                                                                                
+Stocks                                                                          
+skcotS                                                                          
+                                                                                
+TAYLOR                                                                          
+ROLYAT                                                                          
+                                                                                
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+Taylor                                                                          
+rolyaT                                                                          
+                                                                                
+Vargas                                                                          
+sagraV                                                                          
+                                                                                
+Whalen                                                                          
+nelahW                                                                          
+                                                                                
+
+LAST_NAME                                                                       
+-------------------------                                                       
+REVERSING(LAST_NAME)                                                            
+--------------------------------------------------------------------------------
+Zlotkey                                                                         
+yektolZ                                                                         
+                                                                                
+
+40 rows selected.
+
+SQL> @scripts/9_1_8.sql
+SQL> -- 8
+SQL> -- SELECT last_name, reversing(last_name) FROM employees;
+SQL> 
+SQL> SELECT country_name, reversing(country_name) FROM countries;
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Bolivia                                                             
+aiviloB fo cilbupeR                                                             
+                                                                                
+Federative Republic of Brazil                                                   
+lizarB fo cilbupeR evitaredeF                                                   
+                                                                                
+Kingdom of Bhutan                                                               
+natuhB fo modgniK                                                               
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Belarus                                                             
+suraleB fo cilbupeR                                                             
+                                                                                
+Belize                                                                          
+ezileB                                                                          
+                                                                                
+Barbados                                                                        
+sodabraB                                                                        
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Democratic Republic of the Congo                                                
+ognoC eht fo cilbupeR citarcomeD                                                
+                                                                                
+Republic of Namibia                                                             
+aibimaN fo cilbupeR                                                             
+                                                                                
+South Georgia and the South Sandwich Islands                                    
+sdnalsI hciwdnaS htuoS eht dna aigroeG htuoS                                    
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Coral Sea Islands Territory                                                     
+yrotirreT sdnalsI aeS laroC                                                     
+                                                                                
+Navassa Island                                                                  
+dnalsI assavaN                                                                  
+                                                                                
+Antarctica                                                                      
+acitcratnA                                                                      
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Territory of Ashmore and Cartier Islands                                        
+sdnalsI reitraC dna eromhsA fo yrotirreT                                        
+                                                                                
+Spratly Islands                                                                 
+sdnalsI yltarpS                                                                 
+                                                                                
+Paracel Islands                                                                 
+sdnalsI lecaraP                                                                 
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Kyrgyz Republic                                                                 
+cilbupeR zygryK                                                                 
+                                                                                
+Jan Mayen                                                                       
+neyaM naJ                                                                       
+                                                                                
+Falkland Islands                                                                
+sdnalsI dnalklaF                                                                
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+United Kingdom of Great Britain and Northern Ireland                            
+dnalerI nrehtroN dna niatirB taerG fo modgniK detinU                            
+                                                                                
+Bailiwick of Jersey                                                             
+yesreJ fo kciwiliaB                                                             
+                                                                                
+Isle of Man                                                                     
+naM fo elsI                                                                     
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Gibraltar                                                                       
+ratlarbiG                                                                       
+                                                                                
+Republic of Guatemala                                                           
+alametauG fo cilbupeR                                                           
+                                                                                
+Co-operative Republic of Guyana                                                 
+anayuG fo cilbupeR evitarepo-oC                                                 
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Sultanate of Oman                                                               
+namO fo etanatluS                                                               
+                                                                                
+Republic of the Philippines                                                     
+senippilihP eht fo cilbupeR                                                     
+                                                                                
+Republic of Rwanda                                                              
+adnawR fo cilbupeR                                                              
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Cook Islands                                                                    
+sdnalsI kooC                                                                    
+                                                                                
+Niue                                                                            
+euiN                                                                            
+                                                                                
+Pitcairn, Henderson, Ducie, and Oeno Islands                                    
+sdnalsI oneO dna ,eicuD ,nosredneH ,nriactiP                                    
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+New Zealand                                                                     
+dnalaeZ weN                                                                     
+                                                                                
+Republic of Peru                                                                
+ureP fo cilbupeR                                                                
+                                                                                
+Independent State of Papua New Guinea                                           
+aeniuG weN aupaP fo etatS tnednepednI                                           
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Paraguay                                                            
+yaugaraP fo cilbupeR                                                            
+                                                                                
+Kingdom of Saudi Arabia                                                         
+aibarA iduaS fo modgniK                                                         
+                                                                                
+Solomon Islands                                                                 
+sdnalsI nomoloS                                                                 
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Seychelles                                                          
+sellehcyeS fo cilbupeR                                                          
+                                                                                
+Saint Helena                                                                    
+aneleH tniaS                                                                    
+                                                                                
+Republic of Kazakhstan                                                          
+natshkazaK fo cilbupeR                                                          
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Democratic Socialist Republic of Sri Lanka                                      
+aknaL irS fo cilbupeR tsilaicoS citarcomeD                                      
+                                                                                
+Georgia                                                                         
+aigroeG                                                                         
+                                                                                
+Kingdom of Lesotho                                                              
+ohtoseL fo modgniK                                                              
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Western Sahara                                                                  
+arahaS nretseW                                                                  
+                                                                                
+Republic of Moldova                                                             
+avodloM fo cilbupeR                                                             
+                                                                                
+Republic of Macedonia                                                           
+ainodecaM fo cilbupeR                                                           
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Union of Burma                                                                  
+amruB fo noinU                                                                  
+                                                                                
+Mongolia                                                                        
+ailognoM                                                                        
+                                                                                
+Macau Special Administrative Region                                             
+noigeR evitartsinimdA laicepS uacaM                                             
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Malta                                                               
+atlaM fo cilbupeR                                                               
+                                                                                
+Republic of Malawi                                                              
+iwalaM fo cilbupeR                                                              
+                                                                                
+United Mexican States                                                           
+setatS nacixeM detinU                                                           
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Malaysia                                                                        
+aisyalaM                                                                        
+                                                                                
+Lebanese Republic                                                               
+cilbupeR esenabeL                                                               
+                                                                                
+Republic of Mozambique                                                          
+euqibmazoM fo cilbupeR                                                          
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Territory of the Wallis and Futuna Islands                                      
+sdnalsI anutuF dna sillaW eht fo yrotirreT                                      
+                                                                                
+Overseas Lands of French Polynesia                                              
+aisenyloP hcnerF fo sdnaL saesrevO                                              
+                                                                                
+Republic of South Africa                                                        
+acirfA htuoS fo cilbupeR                                                        
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Zambia                                                              
+aibmaZ fo cilbupeR                                                              
+                                                                                
+Territorial Collectivity of Mayotte                                             
+ettoyaM fo ytivitcelloC lairotirreT                                             
+                                                                                
+Department of Martinique                                                        
+euqinitraM fo tnemtrapeD                                                        
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of the Fiji Islands                                                    
+sdnalsI ijiF eht fo cilbupeR                                                    
+                                                                                
+Peoples Democratic Republic of Algeria                                          
+aireglA fo cilbupeR citarcomeD selpoeP                                          
+                                                                                
+Republic of Guinea-Bissau                                                       
+uassiB-aeniuG fo cilbupeR                                                       
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Kingdom of Tonga                                                                
+agnoT fo modgniK                                                                
+                                                                                
+Republic of Equatorial Guinea                                                   
+aeniuG lairotauqE fo cilbupeR                                                   
+                                                                                
+Saint Vincent and the Grenadines                                                
+senidanerG eht dna tnecniV tniaS                                                
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Federation of Saint Kitts and Nevis                                             
+siveN dna sttiK tniaS fo noitaredeF                                             
+                                                                                
+Central African Republic                                                        
+cilbupeR nacirfA lartneC                                                        
+                                                                                
+Grenada                                                                         
+adanerG                                                                         
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Commonwealth of Dominica                                                        
+acinimoD fo htlaewnommoC                                                        
+                                                                                
+Anguilla                                                                        
+alliugnA                                                                        
+                                                                                
+Antigua and Barbuda                                                             
+adubraB dna augitnA                                                             
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Montserrat                                                                      
+tarrestnoM                                                                      
+                                                                                
+United Republic of Tanzania                                                     
+ainaznaT fo cilbupeR detinU                                                     
+                                                                                
+Republic of Slovenia                                                            
+ainevolS fo cilbupeR                                                            
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Kingdom of Swaziland                                                            
+dnalizawS fo modgniK                                                            
+                                                                                
+Turkmenistan                                                                    
+natsinemkruT                                                                    
+                                                                                
+Republic of Uganda                                                              
+adnagU fo cilbupeR                                                              
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Kingdom of the Netherlands                                                      
+sdnalrehteN eht fo modgniK                                                      
+                                                                                
+Republic of Tajikistan                                                          
+natsikijaT fo cilbupeR                                                          
+                                                                                
+United States Virgin Islands                                                    
+sdnalsI nigriV setatS detinU                                                    
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+British Virgin Islands                                                          
+sdnalsI nigriV hsitirB                                                          
+                                                                                
+Republic of Angola                                                              
+alognA fo cilbupeR                                                              
+                                                                                
+Turks and Caicos Islands                                                        
+sdnalsI sociaC dna skruT                                                        
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of the Marshall Islands                                                
+sdnalsI llahsraM eht fo cilbupeR                                                
+                                                                                
+Republic of Zimbabwe                                                            
+ewbabmiZ fo cilbupeR                                                            
+                                                                                
+Republic of Nicaragua                                                           
+augaraciN fo cilbupeR                                                           
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Kingdom of Nepal                                                                
+lapeN fo modgniK                                                                
+                                                                                
+Tokelau                                                                         
+ualekoT                                                                         
+                                                                                
+United States of America                                                        
+aciremA fo setatS detinU                                                        
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Hong Kong Special Administrative Region                                         
+noigeR evitartsinimdA laicepS gnoK gnoH                                         
+                                                                                
+Europa Island                                                                   
+dnalsI aporuE                                                                   
+                                                                                
+Islamic Republic of Pakistan                                                    
+natsikaP fo cilbupeR cimalsI                                                    
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Arab Republic of Egypt                                                          
+tpygE fo cilbupeR barA                                                          
+                                                                                
+Republic of Croatia                                                             
+aitaorC fo cilbupeR                                                             
+                                                                                
+Republic of Haiti                                                               
+itiaH fo cilbupeR                                                               
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of India                                                               
+aidnI fo cilbupeR                                                               
+                                                                                
+Islamic Republic of Iran                                                        
+narI fo cilbupeR cimalsI                                                        
+                                                                                
+Jamaica                                                                         
+aciamaJ                                                                         
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Kenya                                                               
+ayneK fo cilbupeR                                                               
+                                                                                
+Kingdom of Cambodia                                                             
+aidobmaC fo modgniK                                                             
+                                                                                
+Union of the Comoros                                                            
+soromoC eht fo noinU                                                            
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Korea                                                               
+aeroK fo cilbupeR                                                               
+                                                                                
+Cayman Islands                                                                  
+sdnalsI namyaC                                                                  
+                                                                                
+Democratic Peoples Republic of Korea                                            
+aeroK fo cilbupeR selpoeP citarcomeD                                            
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Iraq                                                                
+qarI fo cilbupeR                                                                
+                                                                                
+Territorial Collectivity of Saint Pierre and Miquelon                           
+noleuqiM dna erreiP tniaS fo ytivitcelloC lairotirreT                           
+                                                                                
+Department of Reunion                                                           
+noinueR fo tnemtrapeD                                                           
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Department of Guadeloupe                                                        
+epuoledauG fo tnemtrapeD                                                        
+                                                                                
+Principality of Andorra                                                         
+arrodnA fo ytilapicnirP                                                         
+                                                                                
+Portuguese Republic                                                             
+cilbupeR eseugutroP                                                             
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Montenegro                                                          
+orgenetnoM fo cilbupeR                                                          
+                                                                                
+Canada                                                                          
+adanaC                                                                          
+                                                                                
+Republic of Costa Rica                                                          
+aciR atsoC fo cilbupeR                                                          
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Cape Verde                                                          
+edreV epaC fo cilbupeR                                                          
+                                                                                
+Greenland                                                                       
+dnalneerG                                                                       
+                                                                                
+Dominican Republic                                                              
+cilbupeR nacinimoD                                                              
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+State of Eritrea                                                                
+aertirE fo etatS                                                                
+                                                                                
+Federal Democratic Republic of Ethiopia                                         
+aipoihtE fo cilbupeR citarcomeD laredeF                                         
+                                                                                
+The Holy See (State of the Vatican City)                                        
+)ytiC nacitaV eht fo etatS( eeS yloH ehT                                        
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Kingdom of Spain                                                                
+niapS fo modgniK                                                                
+                                                                                
+Republic of San Marino                                                          
+oniraM naS fo cilbupeR                                                          
+                                                                                
+Republic of Azerbaijan                                                          
+najiabrezA fo cilbupeR                                                          
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Principality of Liechtenstein                                                   
+nietsnethceiL fo ytilapicnirP                                                   
+                                                                                
+Islamic Republic of Afghanistan                                                 
+natsinahgfA fo cilbupeR cimalsI                                                 
+                                                                                
+Republic of Albania                                                             
+ainablA fo cilbupeR                                                             
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Netherlands Antilles                                                            
+sellitnA sdnalrehteN                                                            
+                                                                                
+Argentine Republic                                                              
+cilbupeR enitnegrA                                                              
+                                                                                
+Tuvalu                                                                          
+ulavuT                                                                          
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Territory of Cocos (Keeling) Islands                                            
+sdnalsI )gnileeK( socoC fo yrotirreT                                            
+                                                                                
+Commonwealth of Australia                                                       
+ailartsuA fo htlaewnommoC                                                       
+                                                                                
+Territory of Norfolk Island                                                     
+dnalsI klofroN fo yrotirreT                                                     
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Territory of Christmas Island                                                   
+dnalsI samtsirhC fo yrotirreT                                                   
+                                                                                
+Republic of Kiribati                                                            
+itabiriK fo cilbupeR                                                            
+                                                                                
+Republic of Cyprus                                                              
+surpyC fo cilbupeR                                                              
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Aruba                                                                           
+aburA                                                                           
+                                                                                
+Bosnia and Herzegovina                                                          
+anivogezreH dna ainsoB                                                          
+                                                                                
+Republic of Burundi                                                             
+idnuruB fo cilbupeR                                                             
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Bermuda                                                                         
+adumreB                                                                         
+                                                                                
+Negara Brunei Darussalam                                                        
+malassuraD ienurB arageN                                                        
+                                                                                
+Territory of Guam                                                               
+mauG fo yrotirreT                                                               
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Federated States of Micronesia                                                  
+aisenorciM fo setatS detaredeF                                                  
+                                                                                
+Republic of El Salvador                                                         
+rodavlaS lE fo cilbupeR                                                         
+                                                                                
+Republic of Ecuador                                                             
+rodaucE fo cilbupeR                                                             
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Commonwealth of the Northern Mariana Islands                                    
+sdnalsI anairaM nrehtroN eht fo htlaewnommoC                                    
+                                                                                
+Territory of American Samoa                                                     
+aomaS naciremA fo yrotirreT                                                     
+                                                                                
+Democratic Republic of Sao Tome and Principe                                    
+epicnirP dna emoT oaS fo cilbupeR citarcomeD                                    
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Oriental Republic of Uruguay                                                    
+yaugurU fo cilbupeR latneirO                                                    
+                                                                                
+Republic of Uzbekistan                                                          
+natsikebzU fo cilbupeR                                                          
+                                                                                
+Bolivarian Republic of Venezuela                                                
+aleuzeneV fo cilbupeR nairaviloB                                                
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Vanuatu                                                             
+utaunaV fo cilbupeR                                                             
+                                                                                
+Republic of Poland                                                              
+dnaloP fo cilbupeR                                                              
+                                                                                
+Democratic Republic of Timor-Leste                                              
+etseL-romiT fo cilbupeR citarcomeD                                              
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Kingdom of Sweden                                                               
+nedewS fo modgniK                                                               
+                                                                                
+Slovak Republic                                                                 
+cilbupeR kavolS                                                                 
+                                                                                
+Saint Lucia                                                                     
+aicuL tniaS                                                                     
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Juan de Nova Island                                                             
+dnalsI avoN ed nauJ                                                             
+                                                                                
+Republic of Mauritius                                                           
+suitiruaM fo cilbupeR                                                           
+                                                                                
+Kingdom of Norway                                                               
+yawroN fo modgniK                                                               
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Cuba                                                                
+abuC fo cilbupeR                                                                
+                                                                                
+Republic of Chile                                                               
+elihC fo cilbupeR                                                               
+                                                                                
+Republic of Colombia                                                            
+aibmoloC fo cilbupeR                                                            
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Indonesia                                                           
+aisenodnI fo cilbupeR                                                           
+                                                                                
+Republic of Singapore                                                           
+eropagniS fo cilbupeR                                                           
+                                                                                
+Italian Republic                                                                
+cilbupeR nailatI                                                                
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Federal Republic of Germany                                                     
+ynamreG fo cilbupeR laredeF                                                     
+                                                                                
+Republic of Hungary                                                             
+yragnuH fo cilbupeR                                                             
+                                                                                
+Kingdom of Belgium                                                              
+muigleB fo modgniK                                                              
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+French Republic                                                                 
+cilbupeR hcnerF                                                                 
+                                                                                
+Russian Federation                                                              
+noitaredeF naissuR                                                              
+                                                                                
+Kingdom of Denmark                                                              
+kramneD fo modgniK                                                              
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Swiss Confederation                                                             
+noitaredefnoC ssiwS                                                             
+                                                                                
+Republic of Austria                                                             
+airtsuA fo cilbupeR                                                             
+                                                                                
+Svalbard                                                                        
+drablavS                                                                        
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Japan                                                                           
+napaJ                                                                           
+                                                                                
+Socialist Republic of Vietnam                                                   
+manteiV fo cilbupeR tsilaicoS                                                   
+                                                                                
+Peoples Republic of China                                                       
+anihC fo cilbupeR selpoeP                                                       
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Turkey                                                              
+yekruT fo cilbupeR                                                              
+                                                                                
+Faroe Islands                                                                   
+sdnalsI eoraF                                                                   
+                                                                                
+Bailiwick of Guernsey                                                           
+yesnreuG fo kciwiliaB                                                           
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Hellenic Republic                                                               
+cilbupeR cinelleH                                                               
+                                                                                
+Togolese Republic                                                               
+cilbupeR eselogoT                                                               
+                                                                                
+Republic of Benin                                                               
+nineB fo cilbupeR                                                               
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Botswana                                                            
+anawstoB fo cilbupeR                                                            
+                                                                                
+Kingdom of Thailand                                                             
+dnaliahT fo modgniK                                                             
+                                                                                
+Republic of Djibouti                                                            
+ituobijD fo cilbupeR                                                            
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Great Socialist Peoples Libyan Arab Jamahiriya                                  
+ayirihamaJ barA naybiL selpoeP tsilaicoS taerG                                  
+                                                                                
+Romania                                                                         
+ainamoR                                                                         
+                                                                                
+Islamic Republic of Mauritania                                                  
+ainatiruaM fo cilbupeR cimalsI                                                  
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Burkina Faso                                                                    
+osaF anikruB                                                                    
+                                                                                
+Republic of Madagascar                                                          
+racsagadaM fo cilbupeR                                                          
+                                                                                
+Republic of Guinea                                                              
+aeniuG fo cilbupeR                                                              
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Federal Republic of Nigeria                                                     
+airegiN fo cilbupeR laredeF                                                     
+                                                                                
+Republic of Liberia                                                             
+airebiL fo cilbupeR                                                             
+                                                                                
+Principality of Monaco                                                          
+ocanoM fo ytilapicnirP                                                          
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Kingdom of Morocco                                                              
+occoroM fo modgniK                                                              
+                                                                                
+Tunisian Republic                                                               
+cilbupeR naisinuT                                                               
+                                                                                
+Republic of Sierra Leone                                                        
+enoeL arreiS fo cilbupeR                                                        
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Ghana                                                               
+anahG fo cilbupeR                                                               
+                                                                                
+Republic of Chad                                                                
+dahC fo cilbupeR                                                                
+                                                                                
+Republic of Ireland                                                             
+dnalerI fo cilbupeR                                                             
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of The Gambia                                                          
+aibmaG ehT fo cilbupeR                                                          
+                                                                                
+Republic of Senegal                                                             
+lageneS fo cilbupeR                                                             
+                                                                                
+Republic of Cote d Ivoire                                                       
+eriovI d etoC fo cilbupeR                                                       
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Finland                                                             
+dnalniF fo cilbupeR                                                             
+                                                                                
+Republic of Mali                                                                
+ilaM fo cilbupeR                                                                
+                                                                                
+Republic of Armenia                                                             
+ainemrA fo cilbupeR                                                             
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Niger                                                               
+regiN fo cilbupeR                                                               
+                                                                                
+Republic of the Sudan                                                           
+naduS eht fo cilbupeR                                                           
+                                                                                
+Grand Duchy of Luxembourg                                                       
+gruobmexuL fo yhcuD dnarG                                                       
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Somalia                                                                         
+ailamoS                                                                         
+                                                                                
+Republic of Panama                                                              
+amanaP fo cilbupeR                                                              
+                                                                                
+Republic of Suriname                                                            
+emaniruS fo cilbupeR                                                            
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Nauru                                                               
+uruaN fo cilbupeR                                                               
+                                                                                
+Republic of the Congo                                                           
+ognoC eht fo cilbupeR                                                           
+                                                                                
+Ukraine                                                                         
+eniarkU                                                                         
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Czech Republic                                                                  
+cilbupeR hcezC                                                                  
+                                                                                
+Republic of Honduras                                                            
+sarudnoH fo cilbupeR                                                            
+                                                                                
+Syrian Arab Republic                                                            
+cilbupeR barA nairyS                                                            
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Cameroon                                                            
+nooremaC fo cilbupeR                                                            
+                                                                                
+Commonwealth of The Bahamas                                                     
+samahaB ehT fo htlaewnommoC                                                     
+                                                                                
+Commonwealth of Puerto Rico                                                     
+ociR otreuP fo htlaewnommoC                                                     
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Taiwan                                                                          
+nawiaT                                                                          
+                                                                                
+Republic of Maldives                                                            
+sevidlaM fo cilbupeR                                                            
+                                                                                
+Hashemite Kingdom of Jordan                                                     
+nadroJ fo modgniK etimehsaH                                                     
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Bulgaria                                                            
+airagluB fo cilbupeR                                                            
+                                                                                
+Republic of Lithuania                                                           
+ainauhtiL fo cilbupeR                                                           
+                                                                                
+Republic of Latvia                                                              
+aivtaL fo cilbupeR                                                              
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Trinidad and Tobago                                                 
+ogaboT dna dadinirT fo cilbupeR                                                 
+                                                                                
+Independent State of Samoa                                                      
+aomaS fo etatS tnednepednI                                                      
+                                                                                
+Department of Guiana                                                            
+anaiuG fo tnemtrapeD                                                            
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+State of Kuwait                                                                 
+tiawuK fo etatS                                                                 
+                                                                                
+Peoples Republic of Bangladesh                                                  
+hsedalgnaB fo cilbupeR selpoeP                                                  
+                                                                                
+Republic of Iceland                                                             
+dnalecI fo cilbupeR                                                             
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Gabonese Republic                                                               
+cilbupeR esenobaG                                                               
+                                                                                
+Territory of New Caledonia and Dependencies                                     
+seicnednepeD dna ainodelaC weN fo yrotirreT                                     
+                                                                                
+State of Qatar                                                                  
+rataQ fo etatS                                                                  
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+United Arab Emirates                                                            
+setarimE barA detinU                                                            
+                                                                                
+State of Israel                                                                 
+learsI fo etatS                                                                 
+                                                                                
+Kingdom of Bahrain                                                              
+niarhaB fo modgniK                                                              
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Estonia                                                             
+ainotsE fo cilbupeR                                                             
+                                                                                
+Lao Peoples Democratic Republic                                                 
+cilbupeR citarcomeD selpoeP oaL                                                 
+                                                                                
+Republic of Palau                                                               
+ualaP fo cilbupeR                                                               
+                                                                                
+
+COUNTRY_NAME                                                                    
+----------------------------------------------------------------------          
+REVERSING(COUNTRY_NAME)                                                         
+--------------------------------------------------------------------------------
+Republic of Yemen                                                               
+nemeY fo cilbupeR                                                               
+                                                                                
+
+244 rows selected.
+
+SQL> spool off

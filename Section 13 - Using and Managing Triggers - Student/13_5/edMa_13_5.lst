@@ -1,0 +1,223 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/13_5_1234.sql
+SQL> -- Question 1
+SQL> SELECT trigger_name AS "Name",
+  2  	     trigger_type AS "Type",
+  3  	     triggering_event AS "Event",
+  4  	     table_name AS "Table",
+  5  	     action_type AS "Action",
+  6  	     status
+  7  FROM user_triggers;
+
+Name                           Type                                             
+------------------------------ ----------------                                 
+Event                                                                           
+--------------------------------------------------------------------------------
+Table                          Action      STATUS                               
+------------------------------ ----------- --------                             
+EMP_AUDIT_TRIGG                COMPOUND                                         
+UPDATE                                                                          
+EMPLOYEES                      PL/SQL      ENABLED                              
+                                                                                
+MAX_SALARY                     BEFORE EACH ROW                                  
+UPDATE                                                                          
+EMPLOYEES                      PL/SQL      ENABLED                              
+
+Name                           Type                                             
+------------------------------ ----------------                                 
+Event                                                                           
+--------------------------------------------------------------------------------
+Table                          Action      STATUS                               
+------------------------------ ----------- --------                             
+                                                                                
+LOG_EMP_CHANGE                 BEFORE STATEMENT                                 
+UPDATE                                                                          
+EMPLOYEES                      PL/SQL      ENABLED                              
+                                                                                
+UPDATE_COUNT                   INSTEAD OF                                       
+INSERT                                                                          
+
+Name                           Type                                             
+------------------------------ ----------------                                 
+Event                                                                           
+--------------------------------------------------------------------------------
+Table                          Action      STATUS                               
+------------------------------ ----------- --------                             
+EMP_VU                         PL/SQL      ENABLED                              
+                                                                                
+
+SQL> @scripts/13_5_1234.sql
+SQL> /* -- Question 1
+SQL> SELECT trigger_name AS "Name",
+SQL> 	     trigger_type AS "Type",
+SQL> 	     triggering_event AS "Event",
+SQL> 	     table_name AS "Table",
+SQL> 	     action_type AS "Action",
+SQL> 	     status
+SQL> FROM user_triggers;
+SQL> -- Question 2 */
+SQL> ALTER TRIGGER max_salary DISABLE;
+
+Trigger altered.
+
+SQL> @scripts/13_5_1234.sql
+SQL> /* -- Question 1
+SQL> SELECT trigger_name AS "Name",
+SQL> 	     trigger_type AS "Type",
+SQL> 	     triggering_event AS "Event",
+SQL> 	     table_name AS "Table",
+SQL> 	     action_type AS "Action",
+SQL> 	     status
+SQL> FROM user_triggers;
+SQL> -- Question 2
+SQL> ALTER TRIGGER max_salary DISABLE;
+SQL> -- Question 3 */
+SQL> SELECT text FROM user_source WHERE name = 'MAX_SALARY';
+
+TEXT                                                                            
+--------------------------------------------------------------------------------
+TRIGGER max_salary                                                              
+BEFORE UPDATE OF salary ON employees                                            
+FOR EACH ROW                                                                    
+DECLARE                                                                         
+	v_max_sal employees.salary%TYPE;                                               
+BEGIN                                                                           
+	SELECT MAX(salary) INTO v_max_sal                                              
+	FROM employees;                                                                
+                                                                                
+	DBMS_OUTPUT.PUT_LINE('Current Max Salary is '||v_max_sal);                     
+END max_salary;                                                                 
+
+11 rows selected.
+
+SQL> SELECT trigger_name, status FROM user_triggers;
+
+TRIGGER_NAME                   STATUS                                           
+------------------------------ --------                                         
+UPDATE_COUNT                   ENABLED                                          
+LOG_EMP_CHANGE                 ENABLED                                          
+MAX_SALARY                     DISABLED                                         
+EMP_AUDIT_TRIGG                ENABLED                                          
+
+SQL> DROP TRIGGER max_salary;
+
+Trigger dropped.
+
+SQL> SELECT trigger_name, status FROM user_triggers;
+
+TRIGGER_NAME                   STATUS                                           
+------------------------------ --------                                         
+EMP_AUDIT_TRIGG                ENABLED                                          
+LOG_EMP_CHANGE                 ENABLED                                          
+UPDATE_COUNT                   ENABLED                                          
+
+SQL> @scripts/13_5_5.sql
+SQL> /* -- Question 5
+SQL> -- Part A Based on this http://andreinc.net/2011/05/31/disable-all-triggers-in-the-schema-oracle/
+SQL> CREATE OR REPLACE PROCEDURE alter_trigger(status VARCHAR2) IS
+SQL> 	     CURSOR c_trigger IS
+SQL> 	     (
+SQL> 		     SELECT trigger_name FROM user_triggers
+SQL> 	     );
+SQL> BEGIN
+SQL> 	     IF UPPER(status) NOT IN ('ENABLE', 'DISABLE') THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Parameter must be '||CHR(39)||'Enable'||CHR(39)||' or '||CHR(39)||'Disable'||CHR(39));
+SQL> 		     RAISE VALUE_ERROR;
+SQL> 	     END IF;
+SQL> 	     FOR i in c_trigger
+SQL> 	     LOOP
+SQL> 		     EXECUTE IMMEDIATE 'ALTER TRIGGER '|| i.trigger_name||' '|| status;
+SQL> 	     END LOOP;
+SQL> END;
+SQL> /
+SQL> -- Part B
+SQL> -- Part 1 of B Show current status...
+SQL> SELECT trigger_name, status FROM user_triggers;
+SQL> -- Part 2 of B
+SQL> DECLARE
+SQL> 	     v_status VARCHAR2(10) := 'disable';
+SQL> BEGIN
+SQL> 	     alter_trigger(v_status);
+SQL> END;
+SQL> /
+SQL> -- Part C */
+SQL> SELECT trigger_name, status FROM user_triggers;
+
+TRIGGER_NAME                   STATUS                                           
+------------------------------ --------                                         
+EMP_AUDIT_TRIGG                ENABLED                                          
+LOG_EMP_CHANGE                 ENABLED                                          
+UPDATE_COUNT                   ENABLED                                          
+
+SQL> @scripts/13_5_5.sql
+SQL> /* -- Question 5 */
+SQL> -- Part A Based on this http://andreinc.net/2011/05/31/disable-all-triggers-in-the-schema-oracle/
+SQL> CREATE OR REPLACE PROCEDURE alter_trigger(status VARCHAR2) IS
+  2  	     CURSOR c_trigger IS
+  3  	     (
+  4  		     SELECT trigger_name FROM user_triggers
+  5  	     );
+  6  BEGIN
+  7  	     IF UPPER(status) NOT IN ('ENABLE', 'DISABLE') THEN
+  8  		     DBMS_OUTPUT.PUT_LINE('Parameter must be '||CHR(39)||'Enable'||CHR(39)||' or '||CHR(39)||'Disable'||CHR(39));
+  9  		     RAISE VALUE_ERROR;
+ 10  	     END IF;
+ 11  	     FOR i in c_trigger
+ 12  	     LOOP
+ 13  		     EXECUTE IMMEDIATE 'ALTER TRIGGER '|| i.trigger_name||' '|| status;
+ 14  	     END LOOP;
+ 15  END;
+ 16  /
+
+Procedure created.
+
+SQL> SELECT trigger_name, status FROM user_triggers;
+
+TRIGGER_NAME                   STATUS                                           
+------------------------------ --------                                         
+EMP_AUDIT_TRIGG                ENABLED                                          
+LOG_EMP_CHANGE                 ENABLED                                          
+UPDATE_COUNT                   ENABLED                                          
+
+SQL> @scripts/13_5_5.sql
+SQL> /* -- Question 5
+SQL> -- Part A Based on this http://andreinc.net/2011/05/31/disable-all-triggers-in-the-schema-oracle/
+SQL> CREATE OR REPLACE PROCEDURE alter_trigger(status VARCHAR2) IS
+SQL> 	     CURSOR c_trigger IS
+SQL> 	     (
+SQL> 		     SELECT trigger_name FROM user_triggers
+SQL> 	     );
+SQL> BEGIN
+SQL> 	     IF UPPER(status) NOT IN ('ENABLE', 'DISABLE') THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Parameter must be '||CHR(39)||'Enable'||CHR(39)||' or '||CHR(39)||'Disable'||CHR(39));
+SQL> 		     RAISE VALUE_ERROR;
+SQL> 	     END IF;
+SQL> 	     FOR i in c_trigger
+SQL> 	     LOOP
+SQL> 		     EXECUTE IMMEDIATE 'ALTER TRIGGER '|| i.trigger_name||' '|| status;
+SQL> 	     END LOOP;
+SQL> END;
+SQL> /
+SQL> -- Part B
+SQL> -- Part 1 of B Show current status...
+SQL> SELECT trigger_name, status FROM user_triggers;
+SQL> -- Part 2 of B */
+SQL> DECLARE
+  2  	     v_status VARCHAR2(10) := 'disable';
+  3  BEGIN
+  4  	     alter_trigger(v_status);
+  5  END;
+  6  /
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT trigger_name, status FROM user_triggers;
+
+TRIGGER_NAME                   STATUS                                           
+------------------------------ --------                                         
+EMP_AUDIT_TRIGG                DISABLED                                         
+LOG_EMP_CHANGE                 DISABLED                                         
+UPDATE_COUNT                   DISABLED                                         
+
+SQL> spool off

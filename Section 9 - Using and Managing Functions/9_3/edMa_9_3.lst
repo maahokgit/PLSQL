@@ -1,0 +1,794 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> -- Question 3
+SQL> SELECT object_name, object_type, status FROM user_objects ORDER BY object_type;
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+SAL_INCREASE                                                                    
+FUNCTION            VALID                                                       
+                                                                                
+REVERSING                                                                       
+FUNCTION            VALID                                                       
+                                                                                
+CHECK_DEPT                                                                      
+FUNCTION            VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+UPD_SAL                                                                         
+FUNCTION            VALID                                                       
+                                                                                
+GET_SAL                                                                         
+FUNCTION            VALID                                                       
+                                                                                
+DIVIDE                                                                          
+FUNCTION            VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+FULL_NAME                                                                       
+FUNCTION            VALID                                                       
+                                                                                
+LOC_ID_PK                                                                       
+INDEX               VALID                                                       
+                                                                                
+REG_ID_PK                                                                       
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+LOC_COUNTRY_IX                                                                  
+INDEX               VALID                                                       
+                                                                                
+LOC_STATE_PROVINCE_IX                                                           
+INDEX               VALID                                                       
+                                                                                
+CTRY_REG_IDX                                                                    
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+CURR_PK                                                                         
+INDEX               VALID                                                       
+                                                                                
+LANG_PK                                                                         
+INDEX               VALID                                                       
+                                                                                
+SPOKEN_LANG_PK                                                                  
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+DEPT_ID_PK                                                                      
+INDEX               VALID                                                       
+                                                                                
+DEPT_LOCATION_IX                                                                
+INDEX               VALID                                                       
+                                                                                
+JOB_ID_PK                                                                       
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+EMP_ID_PK                                                                       
+INDEX               VALID                                                       
+                                                                                
+EMP_EMAIL_UK                                                                    
+INDEX               VALID                                                       
+                                                                                
+EMP_DEPARTMENT_IX                                                               
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+EMP_JOB_IX                                                                      
+INDEX               VALID                                                       
+                                                                                
+EMP_MANAGER_IX                                                                  
+INDEX               VALID                                                       
+                                                                                
+EMP_NAME_IX                                                                     
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+JHIST_EMP_ID_ST_DATE_PK                                                         
+INDEX               VALID                                                       
+                                                                                
+JHIST_DEPARTMENT_IX                                                             
+INDEX               VALID                                                       
+                                                                                
+JHIST_EMPLOYEE_IX                                                               
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+JHIST_JOB_IX                                                                    
+INDEX               VALID                                                       
+                                                                                
+SA_ASSESS_PK                                                                    
+INDEX               VALID                                                       
+                                                                                
+SA_STU_PK                                                                       
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+SA_CLASS_PK                                                                     
+INDEX               VALID                                                       
+                                                                                
+SA_INST_PK                                                                      
+INDEX               VALID                                                       
+                                                                                
+SA_SECTS_PK                                                                     
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+SA_COUR_PK                                                                      
+INDEX               VALID                                                       
+                                                                                
+SA_ENROLL_PK                                                                    
+INDEX               VALID                                                       
+                                                                                
+SA_CL_ASSESS_PK                                                                 
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+F_CSR_ID_PK                                                                     
+INDEX               VALID                                                       
+                                                                                
+F_PMU_CODE_PK                                                                   
+INDEX               VALID                                                       
+                                                                                
+F_RMU_CODE_PK                                                                   
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+F_FIM_FOOD_ITEM_NUMBER_PK                                                       
+INDEX               VALID                                                       
+                                                                                
+F_STF_ID_PK                                                                     
+INDEX               VALID                                                       
+                                                                                
+F_ODR_ORDER_NUMBER_PK                                                           
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+F_OLE_PK                                                                        
+INDEX               VALID                                                       
+                                                                                
+F_SFT_CODE_PK                                                                   
+INDEX               VALID                                                       
+                                                                                
+F_SAT_PK                                                                        
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+D_CDS_CD_NUMBER_PK                                                              
+INDEX               VALID                                                       
+                                                                                
+D_CLT_CLIENT_NUMBER_PK                                                          
+INDEX               VALID                                                       
+                                                                                
+D_PKE_CODE_PK                                                                   
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+D_TME_CODE_PK                                                                   
+INDEX               VALID                                                       
+                                                                                
+D_VNE_ID_PK                                                                     
+INDEX               VALID                                                       
+                                                                                
+D_EVE_ID_PK                                                                     
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+D_PTR_ID_PK                                                                     
+INDEX               VALID                                                       
+                                                                                
+D_JAT_PK                                                                        
+INDEX               VALID                                                       
+                                                                                
+D_TPE_CODE_PK                                                                   
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+D_SNG_ID_PK                                                                     
+INDEX               VALID                                                       
+                                                                                
+D_PLM_PK                                                                        
+INDEX               VALID                                                       
+                                                                                
+D_TLG_PK                                                                        
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+D_CDS_IDX                                                                       
+INDEX               VALID                                                       
+                                                                                
+SONG_ID_IDX                                                                     
+INDEX               VALID                                                       
+                                                                                
+ES_SPEC_PK                                                                      
+INDEX               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+LOC_CITY_IX                                                                     
+INDEX               VALID                                                       
+                                                                                
+CRTY_PK                                                                         
+INDEX               VALID                                                       
+                                                                                
+SYS_LOB0000074647C00024$$                                                       
+LOB                 VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+ALTER_TRIGGER                                                                   
+PROCEDURE           VALID                                                       
+                                                                                
+ALTER_ALL_TRIGGERS                                                              
+PROCEDURE           VALID                                                       
+                                                                                
+INSERT_EMP                                                                      
+PROCEDURE           VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+PAY_RAISE                                                                       
+PROCEDURE           VALID                                                       
+                                                                                
+NAME_CHANGE                                                                     
+PROCEDURE           VALID                                                       
+                                                                                
+GET_COUNTRY_INFO                                                                
+PROCEDURE           VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+GET_COUNTRY_COUNT                                                               
+PROCEDURE           VALID                                                       
+                                                                                
+FIND_AREA_POP                                                                   
+PROCEDURE           VALID                                                       
+                                                                                
+POWER_OF_TWO                                                                    
+PROCEDURE           VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+DEPARTMENTS_SEQ                                                                 
+SEQUENCE            VALID                                                       
+                                                                                
+LOCATIONS_SEQ                                                                   
+SEQUENCE            VALID                                                       
+                                                                                
+EMPLOYEES_SEQ                                                                   
+SEQUENCE            VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+AUDIT_TABLE                                                                     
+TABLE               VALID                                                       
+                                                                                
+F_PROMOTIONAL_MENUS                                                             
+TABLE               VALID                                                       
+                                                                                
+EXCEP_EMPS                                                                      
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+EMPLOYEES_DUP                                                                   
+TABLE               VALID                                                       
+                                                                                
+DEPT_COUNT                                                                      
+TABLE               VALID                                                       
+                                                                                
+AUDIT_DDL                                                                       
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+F_EMPS                                                                          
+TABLE               VALID                                                       
+                                                                                
+F_DEPTS                                                                         
+TABLE               VALID                                                       
+                                                                                
+REGIONS                                                                         
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+COUNTRIES                                                                       
+TABLE               VALID                                                       
+                                                                                
+LOCATIONS                                                                       
+TABLE               VALID                                                       
+                                                                                
+CURRENCIES                                                                      
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+LANGUAGES                                                                       
+TABLE               VALID                                                       
+                                                                                
+SPOKEN_LANGUAGES                                                                
+TABLE               VALID                                                       
+                                                                                
+DEPARTMENTS                                                                     
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+JOBS                                                                            
+TABLE               VALID                                                       
+                                                                                
+EMPLOYEES                                                                       
+TABLE               VALID                                                       
+                                                                                
+JOB_GRADES                                                                      
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+JOB_HISTORY                                                                     
+TABLE               VALID                                                       
+                                                                                
+GRADE_CHANGES                                                                   
+TABLE               VALID                                                       
+                                                                                
+ASSESSMENTS                                                                     
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+STUDENTS                                                                        
+TABLE               VALID                                                       
+                                                                                
+CLASSES                                                                         
+TABLE               VALID                                                       
+                                                                                
+INSTRUCTORS                                                                     
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+SECTIONS                                                                        
+TABLE               VALID                                                       
+                                                                                
+COURSES                                                                         
+TABLE               VALID                                                       
+                                                                                
+ENROLLMENTS                                                                     
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+CLASS_ASSESSMENTS                                                               
+TABLE               VALID                                                       
+                                                                                
+F_CUSTOMERS                                                                     
+TABLE               VALID                                                       
+                                                                                
+ERROR_LOG                                                                       
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+F_REGULAR_MENUS                                                                 
+TABLE               VALID                                                       
+                                                                                
+F_FOOD_ITEMS                                                                    
+TABLE               VALID                                                       
+                                                                                
+F_STAFFS                                                                        
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+F_ORDERS                                                                        
+TABLE               VALID                                                       
+                                                                                
+F_ORDER_LINES                                                                   
+TABLE               VALID                                                       
+                                                                                
+F_SHIFTS                                                                        
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+F_SHIFT_ASSIGNMENTS                                                             
+TABLE               VALID                                                       
+                                                                                
+D_CDS                                                                           
+TABLE               VALID                                                       
+                                                                                
+D_CLIENTS                                                                       
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+D_PACKAGES                                                                      
+TABLE               VALID                                                       
+                                                                                
+D_THEMES                                                                        
+TABLE               VALID                                                       
+                                                                                
+D_VENUES                                                                        
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+D_EVENTS                                                                        
+TABLE               VALID                                                       
+                                                                                
+D_PARTNERS                                                                      
+TABLE               VALID                                                       
+                                                                                
+D_JOB_ASSIGNMENTS                                                               
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+D_TYPES                                                                         
+TABLE               VALID                                                       
+                                                                                
+D_SONGS                                                                         
+TABLE               VALID                                                       
+                                                                                
+D_PLAY_LIST_ITEMS                                                               
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+D_TRACK_LISTINGS                                                                
+TABLE               VALID                                                       
+                                                                                
+NEW_DEPTS                                                                       
+TABLE               VALID                                                       
+                                                                                
+EMP_DUP                                                                         
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+NEW_EMPS                                                                        
+TABLE               VALID                                                       
+                                                                                
+CHINESE                                                                         
+TABLE               VALID                                                       
+                                                                                
+ENDANGERED_SPECIES                                                              
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+MESSAGES                                                                        
+TABLE               VALID                                                       
+                                                                                
+UPD_EMPS                                                                        
+TABLE               VALID                                                       
+                                                                                
+PROPOSED_RAISES                                                                 
+TABLE               VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+UPDATE_COUNT                                                                    
+TRIGGER             VALID                                                       
+                                                                                
+EMP_AUDIT_TRIGG                                                                 
+TRIGGER             VALID                                                       
+                                                                                
+LOG_EMP_CHANGE                                                                  
+TRIGGER             VALID                                                       
+                                                                                
+
+OBJECT_NAME                                                                     
+--------------------------------------------------------------------------------
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+EMP_DETAILS_VIEW                                                                
+VIEW                VALID                                                       
+                                                                                
+EMP_VU                                                                          
+VIEW                VALID                                                       
+                                                                                
+
+137 rows selected.
+
+SQL> -- Question 4
+SQL> SELECT owner, object_name, object_type, status
+  2  FROM ALL_OBJECTS
+  3  WHERE owner = 'DATADEV' AND
+  4  object_type IN ('FUNCTION','PROCEDURE')
+  5  ORDER BY object_type;
+
+OWNER                          OBJECT_NAME                                      
+------------------------------ ------------------------------                   
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+DATADEV                        DIVIDE                                           
+FUNCTION            VALID                                                       
+                                                                                
+DATADEV                        FULL_NAME                                        
+FUNCTION            VALID                                                       
+                                                                                
+DATADEV                        SAL_INCREASE                                     
+FUNCTION            VALID                                                       
+                                                                                
+
+OWNER                          OBJECT_NAME                                      
+------------------------------ ------------------------------                   
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+DATADEV                        UPD_SAL                                          
+FUNCTION            VALID                                                       
+                                                                                
+DATADEV                        CHECK_DEPT                                       
+FUNCTION            VALID                                                       
+                                                                                
+DATADEV                        GET_SAL                                          
+FUNCTION            VALID                                                       
+                                                                                
+
+OWNER                          OBJECT_NAME                                      
+------------------------------ ------------------------------                   
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+DATADEV                        REVERSING                                        
+FUNCTION            VALID                                                       
+                                                                                
+DATADEV                        POWER_OF_TWO                                     
+PROCEDURE           VALID                                                       
+                                                                                
+DATADEV                        FIND_AREA_POP                                    
+PROCEDURE           VALID                                                       
+                                                                                
+
+OWNER                          OBJECT_NAME                                      
+------------------------------ ------------------------------                   
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+DATADEV                        GET_COUNTRY_COUNT                                
+PROCEDURE           VALID                                                       
+                                                                                
+DATADEV                        GET_COUNTRY_INFO                                 
+PROCEDURE           VALID                                                       
+                                                                                
+DATADEV                        NAME_CHANGE                                      
+PROCEDURE           VALID                                                       
+                                                                                
+
+OWNER                          OBJECT_NAME                                      
+------------------------------ ------------------------------                   
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+DATADEV                        PAY_RAISE                                        
+PROCEDURE           VALID                                                       
+                                                                                
+DATADEV                        INSERT_EMP                                       
+PROCEDURE           VALID                                                       
+                                                                                
+DATADEV                        ALTER_TRIGGER                                    
+PROCEDURE           VALID                                                       
+                                                                                
+
+OWNER                          OBJECT_NAME                                      
+------------------------------ ------------------------------                   
+OBJECT_TYPE         STATUS                                                      
+------------------- -------                                                     
+DATADEV                        ALTER_ALL_TRIGGERS                               
+PROCEDURE           VALID                                                       
+                                                                                
+
+16 rows selected.
+
+SQL> -- Question 6
+SQL> SELECT * FROM dict WHERE table_name LIKE 'USER%VIEWS%';
+
+TABLE_NAME                                                                      
+------------------------------                                                  
+COMMENTS                                                                        
+--------------------------------------------------------------------------------
+USER_BASE_TABLE_MVIEWS                                                          
+All materialized views with log(s) owned by the user in the database            
+                                                                                
+USER_CUBE_DIM_VIEWS                                                             
+OLAP Dimension Views owned by the user in the database                          
+                                                                                
+USER_CUBE_HIER_VIEWS                                                            
+OLAP Hierarchy Views owner by the user in the database                          
+                                                                                
+
+TABLE_NAME                                                                      
+------------------------------                                                  
+COMMENTS                                                                        
+--------------------------------------------------------------------------------
+USER_CUBE_VIEWS                                                                 
+OLAP Cube Views owned by the user in the database                               
+                                                                                
+USER_EDITIONING_VIEWS                                                           
+Descriptions of the user's own Editioning Views                                 
+                                                                                
+USER_EDITIONING_VIEWS_AE                                                        
+Descriptions of the user's own Editioning Views                                 
+                                                                                
+
+TABLE_NAME                                                                      
+------------------------------                                                  
+COMMENTS                                                                        
+--------------------------------------------------------------------------------
+USER_MVIEWS                                                                     
+All materialized views in the database                                          
+                                                                                
+USER_REGISTERED_MVIEWS                                                          
+Remote materialized views of local tables currently using logs owned by the user
+                                                                                
+USER_VIEWS                                                                      
+Description of the user's own views                                             
+                                                                                
+
+TABLE_NAME                                                                      
+------------------------------                                                  
+COMMENTS                                                                        
+--------------------------------------------------------------------------------
+USER_VIEWS_AE                                                                   
+Description of the user's own views                                             
+                                                                                
+USER_XML_VIEWS                                                                  
+Description of the user's own XMLType views                                     
+                                                                                
+
+11 rows selected.
+
+SQL> spool off

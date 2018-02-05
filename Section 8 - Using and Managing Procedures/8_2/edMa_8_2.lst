@@ -1,0 +1,360 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/8_2_2AB.sql
+SQL> -- 2A)
+SQL> -- Creating Stored Procedure 'get_country_info'
+SQL> CREATE OR REPLACE PROCEDURE get_country_info
+  2  (p_country_id IN countries.country_id%TYPE)
+  3  IS
+  4  v_country_name countries.country_name%TYPE;
+  5  v_capitol countries.capitol%TYPE;
+  6  BEGIN
+  7  	     SELECT country_name, capitol INTO v_country_name, v_capitol
+  8  	     FROM countries WHERE country_id = p_country_id;
+  9  
+ 10  	     DBMS_OUTPUT.PUT_LINE('The Capitol of '||v_country_name||' is '||v_capitol);
+ 11  END get_country_info;
+ 12  /
+
+Procedure created.
+
+SQL> @scripts/8_2_2AB.sql
+SQL> -- 2A)
+SQL> -- Creating Stored Procedure 'get_country_info'
+SQL> /*
+SQL> CREATE OR REPLACE PROCEDURE get_country_info
+SQL> (p_country_id IN countries.country_id%TYPE)
+SQL> IS
+SQL> v_country_name countries.country_name%TYPE;
+SQL> v_capitol countries.capitol%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT country_name, capitol INTO v_country_name, v_capitol
+SQL> 	     FROM countries WHERE country_id = p_country_id;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('The Capitol of '||v_country_name||' is '||v_capitol);
+SQL> END get_country_info;
+SQL> /*/
+SQL> -- 2B) using country id 90 (result should be turkey... and Ankara)
+SQL> BEGIN
+  2  	     get_country_info(90);
+  3  END;
+  4  /
+The Capitol of Republic of Turkey is Ankara                                     
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/8_2_2AB.sql
+SQL> -- 2A)
+SQL> -- Creating Stored Procedure 'get_country_info'
+SQL> /*
+SQL> CREATE OR REPLACE PROCEDURE get_country_info
+SQL> (p_country_id IN countries.country_id%TYPE)
+SQL> IS
+SQL> v_country_name countries.country_name%TYPE;
+SQL> v_capitol countries.capitol%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT country_name, capitol INTO v_country_name, v_capitol
+SQL> 	     FROM countries WHERE country_id = p_country_id;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('The Capitol of '||v_country_name||' is '||v_capitol);
+SQL> END get_country_info;
+SQL> /
+SQL> -- 2B) using country id 90 (result should be turkey... and Ankara)
+SQL> BEGIN
+SQL> 	     get_country_info(90);
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- 2C) using country id 95
+SQL> BEGIN
+  2  	     get_country_info(95);
+  3  END;
+  4  /
+BEGIN
+*
+ERROR at line 1:
+ORA-01403: no data found 
+ORA-06512: at "DATADEV.GET_COUNTRY_INFO", line 7 
+ORA-06512: at line 2 
+
+
+SQL> @scripts/8_2_2D.sql
+SQL> -- 2D)
+SQL> /*
+SQL> CREATE OR REPLACE PROCEDURE get_country_info
+SQL> (p_country_id IN countries.country_id%TYPE)
+SQL> IS
+SQL> v_country_name countries.country_name%TYPE;
+SQL> v_capitol countries.capitol%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT country_name, capitol INTO v_country_name, v_capitol
+SQL> 	     FROM countries WHERE country_id = p_country_id;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('The Capitol of '||v_country_name||' is '||v_capitol);
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Country ID '||p_country_id||' does not exist');
+SQL> END get_country_info;
+SQL> /
+SQL> */
+SQL> -- Running modified Procedure
+SQL> BEGIN
+  2  	     get_country_info(95);
+  3  END;
+  4  /
+BEGIN
+*
+ERROR at line 1:
+ORA-01403: no data found 
+ORA-06512: at "DATADEV.GET_COUNTRY_INFO", line 7 
+ORA-06512: at line 2 
+
+
+SQL> OOPS!
+SP2-0042: unknown command "OOPS!" - rest of line ignored.
+SQL> @scripts/8_2_2D.sql
+SQL> -- 2D)
+SQL> CREATE OR REPLACE PROCEDURE get_country_info
+  2  (p_country_id IN countries.country_id%TYPE)
+  3  IS
+  4  v_country_name countries.country_name%TYPE;
+  5  v_capitol countries.capitol%TYPE;
+  6  BEGIN
+  7  	     SELECT country_name, capitol INTO v_country_name, v_capitol
+  8  	     FROM countries WHERE country_id = p_country_id;
+  9  
+ 10  	     DBMS_OUTPUT.PUT_LINE('The Capitol of '||v_country_name||' is '||v_capitol);
+ 11  EXCEPTION
+ 12  	     WHEN NO_DATA_FOUND THEN
+ 13  	     DBMS_OUTPUT.PUT_LINE('Country ID '||p_country_id||' does not exist');
+ 14  END get_country_info;
+ 15  /
+
+Procedure created.
+
+SQL> @scripts/8_2_2D.sql
+SQL> -- 2D)
+SQL> /*
+SQL> CREATE OR REPLACE PROCEDURE get_country_info
+SQL> (p_country_id IN countries.country_id%TYPE)
+SQL> IS
+SQL> v_country_name countries.country_name%TYPE;
+SQL> v_capitol countries.capitol%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT country_name, capitol INTO v_country_name, v_capitol
+SQL> 	     FROM countries WHERE country_id = p_country_id;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE('The Capitol of '||v_country_name||' is '||v_capitol);
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Country ID '||p_country_id||' does not exist');
+SQL> END get_country_info;
+SQL> /
+SQL> */
+SQL> -- Running modified Procedure
+SQL> BEGIN
+  2  	     get_country_info(95);
+  3  END;
+  4  /
+Country ID 95 does not exist                                                    
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/8_2_4AB.sql
+SQL> -- Creating Procedure for Question 4A
+SQL> CREATE OR REPLACE PROCEDURE get_country_count
+  2  (
+  3  	     p_region_id IN countries.region_id%TYPE,
+  4  	     p_highest_elevation IN countries.highest_elevation%TYPE
+  5  )
+  6  IS
+  7  v_count NUMBER;
+  8  
+  9  BEGIN
+ 10  	     SELECT count(country_name)
+ 11  	     INTO v_count
+ 12  	     FROM countries
+ 13  	     WHERE region_id = p_region_id AND highest_elevation > p_highest_elevation;
+ 14  
+ 15  	     DBMS_OUTPUT.PUT_LINE(
+ 16  				     'There is total of '||
+ 17  				     v_count||
+ 18  				     ' countries, with Region ID '||
+ 19  				     p_region_id||
+ 20  				     ' with elevation higher than '||
+ 21  				     p_highest_elevation||'.');
+ 22  EXCEPTION
+ 23  	     WHEN NO_DATA_FOUND THEN
+ 24  	     DBMS_OUTPUT.PUT_LINE('Region ID '||p_region_id||' does not exist');
+ 25  END get_country_count;
+ 26  /
+
+Procedure created.
+
+SQL> @scripts/8_2_4AB.sql
+SQL> -- Creating Procedure for Question 4A
+SQL> /*
+SQL> CREATE OR REPLACE PROCEDURE get_country_count
+SQL> (
+SQL> 	     p_region_id IN countries.region_id%TYPE,
+SQL> 	     p_highest_elevation IN countries.highest_elevation%TYPE
+SQL> )
+SQL> IS
+SQL> v_count NUMBER;
+SQL> 
+SQL> BEGIN
+SQL> 	     SELECT count(country_name)
+SQL> 	     INTO v_count
+SQL> 	     FROM countries
+SQL> 	     WHERE region_id = p_region_id AND highest_elevation > p_highest_elevation;
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE(
+SQL> 				     'There is total of '||
+SQL> 				     v_count||
+SQL> 				     ' countries, with Region ID '||
+SQL> 				     p_region_id||
+SQL> 				     ' with elevation higher than '||
+SQL> 				     p_highest_elevation||'.');
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Region ID '||p_region_id||' does not exist');
+SQL> END get_country_count;
+SQL> /
+SQL> */
+SQL> -- 4B) Running Stored Procedure
+SQL> BEGIN
+  2  	     get_country_count(5, 2000);
+  3  END;
+  4  /
+There is total of 10 countries, with Region ID 5 with elevation higher than     
+2000.                                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/8_2_4DEF.sql
+SQL> -- Creating Procedure for Question 4D
+SQL> CREATE OR REPLACE PROCEDURE get_country_count
+  2  (
+  3  	     p_region_id IN countries.region_id%TYPE,
+  4  	     p_highest_elevation IN countries.highest_elevation%TYPE,
+  5  	     p_char IN CHAR
+  6  )
+  7  IS
+  8  v_count NUMBER;
+  9  
+ 10  BEGIN
+ 11  	     SELECT count(country_name)
+ 12  	     INTO v_count
+ 13  	     FROM countries
+ 14  	     WHERE (region_id = p_region_id)
+ 15  		     AND (highest_elevation > p_highest_elevation)
+ 16  		     AND (country_name LIKE (p_char||'%'));
+ 17  
+ 18  	     DBMS_OUTPUT.PUT_LINE(
+ 19  				     'There is total of '||
+ 20  				     v_count||
+ 21  				     ' countries, with Region ID '||
+ 22  				     p_region_id||
+ 23  				     ' with elevation higher than '||
+ 24  				     p_highest_elevation||'.');
+ 25  EXCEPTION
+ 26  	     WHEN NO_DATA_FOUND THEN
+ 27  	     DBMS_OUTPUT.PUT_LINE('Region ID '||p_region_id||' does not exist');
+ 28  END get_country_count;
+ 29  /
+
+Procedure created.
+
+SQL> @scripts/8_2_4DEF.sql
+SQL> -- Creating Procedure for Question 4D
+SQL> /*
+SQL> CREATE OR REPLACE PROCEDURE get_country_count
+SQL> (
+SQL> 	     p_region_id IN countries.region_id%TYPE,
+SQL> 	     p_highest_elevation IN countries.highest_elevation%TYPE,
+SQL> 	     p_char IN CHAR
+SQL> )
+SQL> IS
+SQL> v_count NUMBER;
+SQL> 
+SQL> BEGIN
+SQL> 	     SELECT count(country_name)
+SQL> 	     INTO v_count
+SQL> 	     FROM countries
+SQL> 	     WHERE (region_id = p_region_id)
+SQL> 		     AND (highest_elevation > p_highest_elevation)
+SQL> 		     AND (country_name LIKE (p_char||'%'));
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE(
+SQL> 				     'There is total of '||
+SQL> 				     v_count||
+SQL> 				     ' countries, with Region ID '||
+SQL> 				     p_region_id||
+SQL> 				     ' with elevation higher than '||
+SQL> 				     p_highest_elevation||'.');
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Region ID '||p_region_id||' does not exist');
+SQL> END get_country_count;
+SQL> /
+SQL> */
+SQL> -- 4E) Running Procedure, ID:5, Elevation: 2000, CHAR: 'B'
+SQL> BEGIN
+  2  	     get_country_count(5,2000,'B');
+  3  END;
+  4  /
+There is total of 1 countries, with Region ID 5 with elevation higher than 2000.
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/8_2_4DEF.sql
+SQL> -- Creating Procedure for Question 4D
+SQL> /*
+SQL> CREATE OR REPLACE PROCEDURE get_country_count
+SQL> (
+SQL> 	     p_region_id IN countries.region_id%TYPE,
+SQL> 	     p_highest_elevation IN countries.highest_elevation%TYPE,
+SQL> 	     p_char IN CHAR
+SQL> )
+SQL> IS
+SQL> v_count NUMBER;
+SQL> 
+SQL> BEGIN
+SQL> 	     SELECT count(country_name)
+SQL> 	     INTO v_count
+SQL> 	     FROM countries
+SQL> 	     WHERE (region_id = p_region_id)
+SQL> 		     AND (highest_elevation > p_highest_elevation)
+SQL> 		     AND (country_name LIKE (p_char||'%'));
+SQL> 
+SQL> 	     DBMS_OUTPUT.PUT_LINE(
+SQL> 				     'There is total of '||
+SQL> 				     v_count||
+SQL> 				     ' countries, with Region ID '||
+SQL> 				     p_region_id||
+SQL> 				     ' with elevation higher than '||
+SQL> 				     p_highest_elevation||'.');
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Region ID '||p_region_id||' does not exist');
+SQL> END get_country_count;
+SQL> /
+SQL> -- 4E) Running Procedure, ID:5, Elevation: 2000, CHAR: 'B'
+SQL> BEGIN
+SQL> 	     get_country_count(5,2000,'B');
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- 4F) Running Procedure 5,'B', 2000 ... it will break.... or show exception!
+SQL> BEGIN
+  2  	     get_country_count(5,'B',2000);
+  3  END;
+  4  /
+BEGIN
+*
+ERROR at line 1:
+ORA-06502: PL/SQL: numeric or value error: character to number conversion error 
+ORA-06512: at line 2 
+
+
+SQL> spool off

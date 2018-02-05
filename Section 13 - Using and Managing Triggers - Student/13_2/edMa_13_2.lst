@@ -1,0 +1,220 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/13_2_2.sql
+SQL> /* -- Question 2A */
+SQL> DROP TABLE audit_table;
+DROP TABLE audit_table
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> CREATE TABLE audit_table
+  2  (
+  3  	     action VARCHAR2(50),
+  4  	     user_name VARCHAR2(30) DEFAULT USER,
+  5  	     last_change_date TIMESTAMP DEFAULT SYSTIMESTAMP
+  6  );
+
+Table created.
+
+SQL> @scripts/13_2_2.sql
+SQL> /* -- Question 2A
+SQL> DROP TABLE audit_table;
+SQL> CREATE TABLE audit_table
+SQL> (
+SQL> 	     action VARCHAR2(50),
+SQL> 	     user_name VARCHAR2(30) DEFAULT USER,
+SQL> 	     last_change_date TIMESTAMP DEFAULT SYSTIMESTAMP
+SQL> );
+SQL> -- Question 2B */
+SQL> CREATE OR REPLACE TRIGGER log_emp_change
+  2  AFTER INSERT ON employees
+  3  BEGIN
+  4  	     INSERT INTO audit_table (action, user_name, last_change_date)
+  5  	     VALUES ('INSERT', USER, SYSDATE);
+  6  END;
+  7  /
+
+Trigger created.
+
+SQL> INSERT INTO employees(employee_id,first_name,last_name,email,phone_number,hire_date,job_id,salary,commission_pct,manager_id,department_id)
+  2  VALUES(853,'Edward','Ma','EMA','902.403.3362',TO_DATE('2017-11-28','yyyy-mm-dd'),'MK_REP',80000,null,201,20 );
+
+1 row created.
+
+SQL> INSERT INTO employees(employee_id,first_name,last_name,email,phone_number,hire_date,job_id,salary,commission_pct,manager_id,department_id)
+  2  
+SQL> SELECT * FROM audit_table;
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+INSERT                                                                          
+DATADEV                                                                         
+05-DEC-17 01.08.22.000000 PM                                                    
+                                                                                
+
+SQL> DELETE FROM employees WHERE last_name = 'Ma';
+
+1 row deleted.
+
+SQL> SELECT * FROM audit_table;
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+INSERT                                                                          
+DATADEV                                                                         
+05-DEC-17 01.08.22.000000 PM                                                    
+                                                                                
+
+SQL> @scripts/13_2_5.sql
+SQL> /* -- Question 5 */
+SQL> CREATE OR REPLACE TRIGGER log_emp_change
+  2  BEFORE UPDATE ON employees
+  3  BEGIN
+  4  	     INSERT INTO audit_table (action, user_name, last_change_date)
+  5  	     VALUES ('UPDATE', USER, SYSDATE);
+  6  END;
+  7  /
+
+Trigger created.
+
+SQL> @scripts/13_2_5.sql
+SQL> /* -- Question 5
+SQL> CREATE OR REPLACE TRIGGER log_emp_change
+SQL> BEFORE UPDATE ON employees
+SQL> BEGIN
+SQL> 	     INSERT INTO audit_table (action, user_name, last_change_date)
+SQL> 	     VALUES ('UPDATE', USER, SYSDATE);
+SQL> END;
+SQL> /
+SQL> -- Part 1 */
+SQL> UPDATE employees
+  2  SET salary = 80000
+  3  WHERE employee_id = 999;
+
+0 rows updated.
+
+SQL> SELECT salary FROM employees WHERE employee_id = 999;
+
+no rows selected
+
+SQL> SELECT * FROM audit_table;
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+INSERT                                                                          
+DATADEV                                                                         
+05-DEC-17 01.08.22.000000 PM                                                    
+                                                                                
+UPDATE                                                                          
+DATADEV                                                                         
+05-DEC-17 01.10.25.000000 PM                                                    
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+                                                                                
+
+SQL> @scripts/13_2_5.sql
+SQL> /* -- Question 5
+SQL> CREATE OR REPLACE TRIGGER log_emp_change
+SQL> BEFORE UPDATE ON employees
+SQL> BEGIN
+SQL> 	     INSERT INTO audit_table (action, user_name, last_change_date)
+SQL> 	     VALUES ('UPDATE', USER, SYSDATE);
+SQL> END;
+SQL> /
+SQL> -- Part 1
+SQL> UPDATE employees
+SQL> SET salary = 80000
+SQL> WHERE employee_id = 999;
+SQL> -- Part 2
+SQL> SELECT * FROM audit_table;
+SQL> -- Question 5A
+SQL> -- Part 1 */
+SQL> CREATE OR REPLACE TRIGGER log_emp_change
+  2  BEFORE UPDATE ON employees
+  3  BEGIN
+  4  	     IF (TO_NUMBER(TO_CHAR(SYSDATE, 'HH24'))>=18) OR (TO_NUMBER(TO_CHAR(SYSDATE, 'HH24'))<=08)
+  5  	     THEN
+  6  		     RAISE_APPLICATION_ERROR(-20204, 'You can only UPDATE into Employees Table during Business hours!');
+  7  	     END IF;
+  8  END;
+  9  /
+
+Trigger created.
+
+SQL> @scripts/13_2_5.sql
+SQL> /* -- Question 5
+SQL> CREATE OR REPLACE TRIGGER log_emp_change
+SQL> BEFORE UPDATE ON employees
+SQL> BEGIN
+SQL> 	     INSERT INTO audit_table (action, user_name, last_change_date)
+SQL> 	     VALUES ('UPDATE', USER, SYSDATE);
+SQL> END;
+SQL> /
+SQL> -- Part 1
+SQL> UPDATE employees
+SQL> SET salary = 80000
+SQL> WHERE employee_id = 999;
+SQL> -- Part 2
+SQL> SELECT * FROM audit_table;
+SQL> -- Question 5A
+SQL> -- Part 1
+SQL> CREATE OR REPLACE TRIGGER log_emp_change
+SQL> BEFORE UPDATE ON employees
+SQL> BEGIN
+SQL> 	     IF (TO_NUMBER(TO_CHAR(SYSDATE, 'HH24'))>=18) OR (TO_NUMBER(TO_CHAR(SYSDATE, 'HH24'))<=08)
+SQL> 	     THEN
+SQL> 		     RAISE_APPLICATION_ERROR(-20204, 'You can only UPDATE into Employees Table during Business hours!');
+SQL> 	     END IF;
+SQL> END;
+SQL> / */
+SQL> -- Part 2
+SQL> UPDATE employees
+  2  SET salary = 20000
+  3  WHERE employee_id = 100;
+
+1 row updated.
+
+SQL> SELECT * FROM audit_table;
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+INSERT                                                                          
+DATADEV                                                                         
+05-DEC-17 01.08.22.000000 PM                                                    
+                                                                                
+UPDATE                                                                          
+DATADEV                                                                         
+05-DEC-17 01.10.25.000000 PM                                                    
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+                                                                                
+
+SQL> spool off

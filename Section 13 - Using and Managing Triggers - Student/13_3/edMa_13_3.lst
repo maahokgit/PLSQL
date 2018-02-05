@@ -1,0 +1,498 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/13_3_1.sql
+SQL> -- Question 1
+SQL> DROP TRIGGER emp_audit_trigg;
+
+Trigger dropped.
+
+SQL> CREATE OR REPLACE TRIGGER emp_audit_trigg
+  2  AFTER INSERT ON employees
+  3  BEGIN
+  4  	     INSERT INTO audit_table (action) VALUES ('Inserting');
+  5  END;
+  6  /
+
+Trigger created.
+
+SQL> @scripts/13_3_2.sql
+SQL> -- Question 2
+SQL> CREATE OR REPLACE TRIGGER emp_audit_trigg
+  2  AFTER INSERT OR DELETE ON employees
+  3  BEGIN
+  4  	     IF INSERTING THEN
+  5  		     INSERT INTO audit_table (action) VALUES ('Inserting');
+  6  	     END IF;
+  7  	     IF DELETING THEN
+  8  		     INSERT INTO audit_table (action) VALUES ('Deleting');
+  9  	     END IF;
+ 10  END;
+ 11  /
+
+Trigger created.
+
+SQL> @scripts/13_3_3.sql
+SQL> /* -- Question 3 */
+SQL> -- Part 1
+SQL> ALTER TABLE audit_table
+  2    ADD emp_id NUMBER(6);
+
+Table altered.
+
+SQL> DESCRIBE audit_table;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ACTION                                             VARCHAR2(50)
+ USER_NAME                                          VARCHAR2(30)
+ LAST_CHANGE_DATE                                   TIMESTAMP(6)
+ EMP_ID                                             NUMBER(6)
+
+SQL> @scripts/13_3_3.sql
+SQL> /* -- Question 3
+SQL> -- Part 1
+SQL> ALTER TABLE audit_table
+SQL>   ADD emp_id NUMBER(6);
+SQL> -- Part 2
+SQL> DESCRIBE audit_table;
+SQL> -- Part 3 */
+SQL> CREATE OR REPLACE TRIGGER emp_audit_trigg
+  2  AFTER INSERT OR DELETE ON employees FOR EACH ROW
+  3  BEGIN
+  4  	     IF INSERTING THEN
+  5  		     INSERT INTO audit_table (action, emp_id) VALUES ('Inserting', :NEW.employee_id);
+  6  	     END IF;
+  7  	     IF DELETING THEN
+  8  		     INSERT INTO audit_table (action, emp_id) VALUES ('Deleting', :OLD.employee_id);
+  9  	     END IF;
+ 10  END;
+ 11  /
+
+Trigger created.
+
+SQL> @scripts/13_3_3.sql
+SQL> /* -- Question 3
+SQL> -- Part 1
+SQL> ALTER TABLE audit_table
+SQL>   ADD emp_id NUMBER(6);
+SQL> -- Part 2
+SQL> DESCRIBE audit_table;
+SQL> -- Part 3
+SQL> CREATE OR REPLACE TRIGGER emp_audit_trigg
+SQL> AFTER INSERT OR DELETE ON employees FOR EACH ROW
+SQL> BEGIN
+SQL> 	     IF INSERTING THEN
+SQL> 		     INSERT INTO audit_table (action, emp_id) VALUES ('Inserting', :NEW.employee_id);
+SQL> 	     END IF;
+SQL> 	     IF DELETING THEN
+SQL> 		     INSERT INTO audit_table (action, emp_id) VALUES ('Deleting', :OLD.employee_id);
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> -- Part 4 */
+SQL> INSERT INTO employees(employee_id,first_name,last_name,email,phone_number,hire_date,job_id,salary,commission_pct,manager_id,department_id)
+  2  VALUES(853,'Edward','Ma','EMA','902.403.3362',TO_DATE('2017-11-28','yyyy-mm-dd'),'MK_REP',80000,null,201,20 );
+
+1 row created.
+
+SQL> SELECT * FROM audit_table;
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+INSERT                                                                          
+DATADEV                                                                         
+05-DEC-17 01.08.22.000000 PM                                                    
+                                                                                
+                                                                                
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+UPDATE                                                                          
+DATADEV                                                                         
+05-DEC-17 01.10.25.000000 PM                                                    
+                                                                                
+                                                                                
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+Inserting                                                                       
+DATADEV                                                                         
+05-DEC-17 01.16.41.252509 PM                                                    
+       853                                                                      
+                                                                                
+
+SQL> DELETE FROM employees WHERE last_name = 'Ma';
+
+1 row deleted.
+
+SQL> SELECT * FROM audit_table;
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+INSERT                                                                          
+DATADEV                                                                         
+05-DEC-17 01.08.22.000000 PM                                                    
+                                                                                
+                                                                                
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+UPDATE                                                                          
+DATADEV                                                                         
+05-DEC-17 01.10.25.000000 PM                                                    
+                                                                                
+                                                                                
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+Inserting                                                                       
+DATADEV                                                                         
+05-DEC-17 01.16.41.252509 PM                                                    
+       853                                                                      
+                                                                                
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+Deleting                                                                        
+DATADEV                                                                         
+05-DEC-17 01.17.01.541859 PM                                                    
+       853                                                                      
+                                                                                
+
+SQL> @scripts/13_3_4.sql
+SQL> /* -- Question 4 */
+SQL> -- Part A
+SQL> DROP TABLE dept_count;
+
+Table dropped.
+
+SQL> CREATE TABLE dept_count
+  2  AS SELECT department_id dept_id, count(*) count_emps
+  3  FROM employees
+  4  GROUP BY department_id;
+
+Table created.
+
+SQL> @scripts/13_3_4.sql
+SQL> /* -- Question 4
+SQL> -- Part A
+SQL> DROP TABLE dept_count;
+SQL> CREATE TABLE dept_count
+SQL> AS SELECT department_id dept_id, count(*) count_emps
+SQL> FROM employees
+SQL> GROUP BY department_id;
+SQL> -- Part B */
+SQL> DROP VIEW emp_vu;
+
+View dropped.
+
+SQL> CREATE VIEW emp_vu
+  2  AS SELECT employee_id, last_name, department_id
+  3  FROM employees;
+
+View created.
+
+SQL> @scripts/13_3_4.sql
+SQL> /* -- Question 4
+SQL> -- Part A
+SQL> DROP TABLE dept_count;
+SQL> CREATE TABLE dept_count
+SQL> AS SELECT department_id dept_id, count(*) count_emps
+SQL> FROM employees
+SQL> GROUP BY department_id;
+SQL> -- Part B
+SQL> DROP VIEW emp_vu;
+SQL> CREATE VIEW emp_vu
+SQL> AS SELECT employee_id, last_name, department_id
+SQL> FROM employees;
+SQL> -- Part C
+SQL> -- I cannot get DELETE TO WORK */
+SQL> DROP TRIGGER update_count;
+DROP TRIGGER update_count
+*
+ERROR at line 1:
+ORA-04080: trigger 'UPDATE_COUNT' does not exist 
+
+
+SQL> CREATE OR REPLACE TRIGGER update_count
+  2  INSTEAD OF INSERT ON emp_vu
+  3  FOR EACH ROW
+  4  BEGIN
+  5  	     UPDATE dept_count
+  6  	     SET count_emps = count_emps + 1
+  7  	     WHERE dept_id = :NEW.department_id;
+  8  END;
+  9  /
+
+Trigger created.
+
+SQL> SELECT * FROM dept_count;
+
+   DEPT_ID COUNT_EMPS                                                           
+---------- ----------                                                           
+                    1                                                           
+        90          3                                                           
+        20          6                                                           
+        85          4                                                           
+       110          5                                                           
+        80          4                                                           
+        50          7                                                           
+        10          4                                                           
+        60          5                                                           
+
+9 rows selected.
+
+SQL> INSERT INTO emp_vu(employee_id, last_name, department_id) VALUES (123, 'Ma', 80);
+
+1 row created.
+
+SQL> SELECT * FROM dept_count;
+
+   DEPT_ID COUNT_EMPS                                                           
+---------- ----------                                                           
+                    1                                                           
+        90          3                                                           
+        20          6                                                           
+        85          4                                                           
+       110          5                                                           
+        80          5                                                           
+        50          7                                                           
+        10          4                                                           
+        60          5                                                           
+
+9 rows selected.
+
+SQL> @scripts/13_3_5.sql
+SQL> /* -- Question 5
+SQL> -- Part A */
+SQL> CREATE OR REPLACE TRIGGER emp_audit_trigg
+  2  	     FOR UPDATE OF salary ON employees
+  3  	     COMPOUND TRIGGER
+  4  BEFORE STATEMENT IS
+  5  BEGIN
+  6  	     INSERT INTO audit_table (action)
+  7  	     VALUES ('Updating salary');
+  8  END BEFORE STATEMENT;
+  9  AFTER EACH ROW IS
+ 10  BEGIN
+ 11  	     INSERT INTO audit_table (action, emp_id)
+ 12  	     VALUES ('Updated. Old salary: ' || :OLD.salary || '. New salary: '|| :NEW.salary, :NEW.employee_id);
+ 13  END AFTER EACH ROW;
+ 14  END emp_audit_trigg;
+ 15  /
+
+Trigger created.
+
+SQL> SELECT * FROM audit_table;
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+INSERT                                                                          
+DATADEV                                                                         
+05-DEC-17 01.08.22.000000 PM                                                    
+                                                                                
+                                                                                
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+UPDATE                                                                          
+DATADEV                                                                         
+05-DEC-17 01.10.25.000000 PM                                                    
+                                                                                
+                                                                                
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+Inserting                                                                       
+DATADEV                                                                         
+05-DEC-17 01.16.41.252509 PM                                                    
+       853                                                                      
+                                                                                
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+Deleting                                                                        
+DATADEV                                                                         
+05-DEC-17 01.17.01.541859 PM                                                    
+       853                                                                      
+                                                                                
+
+SQL> @scripts/13_3_5.sql
+SQL> /* -- Question 5
+SQL> -- Part A
+SQL> CREATE OR REPLACE TRIGGER emp_audit_trigg
+SQL> 	     FOR UPDATE OF salary ON employees
+SQL> 	     COMPOUND TRIGGER
+SQL> BEFORE STATEMENT IS
+SQL> BEGIN
+SQL> 	     INSERT INTO audit_table (action)
+SQL> 	     VALUES ('Updating salary');
+SQL> END BEFORE STATEMENT;
+SQL> AFTER EACH ROW IS
+SQL> BEGIN
+SQL> 	     INSERT INTO audit_table (action, emp_id)
+SQL> 	     VALUES ('Updated. Old salary: ' || :OLD.salary || '. New salary: '|| :NEW.salary, :NEW.employee_id);
+SQL> END AFTER EACH ROW;
+SQL> END emp_audit_trigg;
+SQL> / */
+SQL> -- Part B
+SQL> UPDATE employees
+  2  SET salary = 5800
+  3  WHERE employee_id = 124;
+
+1 row updated.
+
+SQL> SELECT * FROM audit_table;
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+INSERT                                                                          
+DATADEV                                                                         
+05-DEC-17 01.08.22.000000 PM                                                    
+                                                                                
+                                                                                
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+UPDATE                                                                          
+DATADEV                                                                         
+05-DEC-17 01.10.25.000000 PM                                                    
+                                                                                
+                                                                                
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+Inserting                                                                       
+DATADEV                                                                         
+05-DEC-17 01.16.41.252509 PM                                                    
+       853                                                                      
+                                                                                
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+Deleting                                                                        
+DATADEV                                                                         
+05-DEC-17 01.17.01.541859 PM                                                    
+       853                                                                      
+                                                                                
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+Updating salary                                                                 
+DATADEV                                                                         
+05-DEC-17 01.27.07.372814 PM                                                    
+                                                                                
+                                                                                
+
+ACTION                                                                          
+--------------------------------------------------                              
+USER_NAME                                                                       
+------------------------------                                                  
+LAST_CHANGE_DATE                                                                
+---------------------------------------------------------------------------     
+    EMP_ID                                                                      
+----------                                                                      
+Updated. Old salary: 5800. New salary: 5800                                     
+DATADEV                                                                         
+05-DEC-17 01.27.07.373214 PM                                                    
+       124                                                                      
+                                                                                
+
+6 rows selected.
+
+SQL> spool off

@@ -1,0 +1,48 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/13_4_2.sql
+SQL> -- Question 2
+SQL> DROP TABLE audit_ddl;
+
+Table dropped.
+
+SQL> CREATE TABLE audit_ddl
+  2  (
+  3  	     action VARCHAR2(20),
+  4  	     who VARCHAR2(30) DEFAULT USER,
+  5  	     when TIMESTAMP DEFAULT SYSTIMESTAMP
+  6  );
+
+Table created.
+
+SQL> @scripts/13_4_5.sql
+SQL> -- Question 5
+SQL> CREATE OR REPLACE TRIGGER max_salary
+  2  BEFORE UPDATE OF salary ON employees
+  3  FOR EACH ROW
+  4  DECLARE
+  5  	     v_max_sal employees.salary%TYPE;
+  6  BEGIN
+  7  	     SELECT MAX(salary) INTO v_max_sal
+  8  	     FROM employees;
+  9  
+ 10  	     DBMS_OUTPUT.PUT_LINE('Current Max Salary is '||v_max_sal);
+ 11  END max_salary;
+ 12  /
+
+Trigger created.
+
+SQL> @scripts/13_4_6.sql
+SQL> -- Question 6
+SQL> UPDATE employees
+  2  SET salary = 25000
+  3  WHERE employee_id = 100;
+UPDATE employees
+       *
+ERROR at line 1:
+ORA-04091: table DATADEV.EMPLOYEES is mutating, trigger/function may not see it 
+ORA-06512: at "DATADEV.MAX_SALARY", line 4 
+ORA-04088: error during execution of trigger 'DATADEV.MAX_SALARY' 
+
+
+SQL> spool off

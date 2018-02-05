@@ -1,0 +1,470 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/8_3_2AB.sql
+SQL> -- 2A
+SQL> CREATE OR REPLACE PROCEDURE find_area_pop
+  2  (
+  3  	     p_country_id IN countries.country_id%TYPE,
+  4  	     p_country_name OUT countries.country_name%TYPE,
+  5  	     p_population OUT countries.population%TYPE
+  6  ) IS
+  7  BEGIN
+  8  	     SELECT country_name, population
+  9  	     INTO p_country_name, p_population
+ 10  	     FROM countries WHERE country_id = p_country_id;
+ 11  EXCEPTION
+ 12  	     WHEN NO_DATA_FOUND THEN
+ 13  		     DBMS_OUTPUT.PUT_LINE('Invalid Country ID, try again!');
+ 14  END find_area_pop;
+ 15  /
+
+Procedure created.
+
+SQL> @scripts/8_3_2AB.sql
+SQL> /* -- 2A
+SQL> CREATE OR REPLACE PROCEDURE find_area_pop
+SQL> (
+SQL> 	     p_country_id IN countries.country_id%TYPE,
+SQL> 	     p_country_name OUT countries.country_name%TYPE,
+SQL> 	     p_population OUT countries.population%TYPE
+SQL> ) IS
+SQL> BEGIN
+SQL> 	     SELECT country_name, population
+SQL> 	     INTO p_country_name, p_population
+SQL> 	     FROM countries WHERE country_id = p_country_id;
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Invalid Country ID, try again!');
+SQL> END find_area_pop;
+SQL> /*/
+SQL> -- 2B
+SQL> DECLARE
+  2  	     a_country_name countries.country_name%TYPE;
+  3  	     a_population countries.population%TYPE;
+  4  BEGIN -- using country id: 2 for Canada and 10 for nothing... lols
+  5  	     find_area_pop(2, a_country_name, a_population);
+  6  	     DBMS_OUTPUT.PUT_LINE('Country    : '||a_country_name);
+  7  	     DBMS_OUTPUT.PUT_LINE('Population : '||a_population);
+  8  END;
+  9  /
+Country    : Canada                                                             
+Population : 33098932                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/8_3_2AB.sql
+SQL> /* -- 2A
+SQL> CREATE OR REPLACE PROCEDURE find_area_pop
+SQL> (
+SQL> 	     p_country_id IN countries.country_id%TYPE,
+SQL> 	     p_country_name OUT countries.country_name%TYPE,
+SQL> 	     p_population OUT countries.population%TYPE
+SQL> ) IS
+SQL> BEGIN
+SQL> 	     SELECT country_name, population
+SQL> 	     INTO p_country_name, p_population
+SQL> 	     FROM countries WHERE country_id = p_country_id;
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Invalid Country ID, try again!');
+SQL> END find_area_pop;
+SQL> /*/
+SQL> -- 2B
+SQL> DECLARE
+  2  	     a_country_name countries.country_name%TYPE;
+  3  	     a_population countries.population%TYPE;
+  4  BEGIN -- using country id: 2 for Canada and 10 for nothing... lols
+  5  	     find_area_pop(10, a_country_name, a_population);
+  6  	     DBMS_OUTPUT.PUT_LINE('Country    : '||a_country_name);
+  7  	     DBMS_OUTPUT.PUT_LINE('Population : '||a_population);
+  8  END;
+  9  /
+Invalid Country ID, try again!                                                  
+Country    :                                                                    
+Population :                                                                    
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/8_3_2CD.sql
+SQL> -- 2C
+SQL> CREATE OR REPLACE PROCEDURE find_area_pop
+  2  (
+  3  	     p_country_id IN countries.country_id%TYPE,
+  4  	     p_country_name OUT countries.country_name%TYPE,
+  5  	     p_population OUT countries.population%TYPE,
+  6  	     p_pop_density IN OUT NUMBER
+  7  ) IS
+  8  	     v_area countries.area%TYPE;
+  9  BEGIN
+ 10  	     SELECT country_name, population, area
+ 11  	     INTO p_country_name, p_population, v_area
+ 12  	     FROM countries WHERE country_id = p_country_id;
+ 13  
+ 14  	     p_pop_density := (p_population / v_area);
+ 15  EXCEPTION
+ 16  	     WHEN NO_DATA_FOUND THEN
+ 17  		     DBMS_OUTPUT.PUT_LINE('Invalid Country ID, try again!');
+ 18  END find_area_pop;
+ 19  /
+
+Procedure created.
+
+SQL> @scripts/8_3_2CD.sql
+SQL> /* --2C
+SQL> CREATE OR REPLACE PROCEDURE find_area_pop
+SQL> (
+SQL> 	     p_country_id IN countries.country_id%TYPE,
+SQL> 	     p_country_name OUT countries.country_name%TYPE,
+SQL> 	     p_population OUT countries.population%TYPE,
+SQL> 	     p_pop_density IN OUT NUMBER
+SQL> ) IS
+SQL> 	     v_area countries.area%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT country_name, population, area
+SQL> 	     INTO p_country_name, p_population, v_area
+SQL> 	     FROM countries WHERE country_id = p_country_id;
+SQL> 
+SQL> 	     p_pop_density := (p_population / v_area);
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Invalid Country ID, try again!');
+SQL> END find_area_pop;
+SQL> / */
+SQL> -- 2D
+SQL> DECLARE
+  2  	     a_country_name countries.country_name%TYPE;
+  3  	     a_population countries.population%TYPE;
+  4  	     a_pop_density NUMBER;
+  5  BEGIN -- using country id: 2 for Canada and 10 for nothing... lols
+  6  	     find_area_pop(2, a_country_name, a_population, a_pop_density);
+  7  	     DBMS_OUTPUT.PUT_LINE('Country    : '||a_country_name);
+  8  	     DBMS_OUTPUT.PUT_LINE('Population : '||a_population);
+  9  	     DBMS_OUTPUT.PUT_LINE('Pop Density: '||ROUND(a_pop_density,3));
+ 10  END;
+ 11  /
+Country    : Canada                                                             
+Population : 33098932                                                           
+Pop Density: 3.315                                                              
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/8_3_3.sql
+SQL> CREATE OR REPLACE PROCEDURE power_of_two
+  2  (
+  3  	     p_number IN OUT NUMBER
+  4  ) IS
+  5  
+  6  BEGIN
+  7  	     p_number := p_number * p_number;
+  8  END power_of_two;
+  9  /
+
+Procedure created.
+
+SQL> @scripts/8_3_3.sql
+SQL> /*
+SQL> CREATE OR REPLACE PROCEDURE power_of_two
+SQL> (
+SQL> 	     p_number IN OUT NUMBER
+SQL> ) IS
+SQL> 
+SQL> BEGIN
+SQL> 	     p_number := p_number * p_number;
+SQL> END power_of_two;
+SQL> / */
+SQL> DECLARE
+  2  	     num NUMBER := 4; -- 4, 7, -20
+  3  	     a_number NUMBER := num
+  4  BEGIN
+  5  	     power_of_two(a_number);
+  6  	     DBMS_OUTPUT.PUT_LINE(num||'^2 = '||a_number);
+  7  END;
+  8  /
+BEGIN
+*
+ERROR at line 4:
+ORA-06550: line 4, column 1: 
+PLS-00103: Encountered the symbol "BEGIN" when expecting one of the following: 
+. ( * @ % & = - + ; < / > at in is mod remainder not rem 
+<an exponent (**)> <> or != or ~= >= <= <> and or like like2 
+like4 likec between || multiset member submultiset 
+The symbol ";" was substituted for "BEGIN" to continue. 
+
+
+SQL> @scripts/8_3_3.sql
+SQL> /*
+SQL> CREATE OR REPLACE PROCEDURE power_of_two
+SQL> (
+SQL> 	     p_number IN OUT NUMBER
+SQL> ) IS
+SQL> 
+SQL> BEGIN
+SQL> 	     p_number := p_number * p_number;
+SQL> END power_of_two;
+SQL> / */
+SQL> DECLARE
+  2  	     num NUMBER := 4; -- 4, 7, -20
+  3  	     a_number NUMBER := num;
+  4  BEGIN
+  5  	     power_of_two(a_number);
+  6  	     DBMS_OUTPUT.PUT_LINE(num||'^2 = '||a_number);
+  7  END;
+  8  /
+4^2 = 16                                                                        
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/8_3_3.sql
+SQL> /*
+SQL> CREATE OR REPLACE PROCEDURE power_of_two
+SQL> (
+SQL> 	     p_number IN OUT NUMBER
+SQL> ) IS
+SQL> 
+SQL> BEGIN
+SQL> 	     p_number := p_number * p_number;
+SQL> END power_of_two;
+SQL> / */
+SQL> DECLARE
+  2  	     num NUMBER := 7; -- 4, 7, -20
+  3  	     a_number NUMBER := num;
+  4  BEGIN
+  5  	     power_of_two(a_number);
+  6  	     DBMS_OUTPUT.PUT_LINE(num||'^2 = '||a_number);
+  7  END;
+  8  /
+7^2 = 49                                                                        
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/8_3_3.sql
+SQL> /*
+SQL> CREATE OR REPLACE PROCEDURE power_of_two
+SQL> (
+SQL> 	     p_number IN OUT NUMBER
+SQL> ) IS
+SQL> 
+SQL> BEGIN
+SQL> 	     p_number := p_number * p_number;
+SQL> END power_of_two;
+SQL> / */
+SQL> DECLARE
+  2  	     num NUMBER := -20; -- 4, 7, -20
+  3  	     a_number NUMBER := num;
+  4  BEGIN
+  5  	     power_of_two(a_number);
+  6  	     DBMS_OUTPUT.PUT_LINE(num||'^2 = '||a_number);
+  7  END;
+  8  /
+-20^2 = 400                                                                     
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/8_3_4.sql
+SQL> -- Question 4A
+SQL> DECLARE
+  2  	     v_country_id countries.country_id%TYPE;
+  3  	     v_country_name countries.country_name%TYPE;
+  4  	     v_population countries.population%TYPE;
+  5  	     v_pop_density NUMBER;
+  6  BEGIN -- using country id: 2 for Canada
+  7  	     v_country_id := 2;
+  8  	     find_area_pop
+  9  		     (
+ 10  		     p_population => v_population,
+ 11  		     p_pop_density => v_pop_density,
+ 12  		     p_country_id => v_country_id,
+ 13  		     p_country_name => v_country_name
+ 14  		     );
+ 15  	     DBMS_OUTPUT.PUT_LINE('Country    : '||v_country_name);
+ 16  	     DBMS_OUTPUT.PUT_LINE('Population : '||v_population);
+ 17  	     DBMS_OUTPUT.PUT_LINE('Pop Density: '||ROUND(v_pop_density,3));
+ 18  END;
+ 19  /
+Country    : Canada                                                             
+Population : 33098932                                                           
+Pop Density: 3.315                                                              
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/8_3_4.sql
+SQL> /* -- Question 4A
+SQL> DECLARE
+SQL> 	     v_country_id countries.country_id%TYPE;
+SQL> 	     v_country_name countries.country_name%TYPE;
+SQL> 	     v_population countries.population%TYPE;
+SQL> 	     v_pop_density NUMBER;
+SQL> BEGIN -- using country id: 2 for Canada
+SQL> 	     v_country_id := 2;
+SQL> 	     find_area_pop
+SQL> 		     (
+SQL> 		     p_population => v_population,
+SQL> 		     p_pop_density => v_pop_density,
+SQL> 		     p_country_id => v_country_id,
+SQL> 		     p_country_name => v_country_name
+SQL> 		     );
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Country    : '||v_country_name);
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Population : '||v_population);
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Pop Density: '||ROUND(v_pop_density,3));
+SQL> END;
+SQL> / */
+SQL> -- Question 4B
+SQL> DECLARE
+  2  	     v_country_name countries.country_name%TYPE;
+  3  	     v_population countries.population%TYPE;
+  4  	     v_pop_density NUMBER;
+  5  BEGIN -- using country id: 2 for Canada
+  6  	     find_area_pop
+  7  		     (
+  8  		     p_population => v_population,
+  9  		     p_pop_density => v_pop_density,
+ 10  		     2,
+ 11  		     p_country_name => v_country_name
+ 12  		     );
+ 13  	     DBMS_OUTPUT.PUT_LINE('Country    : '||v_country_name);
+ 14  	     DBMS_OUTPUT.PUT_LINE('Population : '||v_population);
+ 15  	     DBMS_OUTPUT.PUT_LINE('Pop Density: '||ROUND(v_pop_density,3));
+ 16  END;
+ 17  /
+		2,
+		*
+ERROR at line 10:
+ORA-06550: line 10, column 3: 
+PLS-00312: a positional parameter association may not follow a named 
+association 
+ORA-06550: line 6, column 2: 
+PL/SQL: Statement ignored 
+
+
+SQL> @scripts/8_3_4.sql
+SQL> /* -- Question 4A
+SQL> DECLARE
+SQL> 	     v_country_id countries.country_id%TYPE;
+SQL> 	     v_country_name countries.country_name%TYPE;
+SQL> 	     v_population countries.population%TYPE;
+SQL> 	     v_pop_density NUMBER;
+SQL> BEGIN -- using country id: 2 for Canada
+SQL> 	     v_country_id := 2;
+SQL> 	     find_area_pop
+SQL> 		     (
+SQL> 		     p_population => v_population,
+SQL> 		     p_pop_density => v_pop_density,
+SQL> 		     p_country_id => v_country_id,
+SQL> 		     p_country_name => v_country_name
+SQL> 		     );
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Country    : '||v_country_name);
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Population : '||v_population);
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Pop Density: '||ROUND(v_pop_density,3));
+SQL> END;
+SQL> /
+SQL> -- Question 4B
+SQL> DECLARE
+SQL> 	     v_country_name countries.country_name%TYPE;
+SQL> 	     v_population countries.population%TYPE;
+SQL> 	     v_pop_density NUMBER;
+SQL> BEGIN -- using country id: 2 for Canada
+SQL> 	     find_area_pop
+SQL> 		     (
+SQL> 		     p_population => v_population,
+SQL> 		     p_pop_density => v_pop_density,
+SQL> 		     2,
+SQL> 		     p_country_name => v_country_name
+SQL> 		     );
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Country    : '||v_country_name);
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Population : '||v_population);
+SQL> 	     DBMS_OUTPUT.PUT_LINE('Pop Density: '||ROUND(v_pop_density,3));
+SQL> END;
+SQL> / */
+SQL> -- Question 4C
+SQL> DECLARE
+  2  	     v_country_name countries.country_name%TYPE;
+  3  	     v_population countries.population%TYPE;
+  4  	     v_pop_density NUMBER;
+  5  BEGIN -- using country id: 2 for Canada
+  6  	     find_area_pop
+  7  		     (
+  8  		     2,
+  9  		     p_population => v_population,
+ 10  		     p_pop_density => v_pop_density,
+ 11  		     p_country_name => v_country_name
+ 12  		     );
+ 13  	     DBMS_OUTPUT.PUT_LINE('Country    : '||v_country_name);
+ 14  	     DBMS_OUTPUT.PUT_LINE('Population : '||v_population);
+ 15  	     DBMS_OUTPUT.PUT_LINE('Pop Density: '||ROUND(v_pop_density,3));
+ 16  END;
+ 17  /
+Country    : Canada                                                             
+Population : 33098932                                                           
+Pop Density: 3.315                                                              
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/8_3_6.sql
+SQL> -- 6)
+SQL> CREATE OR REPLACE PROCEDURE find_area_pop
+  2  (
+  3  	     p_country_id countries.country_id%TYPE DEFAULT 2,
+  4  	     p_country_name OUT countries.country_name%TYPE,
+  5  	     p_population OUT countries.population%TYPE,
+  6  	     p_pop_density OUT NUMBER
+  7  ) IS
+  8  	     v_area countries.area%TYPE;
+  9  BEGIN
+ 10  	     SELECT country_name, population, area
+ 11  	     INTO p_country_name, p_population, v_area
+ 12  	     FROM countries WHERE country_id = p_country_id;
+ 13  
+ 14  	     p_pop_density := (p_population / v_area);
+ 15  EXCEPTION
+ 16  	     WHEN NO_DATA_FOUND THEN
+ 17  		     DBMS_OUTPUT.PUT_LINE('Invalid Country ID, try again!');
+ 18  END find_area_pop;
+ 19  /
+
+Procedure created.
+
+SQL> @scripts/8_3_6.sql
+SQL> /* -- 6)
+SQL> CREATE OR REPLACE PROCEDURE find_area_pop
+SQL> (
+SQL> 	     p_country_id countries.country_id%TYPE DEFAULT 2,
+SQL> 	     p_country_name OUT countries.country_name%TYPE,
+SQL> 	     p_population OUT countries.population%TYPE,
+SQL> 	     p_pop_density OUT NUMBER
+SQL> ) IS
+SQL> 	     v_area countries.area%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT country_name, population, area
+SQL> 	     INTO p_country_name, p_population, v_area
+SQL> 	     FROM countries WHERE country_id = p_country_id;
+SQL> 
+SQL> 	     p_pop_density := (p_population / v_area);
+SQL> EXCEPTION
+SQL> 	     WHEN NO_DATA_FOUND THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Invalid Country ID, try again!');
+SQL> END find_area_pop;
+SQL> / */
+SQL> -- Running Procedure
+SQL> DECLARE
+  2  	     v_country_name countries.country_name%TYPE;
+  3  	     v_population countries.population%TYPE;
+  4  	     v_pop_density NUMBER;
+  5  BEGIN -- default country id: 2 for Canada
+  6  	     find_area_pop
+  7  		     (
+  8  		     p_population => v_population,
+  9  		     p_pop_density => v_pop_density,
+ 10  		     p_country_name => v_country_name
+ 11  		     );
+ 12  	     DBMS_OUTPUT.PUT_LINE('Country    : '||v_country_name);
+ 13  	     DBMS_OUTPUT.PUT_LINE('Population : '||v_population);
+ 14  	     DBMS_OUTPUT.PUT_LINE('Pop Density: '||ROUND(v_pop_density,3));
+ 15  END;
+ 16  /
+Country    : Canada                                                             
+Population : 33098932                                                           
+Pop Density: 3.315                                                              
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off
