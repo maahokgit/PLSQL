@@ -1,0 +1,139 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/4_5_1N2.sql
+SQL> DECLARE
+  2  	     v_NN NUMBER(2);
+  3  	     V_MMM NUMBER(3) :=100;
+  4  BEGIN
+  5  	     FOR i IN 1..6
+  6  	     LOOP
+  7  		     V_NN := 59 + i;
+  8  		     FOR x IN 1..12
+  9  		     LOOP
+ 10  			     DBMS_OUTPUT.PUT_LINE('inner Plate is '||v_NN||'-'||v_MMM);
+ 11  			     v_MMM := 100 + x;
+ 12  		     END LOOP;
+ 13  	     END LOOP;
+ 14  END;
+ 15  /
+inner Plate is 60-100                                                           
+inner Plate is 60-101                                                           
+inner Plate is 60-102                                                           
+inner Plate is 60-103                                                           
+inner Plate is 60-104                                                           
+inner Plate is 60-105                                                           
+inner Plate is 60-106                                                           
+inner Plate is 60-107                                                           
+inner Plate is 60-108                                                           
+inner Plate is 60-109                                                           
+inner Plate is 60-110                                                           
+inner Plate is 60-111                                                           
+inner Plate is 61-112                                                           
+inner Plate is 61-101                                                           
+inner Plate is 61-102                                                           
+inner Plate is 61-103                                                           
+inner Plate is 61-104                                                           
+inner Plate is 61-105                                                           
+inner Plate is 61-106                                                           
+inner Plate is 61-107                                                           
+inner Plate is 61-108                                                           
+inner Plate is 61-109                                                           
+inner Plate is 61-110                                                           
+inner Plate is 61-111                                                           
+inner Plate is 62-112                                                           
+inner Plate is 62-101                                                           
+inner Plate is 62-102                                                           
+inner Plate is 62-103                                                           
+inner Plate is 62-104                                                           
+inner Plate is 62-105                                                           
+inner Plate is 62-106                                                           
+inner Plate is 62-107                                                           
+inner Plate is 62-108                                                           
+inner Plate is 62-109                                                           
+inner Plate is 62-110                                                           
+inner Plate is 62-111                                                           
+inner Plate is 63-112                                                           
+inner Plate is 63-101                                                           
+inner Plate is 63-102                                                           
+inner Plate is 63-103                                                           
+inner Plate is 63-104                                                           
+inner Plate is 63-105                                                           
+inner Plate is 63-106                                                           
+inner Plate is 63-107                                                           
+inner Plate is 63-108                                                           
+inner Plate is 63-109                                                           
+inner Plate is 63-110                                                           
+inner Plate is 63-111                                                           
+inner Plate is 64-112                                                           
+inner Plate is 64-101                                                           
+inner Plate is 64-102                                                           
+inner Plate is 64-103                                                           
+inner Plate is 64-104                                                           
+inner Plate is 64-105                                                           
+inner Plate is 64-106                                                           
+inner Plate is 64-107                                                           
+inner Plate is 64-108                                                           
+inner Plate is 64-109                                                           
+inner Plate is 64-110                                                           
+inner Plate is 64-111                                                           
+inner Plate is 65-112                                                           
+inner Plate is 65-101                                                           
+inner Plate is 65-102                                                           
+inner Plate is 65-103                                                           
+inner Plate is 65-104                                                           
+inner Plate is 65-105                                                           
+inner Plate is 65-106                                                           
+inner Plate is 65-107                                                           
+inner Plate is 65-108                                                           
+inner Plate is 65-109                                                           
+inner Plate is 65-110                                                           
+inner Plate is 65-111                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_5_1N2.sql
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_NN NUMBER(2);
+SQL> 	     V_MMM NUMBER(3) :=100;
+SQL> BEGIN
+SQL> 	     FOR i IN 1..6
+SQL> 	     LOOP
+SQL> 		     V_NN := 59 + i;
+SQL> 		     FOR x IN 1..12
+SQL> 		     LOOP
+SQL> 			     DBMS_OUTPUT.PUT_LINE('inner Plate is '||v_NN||'-'||v_MMM);
+SQL> 			     v_MMM := 100 + x;
+SQL> 		     END LOOP;
+SQL> 	     END LOOP;
+SQL> END;
+SQL> /
+SQL> */
+SQL> DECLARE
+  2  	     v_NN NUMBER(2);
+  3  	     v_MMM NUMBER(3):=100;
+  4  	     v_test NUMBER(3);
+  5  BEGIN
+  6  	     <<outer_loop>>
+  7  	     FOR i IN 1..6
+  8  	     LOOP
+  9  		     V_NN := 59 + i;
+ 10  		     v_test := v_NN + v_MMM;
+ 11  		     DBMS_OUTPUT.PUT_LINE('Outter Loop SUM is '||v_test);
+ 12  		     EXIT WHEN v_test = 172;
+ 13  		     <<inner_loop>>
+ 14  		     FOR x IN 1..11
+ 15  		     LOOP
+ 16  			     v_MMM := 100 + x;
+ 17  		     END LOOP inner_loop;
+ 18  	     END LOOP outer_loop;
+ 19  END;
+ 20  /
+Outter Loop SUM is 160                                                          
+Outter Loop SUM is 172                                                          
+
+PL/SQL procedure successfully completed.
+
+SQL> spool
+currently spooling to /home/oracle/logs/edma_4_5.lst
+SQL> spool off

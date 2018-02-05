@@ -1,0 +1,171 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/4_3_4.sql
+SQL> DECLARE
+  2  	     v_country_id countries.country_id%TYPE := 0;
+  3  	     v_country_name countries.country_name%TYPE;
+  4  BEGIN
+  5  	     LOOP
+  6  		     v_country_id := v_country_id + 1;
+  7  
+  8  		     SELECT country_id, country_name
+  9  		     INTO v_country_id, v_country_name
+ 10  		     FROM countries WHERE country_id = v_country_id;
+ 11  
+ 12  		     DBMS_OUTPUT.PUT_LINE(v_country_id ||' is '||v_country_name);
+ 13  
+ 14  		     IF v_country_id = 3 THEN
+ 15  			     EXIT;
+ 16  		     END IF;
+ 17  	     END LOOP;
+ 18  END;
+ 19  /
+1 is United States of America                                                   
+2 is Canada                                                                     
+3 is Republic of Kazakhstan                                                     
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_3_5.sql
+SQL> DECLARE
+  2  	     v_country_id countries.country_id%TYPE := 0;
+  3  	     v_country_name countries.country_name%TYPE;
+  4  BEGIN
+  5  	     LOOP
+  6  		     v_country_id := v_country_id + 1;
+  7  
+  8  		     SELECT country_id, country_name
+  9  		     INTO v_country_id, v_country_name
+ 10  		     FROM countries WHERE country_id = v_country_id;
+ 11  
+ 12  		     DBMS_OUTPUT.PUT_LINE(v_country_id ||' is '||v_country_name);
+ 13  
+ 14  		     EXIT WHEN v_country_id = 3;
+ 15  	     END LOOP;
+ 16  END;
+ 17  /
+1 is United States of America                                                   
+2 is Canada                                                                     
+3 is Republic of Kazakhstan                                                     
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_3_6.sql
+SQL> -- A
+SQL> /*
+SQL> DROP TABLE messages;
+SQL> CREATE TABLE messages
+SQL> 	     (
+SQL> 	     results NUMBER(2)
+SQL> 	     );
+SQL> */
+SQL> -- B
+SQL> 
+SQL> DECLARE
+  2  	     v_num messages.results%TYPE := 0;
+  3  BEGIN
+  4  	     LOOP
+  5  		     v_num := v_num + 1;
+  6  		     IF v_num != 6 AND v_num !=8 THEN
+  7  			     INSERT INTO messages(results) VALUES (v_num);
+  8  			     DBMS_OUTPUT.PUT_LINE('Inserted value '||v_num||' into messages table');
+  9  		     ELSE
+ 10  			     DBMS_OUTPUT.PUT_LINE('Nothing inserted');
+ 11  		     END IF;
+ 12  
+ 13  		     EXIT WHEN v_num = 10;
+ 14  	     END LOOP;
+ 15  END;
+ 16  /
+Inserted value 1 into messages table                                            
+Inserted value 2 into messages table                                            
+Inserted value 3 into messages table                                            
+Inserted value 4 into messages table                                            
+Inserted value 5 into messages table                                            
+Nothing inserted                                                                
+Inserted value 7 into messages table                                            
+Nothing inserted                                                                
+Inserted value 9 into messages table                                            
+Inserted value 10 into messages table                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> -- C
+SQL> 
+SQL> SELECT * FROM messages;
+
+   RESULTS                                                                      
+----------                                                                      
+         1                                                                      
+         2                                                                      
+         3                                                                      
+         4                                                                      
+         5                                                                      
+         7                                                                      
+         9                                                                      
+        10                                                                      
+         1                                                                      
+         2                                                                      
+         3                                                                      
+
+   RESULTS                                                                      
+----------                                                                      
+         4                                                                      
+         5                                                                      
+         7                                                                      
+         9                                                                      
+        10                                                                      
+
+16 rows selected.
+
+SQL> @scripts/4_3_6.sql
+SQL> -- A
+SQL> DROP TABLE messages;
+DROP TABLE messages
+           *
+ERROR at line 1:
+ORA-00054: resource busy and acquire with NOWAIT specified or timeout expired 
+
+
+SQL> 
+SQL> CREATE TABLE messages
+  2  	     (
+  3  	     results NUMBER(2)
+  4  	     );
+CREATE TABLE messages
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> 
+SQL> DROP TABLE messages;
+DROP TABLE messages
+           *
+ERROR at line 1:
+ORA-00054: resource busy and acquire with NOWAIT specified or timeout expired 
+
+
+SQL> DROP TABLE messages PURGE;
+DROP TABLE messages PURGE
+           *
+ERROR at line 1:
+ORA-00054: resource busy and acquire with NOWAIT specified or timeout expired 
+
+
+SQL> DROP TABLE messages NOWAIT;
+DROP TABLE messages NOWAIT
+                    *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> DROP TABLE messages CASCADE;
+DROP TABLE messages CASCADE
+                          *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> exit

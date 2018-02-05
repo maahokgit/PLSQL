@@ -1,0 +1,431 @@
+SQL> @scripts/4_2_1.sql
+
+PL/SQL procedure successfully completed.
+
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/4_2_1.sql
+SQL> DECLARE
+  2  	     v_country_name countries.country_name%TYPE := 'Japan';
+  3  	     v_airports countries.airports%TYPE;
+  4  BEGIN
+  5  	     SELECT airports INTO v_airports
+  6  	     FROM countries
+  7  	     WHERE country_name = v_country_name;
+  8  	     CASE
+  9  		     WHEN v_airports >= 0 AND v_airports <= 100 THEN
+ 10  			     DBMS_OUTPUT.PUT_LINE('There are 100 or fewer airports.');
+ 11  		     WHEN v_airports >= 101 AND v_airports <= 1000 THEN
+ 12  			     DBMS_OUTPUT.PUT_LINE('There are between 101 and 1,000 airports.');
+ 13  		     WHEN v_airports >= 1001 AND v_airports <= 10000 THEN
+ 14  			     DBMS_OUTPUT.PUT_LINE('There are between 1,001 and 10,000 airports.');
+ 15  		     WHEN v_airports > 10000 THEN
+ 16  			     DBMS_OUTPUT.PUT_LINE('There are more than 10,000 airports.');
+ 17  	     END CASE;
+ 18  END;
+ 19  /
+There are between 101 and 1,000 airports.                                       
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_1.sql
+SQL> DECLARE
+  2  	     v_country_name countries.country_name%TYPE := 'Canada';
+  3  	     v_airports countries.airports%TYPE;
+  4  BEGIN
+  5  	     SELECT airports INTO v_airports
+  6  	     FROM countries
+  7  	     WHERE country_name = v_country_name;
+  8  	     CASE
+  9  		     WHEN v_airports >= 0 AND v_airports <= 100 THEN
+ 10  			     DBMS_OUTPUT.PUT_LINE('There are 100 or fewer airports.');
+ 11  		     WHEN v_airports >= 101 AND v_airports <= 1000 THEN
+ 12  			     DBMS_OUTPUT.PUT_LINE('There are between 101 and 1,000 airports.');
+ 13  		     WHEN v_airports >= 1001 AND v_airports <= 10000 THEN
+ 14  			     DBMS_OUTPUT.PUT_LINE('There are between 1,001 and 10,000 airports.');
+ 15  		     WHEN v_airports > 10000 THEN
+ 16  			     DBMS_OUTPUT.PUT_LINE('There are more than 10,000 airports.');
+ 17  	     END CASE;
+ 18  END;
+ 19  /
+There are between 1,001 and 10,000 airports.                                    
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_1.sql
+SQL> DECLARE
+  2  	     v_country_name countries.country_name%TYPE := 'Navassa Island';
+  3  	     v_airports countries.airports%TYPE;
+  4  BEGIN
+  5  	     SELECT airports INTO v_airports
+  6  	     FROM countries
+  7  	     WHERE country_name = v_country_name;
+  8  	     CASE
+  9  		     WHEN v_airports >= 0 AND v_airports <= 100 THEN
+ 10  			     DBMS_OUTPUT.PUT_LINE('There are 100 or fewer airports.');
+ 11  		     WHEN v_airports >= 101 AND v_airports <= 1000 THEN
+ 12  			     DBMS_OUTPUT.PUT_LINE('There are between 101 and 1,000 airports.');
+ 13  		     WHEN v_airports >= 1001 AND v_airports <= 10000 THEN
+ 14  			     DBMS_OUTPUT.PUT_LINE('There are between 1,001 and 10,000 airports.');
+ 15  		     WHEN v_airports > 10000 THEN
+ 16  			     DBMS_OUTPUT.PUT_LINE('There are more than 10,000 airports.');
+ 17  	     END CASE;
+ 18  END;
+ 19  /
+DECLARE
+*
+ERROR at line 1:
+ORA-06592: CASE not found while executing CASE statement 
+ORA-06512: at line 8 
+
+
+SQL> @scripts/4_2_1.sql
+SQL> DECLARE
+  2  	     v_country_name countries.country_name%TYPE := 'Navassa Island';
+  3  	     v_airports countries.airports%TYPE;
+  4  BEGIN
+  5  	     SELECT airports INTO v_airports
+  6  	     FROM countries
+  7  	     WHERE country_name = v_country_name;
+  8  	     CASE
+  9  		     WHEN v_airports >= 0 AND v_airports <= 100 THEN
+ 10  			     DBMS_OUTPUT.PUT_LINE('There are 100 or fewer airports.');
+ 11  		     WHEN v_airports >= 101 AND v_airports <= 1000 THEN
+ 12  			     DBMS_OUTPUT.PUT_LINE('There are between 101 and 1,000 airports.');
+ 13  		     WHEN v_airports >= 1001 AND v_airports <= 10000 THEN
+ 14  			     DBMS_OUTPUT.PUT_LINE('There are between 1,001 and 10,000 airports.');
+ 15  		     WHEN v_airports > 10000 THEN
+ 16  			     DBMS_OUTPUT.PUT_LINE('There are more than 10,000 airports.');
+ 17  		     WHEN v_airports IS NULL THEN
+ 18  			     DBMS_OUTPUT.PUT_LINE('No Airport');
+ 19  	     END CASE;
+ 20  END;
+ 21  /
+No Airport                                                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_2.sql
+SQL> DECLARE
+  2  	     v_country_name countries.country_name%TYPE := 'Canada';
+  3  	     v_coastline countries.coastline %TYPE;
+  4  	     v_coastline_description VARCHAR2(50);
+  5  BEGIN
+  6  	     SELECT coastline INTO v_coastline
+  7  	     FROM countries
+  8  	     WHERE country_name = v_country_name;
+  9  
+ 10  	     v_coastline_description :=
+ 11  
+ 12  	     CASE
+ 13  		     WHEN v_coastline = 0 THEN 'no coastline.'
+ 14  		     WHEN v_coastline < 1000 THEN 'a small coastline.'
+ 15  		     WHEN v_coastline < 10000 THEN 'a mid-range coastline.'
+ 16  		     WHEN v_coastline > 10000 THEN 'a large coastline.'
+ 17  	     END;
+ 18  	     DBMS_OUTPUT.PUT_LINE('Country ' || v_country_name || ' has '
+ 19  	     || v_coastline_description);
+ 20  END;
+ 21  /
+Country Canada has a large coastline.                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> SELECT COUNT(country_name) FROM countries WHERE currency_code = 'USD';
+
+COUNT(COUNTRY_NAME)                                                             
+-------------------                                                             
+                 14                                                             
+
+SQL> @scripts/4_2_2.sql
+SQL> DECLARE
+  2  	     v_country_name countries.country_name%TYPE := 'Grenada';
+  3  	     v_coastline countries.coastline %TYPE;
+  4  	     v_coastline_description VARCHAR2(50);
+  5  BEGIN
+  6  	     SELECT coastline INTO v_coastline
+  7  	     FROM countries
+  8  	     WHERE country_name = v_country_name;
+  9  
+ 10  	     v_coastline_description :=
+ 11  
+ 12  	     CASE
+ 13  		     WHEN v_coastline = 0 THEN 'no coastline.'
+ 14  		     WHEN v_coastline < 1000 THEN 'a small coastline.'
+ 15  		     WHEN v_coastline < 10000 THEN 'a mid-range coastline.'
+ 16  		     WHEN v_coastline > 10000 THEN 'a large coastline.'
+ 17  	     END;
+ 18  	     DBMS_OUTPUT.PUT_LINE('Country ' || v_country_name || ' has '
+ 19  	     || v_coastline_description);
+ 20  END;
+ 21  /
+Country Grenada has a small coastline.                                          
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_2.sql
+SQL> DECLARE
+  2  	     v_country_name countries.country_name%TYPE := 'Mongolia';
+  3  	     v_coastline countries.coastline %TYPE;
+  4  	     v_coastline_description VARCHAR2(50);
+  5  BEGIN
+  6  	     SELECT coastline INTO v_coastline
+  7  	     FROM countries
+  8  	     WHERE country_name = v_country_name;
+  9  
+ 10  	     v_coastline_description :=
+ 11  
+ 12  	     CASE
+ 13  		     WHEN v_coastline = 0 THEN 'no coastline.'
+ 14  		     WHEN v_coastline < 1000 THEN 'a small coastline.'
+ 15  		     WHEN v_coastline < 10000 THEN 'a mid-range coastline.'
+ 16  		     WHEN v_coastline > 10000 THEN 'a large coastline.'
+ 17  	     END;
+ 18  	     DBMS_OUTPUT.PUT_LINE('Country ' || v_country_name || ' has '
+ 19  	     || v_coastline_description);
+ 20  END;
+ 21  /
+Country Mongolia has no coastline.                                              
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_3.sql
+SQL> -- US Dollar Code: USD, Swiss franc Code: CHF, Euro Code: EUR
+SQL> 
+SQL> DECLARE
+  2  	     v_country_code countries.currency_code%TYPE := 'USD';
+  3  	     v_curr_count NUMBER;
+  4  BEGIN
+  5  	     SELECT COUNT(country_name)
+  6  	     INTO v_curr_count
+  7  	     FROM countries
+  8  	     WHERE currency_code = v_country_code;
+  9  
+ 10  	     CASE
+ 11  		     WHEN v_curr_count < 10 THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used infewer than 10 countries');
+ 13  		     WHEN v_curr_count >=10 AND v_curr_count < 20 THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used in between 10 and 20 countries');
+ 15  		     WHEN v_curr_count > 20 THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used in more than 20 countries');
+ 17  	     END CASE;
+ 18  END;
+ 19  /
+USD is used in between 10 and 20 countries                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_3.sql
+SQL> -- US Dollar Code: USD, Swiss franc Code: CHF, Euro Code: EUR
+SQL> 
+SQL> DECLARE
+  2  	     v_country_code countries.currency_code%TYPE := 'USD';
+  3  	     v_curr_count NUMBER;
+  4  BEGIN
+  5  	     SELECT COUNT(country_name)
+  6  	     INTO v_curr_count
+  7  	     FROM countries
+  8  	     WHERE currency_code = v_country_code;
+  9  
+ 10  	     CASE
+ 11  		     WHEN v_curr_count < 10 THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used infewer than 10 countries');
+ 13  		     WHEN v_curr_count >=10 AND v_curr_count < 20 THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used in between 10 and 20 countries');
+ 15  		     WHEN v_curr_count > 20 THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used in more than 20 countries');
+ 17  	     END CASE;
+ 18  END;
+ 19  /
+USD is used in between 10 and 20 countries                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_3.sql
+SQL> -- US Dollar Code: USD, Swiss franc Code: CHF, Euro Code: EUR
+SQL> 
+SQL> DECLARE
+  2  	     v_country_code countries.currency_code%TYPE := 'CHF';
+  3  	     v_curr_count NUMBER;
+  4  BEGIN
+  5  	     SELECT COUNT(country_name)
+  6  	     INTO v_curr_count
+  7  	     FROM countries
+  8  	     WHERE currency_code = v_country_code;
+  9  
+ 10  	     CASE
+ 11  		     WHEN v_curr_count < 10 THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used infewer than 10 countries');
+ 13  		     WHEN v_curr_count >=10 AND v_curr_count < 20 THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used in between 10 and 20 countries');
+ 15  		     WHEN v_curr_count > 20 THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used in more than 20 countries');
+ 17  	     END CASE;
+ 18  END;
+ 19  /
+CHF is used infewer than 10 countries                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_3.sql
+SQL> -- US Dollar Code: USD, Swiss franc Code: CHF, Euro Code: EUR
+SQL> 
+SQL> DECLARE
+  2  	     v_country_code countries.currency_code%TYPE := 'CHF';
+  3  	     v_curr_count NUMBER;
+  4  BEGIN
+  5  	     SELECT COUNT(country_name)
+  6  	     INTO v_curr_count
+  7  	     FROM countries
+  8  	     WHERE currency_code = v_country_code;
+  9  
+ 10  	     CASE
+ 11  		     WHEN v_curr_count < 10 THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used infewer than 10 countries');
+ 13  		     WHEN v_curr_count >=10 AND v_curr_count < 20 THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used in between 10 and 20 countries');
+ 15  		     WHEN v_curr_count > 20 THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used in more than 20 countries');
+ 17  	     END CASE;
+ 18  END;
+ 19  /
+CHF is used infewer than 10 countries                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_3.sql
+SQL> -- US Dollar Code: USD, Swiss franc Code: CHF, Euro Code: EUR
+SQL> 
+SQL> DECLARE
+  2  	     v_country_code countries.currency_code%TYPE := 'EUR';
+  3  	     v_curr_count NUMBER;
+  4  BEGIN
+  5  	     SELECT COUNT(country_name)
+  6  	     INTO v_curr_count
+  7  	     FROM countries
+  8  	     WHERE currency_code = v_country_code;
+  9  
+ 10  	     CASE
+ 11  		     WHEN v_curr_count < 10 THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used infewer than 10 countries');
+ 13  		     WHEN v_curr_count >=10 AND v_curr_count < 20 THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used in between 10 and 20 countries');
+ 15  		     WHEN v_curr_count > 20 THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE(v_country_code ||' is used in more than 20 countries');
+ 17  	     END CASE;
+ 18  END;
+ 19  /
+EUR is used in more than 20 countries                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_4.sql
+SQL> DECLARE
+  2  	     x BOOLEAN := FALSE;
+  3  	     y BOOLEAN;
+  4  	     v_color VARCHAR(20) := 'Red';
+  5  BEGIN
+  6  	     IF (x OR y)
+  7  		     THEN v_color := 'White';
+  8  	     ELSE
+  9  		     v_color := 'Black';
+ 10  	     END IF;
+ 11  		     DBMS_OUTPUT.PUT_LINE(v_color);
+ 12  END;
+ 13  /
+Black                                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_4.sql
+SQL> DECLARE
+  2  	     x BOOLEAN;
+  3  	     y BOOLEAN;
+  4  	     v_color VARCHAR(20) := 'Red';
+  5  BEGIN
+  6  	     IF (x OR y)
+  7  		     THEN v_color := 'White';
+  8  	     ELSE
+  9  		     v_color := 'Black';
+ 10  	     END IF;
+ 11  		     DBMS_OUTPUT.PUT_LINE(v_color);
+ 12  END;
+ 13  /
+Black                                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_4.sql
+SQL> DECLARE
+  2  	     x BOOLEAN := TRUE;
+  3  	     y BOOLEAN := TRUE;
+  4  	     v_color VARCHAR(20) := 'Red';
+  5  BEGIN
+  6  	     IF (x OR y)
+  7  		     THEN v_color := 'White';
+  8  	     ELSE
+  9  		     v_color := 'Black';
+ 10  	     END IF;
+ 11  		     DBMS_OUTPUT.PUT_LINE(v_color);
+ 12  END;
+ 13  /
+White                                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_4.sql
+SQL> DECLARE
+  2  	     x BOOLEAN := TRUE;
+  3  	     y BOOLEAN := TRUE;
+  4  	     v_color VARCHAR(20) := 'Red';
+  5  BEGIN
+  6  	     IF (x AND y)
+  7  		     THEN v_color := 'White';
+  8  	     ELSE
+  9  		     v_color := 'Black';
+ 10  	     END IF;
+ 11  		     DBMS_OUTPUT.PUT_LINE(v_color);
+ 12  END;
+ 13  /
+White                                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_4.sql
+SQL> DECLARE
+  2  	     x BOOLEAN := FALSE;
+  3  	     y BOOLEAN;
+  4  	     v_color VARCHAR(20) := 'Red';
+  5  BEGIN
+  6  	     IF (x AND y)
+  7  		     THEN v_color := 'White';
+  8  	     ELSE
+  9  		     v_color := 'Black';
+ 10  	     END IF;
+ 11  		     DBMS_OUTPUT.PUT_LINE(v_color);
+ 12  END;
+ 13  /
+Black                                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_2_4.sql
+SQL> DECLARE
+  2  	     x BOOLEAN;
+  3  	     y BOOLEAN;
+  4  	     v_color VARCHAR(20) := 'Red';
+  5  BEGIN
+  6  	     IF (x AND y)
+  7  		     THEN v_color := 'White';
+  8  	     ELSE
+  9  		     v_color := 'Black';
+ 10  	     END IF;
+ 11  		     DBMS_OUTPUT.PUT_LINE(v_color);
+ 12  END;
+ 13  /
+Black                                                                           
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off

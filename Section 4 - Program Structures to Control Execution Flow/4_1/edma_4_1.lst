@@ -1,0 +1,1057 @@
+SQL> set echo on
+SQL> set serveroutput on
+SQL> @scripts/4_1_5.sql
+SQL> 
+SQL> DECLARE
+  2  	     v_pop countries.population%TYPE;
+  3  	     c_pop countries.population%TYPE := 1000000000;
+  4  BEGIN
+  5  	     SELECT population
+  6  	     INTO v_pop FROM countries
+  7  	     WHERE country_id = 91; --india
+  8  
+  9  	     IF v_pop >= c_pop
+ 10  	     THEN
+ 11  		     DBMS_OUTPUT.PUT_LINE('India'||chr(39)||'s Population is greater than '||c_pop);
+ 12  	     ELSE
+ 13  		     DBMS_OUTPUT.PUT_LINE('India'||chr(39)||'s Population is less than '||c_pop);
+ 14  	     END IF;
+ 15  END;
+ 16  /
+India's Population is greater than 1000000000                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_1_5.sql
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_pop countries.population%TYPE;
+SQL> 	     c_pop countries.population%TYPE := 1000000000;
+SQL> BEGIN
+SQL> 	     SELECT population
+SQL> 	     INTO v_pop FROM countries
+SQL> 	     WHERE country_id = 91; --india
+SQL> 
+SQL> 	     IF v_pop >= c_pop
+SQL> 	     THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('India'||chr(39)||'s Population is greater than '||c_pop);
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE('India'||chr(39)||'s Population is less than '||c_pop);
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> */
+SQL> 
+SQL> DECLARE
+  2  	     v_pop countries.population%TYPE;
+  3  	     c_pop countries.population%TYPE := 1000000000;
+  4  BEGIN
+  5  	     SELECT population
+  6  	     INTO v_pop FROM countries
+  7  	     WHERE country_id = 44; --UK, GOD SAVE THE QUEEN!
+  8  
+  9  	     IF v_pop >= c_pop
+ 10  	     THEN
+ 11  		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is greater than '||c_pop);
+ 12  	     ELSE
+ 13  		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is less than '||c_pop);
+ 14  	     END IF;
+ 15  END;
+ 16  /
+UK's Population is less than 1000000000                                         
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> 
+SQL> @scripts/4_1_6.sql
+SQL> -- for China Pop.
+SQL> DECLARE
+  2  	     v_pop countries.population%TYPE;
+  3  	     c_pop countries.population%TYPE := 1000000000;
+  4  	     c_pop_zero countries.population%TYPE := 0;
+  5  	     c_pop_null countries.population%TYPE := null;
+  6  BEGIN
+  7  	     SELECT population
+  8  	     INTO v_pop FROM countries
+  9  	     WHERE country_id = 86; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+ 10  
+ 11  	     IF v_pop > c_pop THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is greater than '||c_pop);
+ 13  	     ELSE IF v_pop > c_pop_zero THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is greater than '||c_pop_zero);
+ 15  	     ELSE IF v_pop = c_pop_zero THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is '||c_pop_zero);
+ 17  	     ELSE IF v_pop IS NULL THEN
+ 18  		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+ 19  	     END IF;END IF;END IF;END IF; --end all ifs...
+ 20  END;
+ 21  /
+China's Population is greater than 1000000000                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_1_6.sql
+SQL> -- for China Pop.
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_pop countries.population%TYPE;
+SQL> 	     c_pop countries.population%TYPE := 1000000000;
+SQL> 	     c_pop_zero countries.population%TYPE := 0;
+SQL> 	     c_pop_null countries.population%TYPE := null;
+SQL> BEGIN
+SQL> 	     SELECT population
+SQL> 	     INTO v_pop FROM countries
+SQL> 	     WHERE country_id = 86; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+SQL> 
+SQL> 	     IF v_pop > c_pop THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is greater than '||c_pop);
+SQL> 	     ELSE IF v_pop > c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is greater than '||c_pop_zero);
+SQL> 	     ELSE IF v_pop = c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is '||c_pop_zero);
+SQL> 	     ELSE IF v_pop IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+SQL> 	     END IF;END IF;END IF;END IF; --end all ifs...
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- for UK Pop.
+SQL> DECLARE
+  2  	     v_pop countries.population%TYPE;
+  3  	     c_pop countries.population%TYPE := 1000000000;
+  4  	     c_pop_zero countries.population%TYPE := 0;
+  5  	     c_pop_null countries.population%TYPE := null;
+  6  BEGIN
+  7  	     SELECT population
+  8  	     INTO v_pop FROM countries
+  9  	     WHERE country_id = 44; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+ 10  
+ 11  	     IF v_pop > c_pop THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is greater than '||c_pop);
+ 13  	     ELSE IF v_pop > c_pop_zero THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is greater than '||c_pop_zero);
+ 15  	     ELSE IF v_pop = c_pop_zero THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is '||c_pop_zero);
+ 17  	     ELSE IF v_pop IS NULL THEN
+ 18  		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+ 19  	     END IF;END IF;END IF;END IF; --end all ifs...
+ 20  END;
+ 21  /
+UK's Population is greater than 0                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_1_6.sql
+SQL> -- for China Pop.
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_pop countries.population%TYPE;
+SQL> 	     c_pop countries.population%TYPE := 1000000000;
+SQL> 	     c_pop_zero countries.population%TYPE := 0;
+SQL> 	     c_pop_null countries.population%TYPE := null;
+SQL> BEGIN
+SQL> 	     SELECT population
+SQL> 	     INTO v_pop FROM countries
+SQL> 	     WHERE country_id = 86; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+SQL> 
+SQL> 	     IF v_pop > c_pop THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is greater than '||c_pop);
+SQL> 	     ELSE IF v_pop > c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is greater than '||c_pop_zero);
+SQL> 	     ELSE IF v_pop = c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is '||c_pop_zero);
+SQL> 	     ELSE IF v_pop IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+SQL> 	     END IF;END IF;END IF;END IF; --end all ifs...
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- for UK Pop.
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_pop countries.population%TYPE;
+SQL> 	     c_pop countries.population%TYPE := 1000000000;
+SQL> 	     c_pop_zero countries.population%TYPE := 0;
+SQL> 	     c_pop_null countries.population%TYPE := null;
+SQL> BEGIN
+SQL> 	     SELECT population
+SQL> 	     INTO v_pop FROM countries
+SQL> 	     WHERE country_id = 44; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+SQL> 
+SQL> 	     IF v_pop > c_pop THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is greater than '||c_pop);
+SQL> 	     ELSE IF v_pop > c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is greater than '||c_pop_zero);
+SQL> 	     ELSE IF v_pop = c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is '||c_pop_zero);
+SQL> 	     ELSE IF v_pop IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+SQL> 	     END IF;END IF;END IF;END IF; --end all ifs...
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- for Anarctica Pop.
+SQL> DECLARE
+  2  	     v_pop countries.population%TYPE;
+  3  	     c_pop countries.population%TYPE := 1000000000;
+  4  	     c_pop_zero countries.population%TYPE := 0;
+  5  	     c_pop_null countries.population%TYPE := null;
+  6  BEGIN
+  7  	     SELECT population
+  8  	     INTO v_pop FROM countries
+  9  	     WHERE country_id = 672; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+ 10  
+ 11  	     IF v_pop > c_pop THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE('Antaractica'||chr(39)||'s Population is greater than '||c_pop);
+ 13  	     ELSE IF v_pop > c_pop_zero THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE('Antaractica'||chr(39)||'s Population is greater than '||c_pop_zero);
+ 15  	     ELSE IF v_pop = c_pop_zero THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE('Antaractica'||chr(39)||'s Population is '||c_pop_zero);
+ 17  	     ELSE IF v_pop IS NULL THEN
+ 18  		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+ 19  	     END IF;END IF;END IF;END IF; --end all ifs...
+ 20  END;
+ 21  /
+Antaractica's Population is 0                                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_1_6.sql
+SQL> -- for China Pop.
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_pop countries.population%TYPE;
+SQL> 	     c_pop countries.population%TYPE := 1000000000;
+SQL> 	     c_pop_zero countries.population%TYPE := 0;
+SQL> 	     c_pop_null countries.population%TYPE := null;
+SQL> BEGIN
+SQL> 	     SELECT population
+SQL> 	     INTO v_pop FROM countries
+SQL> 	     WHERE country_id = 86; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+SQL> 
+SQL> 	     IF v_pop > c_pop THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is greater than '||c_pop);
+SQL> 	     ELSE IF v_pop > c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is greater than '||c_pop_zero);
+SQL> 	     ELSE IF v_pop = c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is '||c_pop_zero);
+SQL> 	     ELSE IF v_pop IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+SQL> 	     END IF;END IF;END IF;END IF; --end all ifs...
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- for UK Pop.
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_pop countries.population%TYPE;
+SQL> 	     c_pop countries.population%TYPE := 1000000000;
+SQL> 	     c_pop_zero countries.population%TYPE := 0;
+SQL> 	     c_pop_null countries.population%TYPE := null;
+SQL> BEGIN
+SQL> 	     SELECT population
+SQL> 	     INTO v_pop FROM countries
+SQL> 	     WHERE country_id = 44; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+SQL> 
+SQL> 	     IF v_pop > c_pop THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is greater than '||c_pop);
+SQL> 	     ELSE IF v_pop > c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is greater than '||c_pop_zero);
+SQL> 	     ELSE IF v_pop = c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is '||c_pop_zero);
+SQL> 	     ELSE IF v_pop IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+SQL> 	     END IF;END IF;END IF;END IF; --end all ifs...
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- for Anarctica Pop.
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_pop countries.population%TYPE;
+SQL> 	     c_pop countries.population%TYPE := 1000000000;
+SQL> 	     c_pop_zero countries.population%TYPE := 0;
+SQL> 	     c_pop_null countries.population%TYPE := null;
+SQL> BEGIN
+SQL> 	     SELECT population
+SQL> 	     INTO v_pop FROM countries
+SQL> 	     WHERE country_id = 672; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+SQL> 
+SQL> 	     IF v_pop > c_pop THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Antaractica'||chr(39)||'s Population is greater than '||c_pop);
+SQL> 	     ELSE IF v_pop > c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Antaractica'||chr(39)||'s Population is greater than '||c_pop_zero);
+SQL> 	     ELSE IF v_pop = c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Antaractica'||chr(39)||'s Population is '||c_pop_zero);
+SQL> 	     ELSE IF v_pop IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+SQL> 	     END IF;END IF;END IF;END IF; --end all ifs...
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- Europa Island Pop.
+SQL> DECLARE
+  2  	     v_pop countries.population%TYPE;
+  3  	     c_pop countries.population%TYPE := 1000000000;
+  4  	     c_pop_zero countries.population%TYPE := 0;
+  5  	     c_pop_null countries.population%TYPE := null;
+  6  BEGIN
+  7  	     SELECT population
+  8  	     INTO v_pop FROM countries
+  9  	     WHERE country_id = 15; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+ 10  
+ 11  	     IF v_pop > c_pop THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE('Europa Island'||chr(39)||'s Population is greater than '||c_pop);
+ 13  	     ELSE IF v_pop > c_pop_zero THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE('Europa Island'||chr(39)||'s Population is greater than '||c_pop_zero);
+ 15  	     ELSE IF v_pop = c_pop_zero THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE('Europa Island'||chr(39)||'s Population is '||c_pop_zero);
+ 17  	     ELSE IF v_pop IS NULL THEN
+ 18  		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+ 19  	     END IF;END IF;END IF;END IF; --end all ifs...
+ 20  END;
+ 21  /
+No data for this country                                                        
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_1_7.sql
+SQL> --get Antarctica holiday
+SQL> SELECT date_of_independence, national_holiday_date FROM countries WHERE country_id = 672;
+
+DATE_OF_INDEPENDENCE           NATIONAL_HOLIDAY_DATE                            
+------------------------------ ------------------------------                   
+                                                                                
+
+SQL> --check output
+SQL> DECLARE
+  2  	     v_country_id countries.country_id%TYPE := 672;
+  3  	     v_ind_date countries.date_of_independence%TYPE;
+  4  	     v_natl_holiday countries.national_holiday_date%TYPE;
+  5  BEGIN
+  6  	     SELECT date_of_independence, national_holiday_date
+  7  	     INTO v_ind_date, v_natl_holiday
+  8  	     FROM countries
+  9  	     WHERE country_id = v_country_id;
+ 10  
+ 11  	     IF v_ind_date IS NOT NULL THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE('A');
+ 13  	     ELSIF v_natl_holiday IS NOT NULL THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE('B');
+ 15  	     ELSIF v_natl_holiday IS NULL AND v_ind_date IS NULL THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE('C');
+ 17  	     END IF;
+ 18  END;
+ 19  /
+C                                                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> @scripts/4_1_7.sql
+SQL> --get Antarctica holiday
+SQL> --SELECT date_of_independence, national_holiday_date FROM countries WHERE country_id = 672;
+SQL> --check output
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_country_id countries.country_id%TYPE := 672;
+SQL> 	     v_ind_date countries.date_of_independence%TYPE;
+SQL> 	     v_natl_holiday countries.national_holiday_date%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT date_of_independence, national_holiday_date
+SQL> 	     INTO v_ind_date, v_natl_holiday
+SQL> 	     FROM countries
+SQL> 	     WHERE country_id = v_country_id;
+SQL> 
+SQL> 	     IF v_ind_date IS NOT NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('A');
+SQL> 	     ELSIF v_natl_holiday IS NOT NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('B');
+SQL> 	     ELSIF v_natl_holiday IS NULL AND v_ind_date IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('C');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> */
+SQL> --get Iraq holiday
+SQL> SELECT date_of_independence, national_holiday_date FROM countries WHERE country_id = 964;
+
+DATE_OF_INDEPENDENCE           NATIONAL_HOLIDAY_DATE                            
+------------------------------ ------------------------------                   
+28-Jun-2004                                                                     
+
+SQL> --check output
+SQL> DECLARE
+  2  	     v_country_id countries.country_id%TYPE := 964;
+  3  	     v_ind_date countries.date_of_independence%TYPE;
+  4  	     v_natl_holiday countries.national_holiday_date%TYPE;
+  5  BEGIN
+  6  	     SELECT date_of_independence, national_holiday_date
+  7  	     INTO v_ind_date, v_natl_holiday
+  8  	     FROM countries
+  9  	     WHERE country_id = v_country_id;
+ 10  
+ 11  	     IF v_ind_date IS NOT NULL THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE('A');
+ 13  	     ELSIF v_natl_holiday IS NOT NULL THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE('B');
+ 15  	     ELSIF v_natl_holiday IS NULL AND v_ind_date IS NULL THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE('C');
+ 17  	     END IF;
+ 18  END;
+ 19  /
+A                                                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_1_7.sql
+SQL> --get Antarctica holiday
+SQL> --SELECT date_of_independence, national_holiday_date FROM countries WHERE country_id = 672;
+SQL> --check output
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_country_id countries.country_id%TYPE := 672;
+SQL> 	     v_ind_date countries.date_of_independence%TYPE;
+SQL> 	     v_natl_holiday countries.national_holiday_date%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT date_of_independence, national_holiday_date
+SQL> 	     INTO v_ind_date, v_natl_holiday
+SQL> 	     FROM countries
+SQL> 	     WHERE country_id = v_country_id;
+SQL> 
+SQL> 	     IF v_ind_date IS NOT NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('A');
+SQL> 	     ELSIF v_natl_holiday IS NOT NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('B');
+SQL> 	     ELSIF v_natl_holiday IS NULL AND v_ind_date IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('C');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> 
+SQL> --get Iraq holiday
+SQL> SELECT date_of_independence, national_holiday_date FROM countries WHERE country_id = 964;
+SQL> --check output
+SQL> DECLARE
+SQL> 	     v_country_id countries.country_id%TYPE := 964;
+SQL> 	     v_ind_date countries.date_of_independence%TYPE;
+SQL> 	     v_natl_holiday countries.national_holiday_date%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT date_of_independence, national_holiday_date
+SQL> 	     INTO v_ind_date, v_natl_holiday
+SQL> 	     FROM countries
+SQL> 	     WHERE country_id = v_country_id;
+SQL> 
+SQL> 	     IF v_ind_date IS NOT NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('A');
+SQL> 	     ELSIF v_natl_holiday IS NOT NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('B');
+SQL> 	     ELSIF v_natl_holiday IS NULL AND v_ind_date IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('C');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> */
+SQL> --get Spain holiday
+SQL> SELECT date_of_independence, national_holiday_date FROM countries WHERE country_id = 34;
+
+DATE_OF_INDEPENDENCE           NATIONAL_HOLIDAY_DATE                            
+------------------------------ ------------------------------                   
+                               12-Oct                                           
+
+SQL> --check output
+SQL> DECLARE
+  2  	     v_country_id countries.country_id%TYPE := 34;
+  3  	     v_ind_date countries.date_of_independence%TYPE;
+  4  	     v_natl_holiday countries.national_holiday_date%TYPE;
+  5  BEGIN
+  6  	     SELECT date_of_independence, national_holiday_date
+  7  	     INTO v_ind_date, v_natl_holiday
+  8  	     FROM countries
+  9  	     WHERE country_id = v_country_id;
+ 10  
+ 11  	     IF v_ind_date IS NOT NULL THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE('A');
+ 13  	     ELSIF v_natl_holiday IS NOT NULL THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE('B');
+ 15  	     ELSIF v_natl_holiday IS NULL AND v_ind_date IS NULL THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE('C');
+ 17  	     END IF;
+ 18  END;
+ 19  /
+B                                                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_1_7.sql
+SQL> --get Antarctica holiday
+SQL> --SELECT date_of_independence, national_holiday_date FROM countries WHERE country_id = 672;
+SQL> --check output
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_country_id countries.country_id%TYPE := 672;
+SQL> 	     v_ind_date countries.date_of_independence%TYPE;
+SQL> 	     v_natl_holiday countries.national_holiday_date%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT date_of_independence, national_holiday_date
+SQL> 	     INTO v_ind_date, v_natl_holiday
+SQL> 	     FROM countries
+SQL> 	     WHERE country_id = v_country_id;
+SQL> 
+SQL> 	     IF v_ind_date IS NOT NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('A');
+SQL> 	     ELSIF v_natl_holiday IS NOT NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('B');
+SQL> 	     ELSIF v_natl_holiday IS NULL AND v_ind_date IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('C');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> 
+SQL> --get Iraq holiday
+SQL> SELECT date_of_independence, national_holiday_date FROM countries WHERE country_id = 964;
+SQL> --check output
+SQL> DECLARE
+SQL> 	     v_country_id countries.country_id%TYPE := 964;
+SQL> 	     v_ind_date countries.date_of_independence%TYPE;
+SQL> 	     v_natl_holiday countries.national_holiday_date%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT date_of_independence, national_holiday_date
+SQL> 	     INTO v_ind_date, v_natl_holiday
+SQL> 	     FROM countries
+SQL> 	     WHERE country_id = v_country_id;
+SQL> 
+SQL> 	     IF v_ind_date IS NOT NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('A');
+SQL> 	     ELSIF v_natl_holiday IS NOT NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('B');
+SQL> 	     ELSIF v_natl_holiday IS NULL AND v_ind_date IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('C');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> 
+SQL> --get Spain holiday
+SQL> SELECT date_of_independence, national_holiday_date FROM countries WHERE country_id = 34;
+SQL> --check output
+SQL> DECLARE
+SQL> 	     v_country_id countries.country_id%TYPE := 34;
+SQL> 	     v_ind_date countries.date_of_independence%TYPE;
+SQL> 	     v_natl_holiday countries.national_holiday_date%TYPE;
+SQL> BEGIN
+SQL> 	     SELECT date_of_independence, national_holiday_date
+SQL> 	     INTO v_ind_date, v_natl_holiday
+SQL> 	     FROM countries
+SQL> 	     WHERE country_id = v_country_id;
+SQL> 
+SQL> 	     IF v_ind_date IS NOT NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('A');
+SQL> 	     ELSIF v_natl_holiday IS NOT NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('B');
+SQL> 	     ELSIF v_natl_holiday IS NULL AND v_ind_date IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('C');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> */
+SQL> --get US holiday
+SQL> SELECT date_of_independence, national_holiday_date FROM countries WHERE country_id = 1;
+
+DATE_OF_INDEPENDENCE           NATIONAL_HOLIDAY_DATE                            
+------------------------------ ------------------------------                   
+4-Jul-1776                     4-Jul                                            
+
+SQL> --check output
+SQL> DECLARE
+  2  	     v_country_id countries.country_id%TYPE := 1;
+  3  	     v_ind_date countries.date_of_independence%TYPE;
+  4  	     v_natl_holiday countries.national_holiday_date%TYPE;
+  5  BEGIN
+  6  	     SELECT date_of_independence, national_holiday_date
+  7  	     INTO v_ind_date, v_natl_holiday
+  8  	     FROM countries
+  9  	     WHERE country_id = v_country_id;
+ 10  
+ 11  	     IF v_ind_date IS NOT NULL THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE('A');
+ 13  	     ELSIF v_natl_holiday IS NOT NULL THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE('B');
+ 15  	     ELSIF v_natl_holiday IS NULL AND v_ind_date IS NULL THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE('C');
+ 17  	     END IF;
+ 18  END;
+ 19  /
+A                                                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/scripts.sql
+SQL> DECLARE
+  2  	     v_num1 NUMBER(3) := 123;
+  3  	     v_num2 NUMBER;
+  4  BEGIN
+  5  	     IF v_num1 <> v_num2 THEN
+  6  		     DBMS_OUTPUT.PUT_LINE('The two numbers are not equal');
+  7  	     ELSE
+  8  		     DBMS_OUTPUT.PUT_LINE('The two numbers are equal');
+  9  	     END IF;
+ 10  END;
+ 11  /
+The two numbers are equal                                                       
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_1_9.sql
+SQL> -- if 0 then leap year, if not 0 then not leap year
+SQL> -- for year 1990
+SQL> DECLARE
+  2  	     v_year NUMBER(4) :=1990;
+  3  	     v_result NUMBER(4);
+  4  BEGIN
+  5  	     v_result := MOD(v_year, 4);
+  6  
+  7  	     IF v_result = 0 THEN
+  8  		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+  9  	     ELSE
+ 10  		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+ 11  	     END IF;
+ 12  END;
+ 13  /
+1990 is not a leap year                                                         
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> @scripts/4_1_9.sql
+SQL> -- if 0 then leap year, if not 0 then not leap year
+SQL> -- for year 1990
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=1990;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- for year 2000
+SQL> DECLARE
+  2  	     v_year NUMBER(4) :=2000;
+  3  	     v_result NUMBER(4);
+  4  BEGIN
+  5  	     v_result := MOD(v_year, 4);
+  6  
+  7  	     IF v_result = 0 THEN
+  8  		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+  9  	     ELSE
+ 10  		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+ 11  	     END IF;
+ 12  END;
+ 13  /
+2000 is a leap year                                                             
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_1_9.sql
+SQL> -- if 0 then leap year, if not 0 then not leap year
+SQL> -- for year 1990
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=1990;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> 
+SQL> -- for year 2000
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=2000;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- for year 1996
+SQL> DECLARE
+  2  	     v_year NUMBER(4) :=1996;
+  3  	     v_result NUMBER(4);
+  4  BEGIN
+  5  	     v_result := MOD(v_year, 4);
+  6  
+  7  	     IF v_result = 0 THEN
+  8  		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+  9  	     ELSE
+ 10  		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+ 11  	     END IF;
+ 12  END;
+ 13  /
+1996 is a leap year                                                             
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_1_6.sql
+SQL> -- for China Pop.
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_pop countries.population%TYPE;
+SQL> 	     c_pop countries.population%TYPE := 1000000000;
+SQL> 	     c_pop_zero countries.population%TYPE := 0;
+SQL> 	     c_pop_null countries.population%TYPE := null;
+SQL> BEGIN
+SQL> 	     SELECT population
+SQL> 	     INTO v_pop FROM countries
+SQL> 	     WHERE country_id = 86; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+SQL> 
+SQL> 	     IF v_pop > c_pop THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is greater than '||c_pop);
+SQL> 	     ELSE IF v_pop > c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is greater than '||c_pop_zero);
+SQL> 	     ELSE IF v_pop = c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('China'||chr(39)||'s Population is '||c_pop_zero);
+SQL> 	     ELSE IF v_pop IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+SQL> 	     END IF;END IF;END IF;END IF; --end all ifs...
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- for UK Pop.
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_pop countries.population%TYPE;
+SQL> 	     c_pop countries.population%TYPE := 1000000000;
+SQL> 	     c_pop_zero countries.population%TYPE := 0;
+SQL> 	     c_pop_null countries.population%TYPE := null;
+SQL> BEGIN
+SQL> 	     SELECT population
+SQL> 	     INTO v_pop FROM countries
+SQL> 	     WHERE country_id = 44; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+SQL> 
+SQL> 	     IF v_pop > c_pop THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is greater than '||c_pop);
+SQL> 	     ELSE IF v_pop > c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is greater than '||c_pop_zero);
+SQL> 	     ELSE IF v_pop = c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('UK'||chr(39)||'s Population is '||c_pop_zero);
+SQL> 	     ELSE IF v_pop IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+SQL> 	     END IF;END IF;END IF;END IF; --end all ifs...
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- for Anarctica Pop.
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_pop countries.population%TYPE;
+SQL> 	     c_pop countries.population%TYPE := 1000000000;
+SQL> 	     c_pop_zero countries.population%TYPE := 0;
+SQL> 	     c_pop_null countries.population%TYPE := null;
+SQL> BEGIN
+SQL> 	     SELECT population
+SQL> 	     INTO v_pop FROM countries
+SQL> 	     WHERE country_id = 672; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+SQL> 
+SQL> 	     IF v_pop > c_pop THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Antaractica'||chr(39)||'s Population is greater than '||c_pop);
+SQL> 	     ELSE IF v_pop > c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Antaractica'||chr(39)||'s Population is greater than '||c_pop_zero);
+SQL> 	     ELSE IF v_pop = c_pop_zero THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('Antaractica'||chr(39)||'s Population is '||c_pop_zero);
+SQL> 	     ELSE IF v_pop IS NULL THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+SQL> 	     END IF;END IF;END IF;END IF; --end all ifs...
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- Europa Island Pop.
+SQL> DECLARE
+  2  	     v_pop countries.population%TYPE;
+  3  	     c_pop countries.population%TYPE := 1000000000;
+  4  	     c_pop_zero countries.population%TYPE := 0;
+  5  	     c_pop_null countries.population%TYPE := null;
+  6  BEGIN
+  7  	     SELECT population
+  8  	     INTO v_pop FROM countries
+  9  	     WHERE country_id = 15; --86 china 44 UK, 672 Antaractica, 15 Europa Island
+ 10  
+ 11  	     IF v_pop > c_pop THEN
+ 12  		     DBMS_OUTPUT.PUT_LINE('Europa Island'||chr(39)||'s Population is greater than '||c_pop);
+ 13  	     ELSE IF v_pop > c_pop_zero THEN
+ 14  		     DBMS_OUTPUT.PUT_LINE('Europa Island'||chr(39)||'s Population is greater than '||c_pop_zero);
+ 15  	     ELSE IF v_pop = c_pop_zero THEN
+ 16  		     DBMS_OUTPUT.PUT_LINE('Europa Island'||chr(39)||'s Population is '||c_pop_zero);
+ 17  	     ELSE IF v_pop IS NULL THEN
+ 18  		     DBMS_OUTPUT.PUT_LINE('No data for this country');
+ 19  	     END IF;END IF;END IF;END IF; --end all ifs...
+ 20  END;
+ 21  /
+No data for this country                                                        
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_1_9.sql
+SQL> -- if 0 then leap year, if not 0 then not leap year
+SQL> -- for year 1990
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=1990;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> 
+SQL> -- for year 2000
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=2000;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> 
+SQL> -- for year 1996
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=1996;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- for year 1900
+SQL> DECLARE
+  2  	     v_year NUMBER(4) :=1900;
+  3  	     v_result NUMBER(4);
+  4  BEGIN
+  5  	     v_result := MOD(v_year, 4);
+  6  
+  7  	     IF v_result = 0 THEN
+  8  		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+  9  	     ELSE
+ 10  		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+ 11  	     END IF;
+ 12  END;
+ 13  /
+1900 is a leap year                                                             
+
+PL/SQL procedure successfully completed.
+
+SQL> @script/4_1_9.sql
+SP2-0310: unable to open file "script/4_1_9.sql"
+SQL> @scripts/4_1_9.sql
+SQL> -- if 0 then leap year, if not 0 then not leap year
+SQL> -- for year 1990
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=1990;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> 
+SQL> -- for year 2000
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=2000;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> 
+SQL> -- for year 1996
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=1996;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> 
+SQL> -- for year 1900
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=1900;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- for year 2016
+SQL> DECLARE
+  2  	     v_year NUMBER(4) :=2016;
+  3  	     v_result NUMBER(4);
+  4  BEGIN
+  5  	     v_result := MOD(v_year, 4);
+  6  
+  7  	     IF v_result = 0 THEN
+  8  		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+  9  	     ELSE
+ 10  		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+ 11  	     END IF;
+ 12  END;
+ 13  /
+2016 is a leap year                                                             
+
+PL/SQL procedure successfully completed.
+
+SQL> @scripts/4_1_9.sql
+SQL> -- if 0 then leap year, if not 0 then not leap year
+SQL> -- for year 1990
+SQL> /*
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=1990;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> 
+SQL> -- for year 2000
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=2000;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> 
+SQL> -- for year 1996
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=1996;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> 
+SQL> -- for year 1900
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=1900;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> 
+SQL> -- for year 2016
+SQL> DECLARE
+SQL> 	     v_year NUMBER(4) :=2016;
+SQL> 	     v_result NUMBER(4);
+SQL> BEGIN
+SQL> 	     v_result := MOD(v_year, 4);
+SQL> 
+SQL> 	     IF v_result = 0 THEN
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+SQL> 	     ELSE
+SQL> 		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+SQL> 	     END IF;
+SQL> END;
+SQL> /
+SQL> */
+SQL> -- for year 1884
+SQL> DECLARE
+  2  	     v_year NUMBER(4) :=1884;
+  3  	     v_result NUMBER(4);
+  4  BEGIN
+  5  	     v_result := MOD(v_year, 4);
+  6  
+  7  	     IF v_result = 0 THEN
+  8  		     DBMS_OUTPUT.PUT_LINE(v_year||' is a leap year');
+  9  	     ELSE
+ 10  		     DBMS_OUTPUT.PUT_LINE(v_year||' is not a leap year');
+ 11  	     END IF;
+ 12  END;
+ 13  /
+1884 is a leap year                                                             
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off
